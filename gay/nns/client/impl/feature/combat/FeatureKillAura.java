@@ -27,7 +27,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
-import java.lang.runtime.SwitchBootstraps;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,8 +35,8 @@ import java.util.List;
 public class FeatureKillAura extends AbstractFeature {
 
     @Serialize(name = "Auto_Block")
-    @Mode(modes = {"Hypixel"})
-    public String autoBlock = "Hypixel";
+    @Mode(modes = {"None", "Hypixel"})
+    public String autoBlock = "None";
     @Serialize(name = "Attack_Range")
     @Slider(min = 1, max = 6, increment = 0.1f)
     public double attackRange = 3.f;
@@ -106,7 +105,11 @@ public class FeatureKillAura extends AbstractFeature {
 
             Core.getSingleton().getRotationManager().setRotation(rotations);
 
-            if (autoBlock.equals("Hypixel")) {
+            switch (autoBlock) {
+                case "None": {
+                    break;
+                }
+                case "Hypixel": {
                 if (mcTarget != mc.thePlayer) {
                     mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                     mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
