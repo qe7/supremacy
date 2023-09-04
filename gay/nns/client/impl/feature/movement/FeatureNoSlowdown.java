@@ -17,7 +17,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import org.apache.commons.lang3.RandomUtils;
 
-@FeatureInfo(name = "No_Slowdown", description = "Prevents you from slowing down when you're blocking.", category = FeatureCategory.MOVEMENT)
+@FeatureInfo(name = "NoSlowdown", description = "Prevents you from slowing down when you're blocking.", category = FeatureCategory.MOVEMENT)
 public class FeatureNoSlowdown extends AbstractFeature {
 
 	@Serialize(name = "Mode")

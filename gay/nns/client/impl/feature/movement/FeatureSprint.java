@@ -29,7 +29,7 @@ public class FeatureSprint extends AbstractFeature {
 	@Override
 	protected void onDisable() {
 		super.onDisable();
-		mc.gameSettings.keyBindSprint.pressed = Keyboard.isKeyDown(mc.gameSettings.keyBindSprint.getKeyCode());
+		mc.gameSettings.keyBindSprint.setKeyPressed(false);
 	}
 
 	@Subscribe
@@ -38,8 +38,8 @@ public class FeatureSprint extends AbstractFeature {
 		if (mc.thePlayer == null) return;
 
 		switch (mode) {
-			case "Legit" -> mc.gameSettings.keyBindSprint.pressed = true;
-			case "Rage" -> {
+			case "Legit" -> mc.gameSettings.keyBindSprint.setKeyPressed(true);
+			case "Omni" -> {
 				if (mc.thePlayer.moveForward != 0 || mc.thePlayer.moveStrafing != 0) {
 					mc.thePlayer.setSprinting(true);
 				}

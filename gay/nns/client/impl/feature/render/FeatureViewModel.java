@@ -6,7 +6,7 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.api.feature.AbstractFeature;
 
-@FeatureInfo(name = "View_Model", category = FeatureCategory.RENDER)
+@FeatureInfo(name = "ViewModel", category = FeatureCategory.RENDER)
 public class FeatureViewModel extends AbstractFeature {
 
 	@Serialize(name = "View_Model_X")

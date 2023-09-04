@@ -10,7 +10,7 @@ import gay.nns.client.api.setting.annotations.*;
 
 import java.awt.*;
 
-@FeatureInfo(name = "Example_Feature", description = "Example Feature", category = FeatureCategory.OTHER)
+@FeatureInfo(name = "ExampleFeature", description = "Example Feature", category = FeatureCategory.OTHER)
 public class FeatureExample extends AbstractFeature {
 
 	@Serialize(name = "Example_Color")
