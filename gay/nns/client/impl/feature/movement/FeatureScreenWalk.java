@@ -11,7 +11,7 @@ import gay.nns.client.impl.event.player.UpdateEvent;
 import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
-@FeatureInfo(name = "ScreenWalk", description = "Allows you to walk on the screen", category = FeatureCategory.MOVEMENT)
+@FeatureInfo(name = "InventoryMove", description = "Allows you to walk on the screen", category = FeatureCategory.MOVEMENT)
 public class FeatureScreenWalk extends AbstractFeature {
 
 	@Serialize(name = "ClickGUI_only")

@@ -10,7 +10,7 @@ import gay.nns.client.impl.event.player.MotionEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.util.IMinecraft;
 
-@FeatureInfo(name = "No_Fall", description = "Prevents fall damage.", category = FeatureCategory.OTHER)
+@FeatureInfo(name = "NoFall", description = "Prevents fall damage.", category = FeatureCategory.OTHER)
 public class FeatureNoFall extends AbstractFeature {
 
 	@Serialize(name = "Mode")

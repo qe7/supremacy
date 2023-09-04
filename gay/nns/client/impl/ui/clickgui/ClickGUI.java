@@ -35,6 +35,7 @@ public class ClickGUI extends GuiScreen {
     public FeatureCategory selectedCategory;
     private AbstractFeature selectedModule;
 
+
     // Scroll variables
     private float scrollY;
     private AnimateUtil scrollAnimate = new AnimateUtil(0, 1);
@@ -47,6 +48,11 @@ public class ClickGUI extends GuiScreen {
         posX = getScaledRes().getScaledWidth() / 2f - 150;
         posY = getScaledRes().getScaledHeight() / 2f - 100;
         selectedCategory = FeatureCategory.COMBAT;
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
     // Draw the GUI on the screen

@@ -8,7 +8,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 
 import java.util.UUID;
 
-@FeatureInfo(name = "Fake_Player", description = "Spawns a fake player", category = FeatureCategory.RENDER)
+@FeatureInfo(name = "FakePlayer", description = "Spawns a fake player", category = FeatureCategory.RENDER)
 public class FeatureFakePlayer extends AbstractFeature {
 
 	public FeatureFakePlayer() {

@@ -10,7 +10,7 @@ import gay.nns.client.impl.event.packet.PacketReceiveEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
-@FeatureInfo(name = "No_Rotate", description = "Prevents you from rotating your player", category = FeatureCategory.OTHER)
+@FeatureInfo(name = "NoRotate", description = "Prevents you from rotating your player", category = FeatureCategory.OTHER)
 public class FeatureNoRotate extends AbstractFeature {
 
 	@Serialize(name = "Mode")

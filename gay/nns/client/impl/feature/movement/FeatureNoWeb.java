@@ -9,7 +9,7 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.util.player.MovementUtil;
 
-@FeatureInfo(name = "No_Web", description = "Prevents you from getting slowed down by webs", category = FeatureCategory.MOVEMENT)
+@FeatureInfo(name = "NoWeb", description = "Prevents you from getting slowed down by webs", category = FeatureCategory.MOVEMENT)
 public class FeatureNoWeb extends AbstractFeature {
 
 	@Serialize(name = "Speed")
