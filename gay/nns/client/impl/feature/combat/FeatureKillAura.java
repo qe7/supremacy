@@ -109,6 +109,7 @@ public class FeatureKillAura extends AbstractFeature {
                 case "None": {
                     break;
                 }
+                
                 case "Hypixel": {
                     if (mcTarget != mc.thePlayer) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
@@ -119,17 +120,18 @@ public class FeatureKillAura extends AbstractFeature {
                         mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
                 }
+                break;
+            }
 
-                if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
-                    if (rayTrace) {
-                        PlayerUtil.sendClick(0, true);
-                        PlayerUtil.sendClick(0, false);
-                    } else {
-                        IMinecraft.mc.thePlayer.swingItem();
-                        IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
-                    }
-                    timer.reset();
+            if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
+                if (rayTrace) {
+                    PlayerUtil.sendClick(0, true);
+                    PlayerUtil.sendClick(0, false);
+                } else {
+                    IMinecraft.mc.thePlayer.swingItem();
+                    IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
                 }
+                timer.reset();
             }
         }
     }
