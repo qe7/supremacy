@@ -69,6 +69,10 @@ public class FeatureKillAura extends AbstractFeature {
 
     @Override
     protected void onDisable() {
+        if(this.isBlocking) {
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+            this.isBlocking = false;
+        }
         super.onDisable();
     }
 
