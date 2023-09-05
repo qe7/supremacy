@@ -57,6 +57,7 @@ public class FeatureKillAura extends AbstractFeature {
     private final TimerUtil timer = new TimerUtil();
 
     private boolean isBlocking = false;
+    private int hitTicks;
 
     public FeatureKillAura() {
         super();
@@ -76,6 +77,7 @@ public class FeatureKillAura extends AbstractFeature {
 
     @Subscribe
     public void onMotion(final MotionEvent motionEvent) {
+        this.hitTicks++;
         if (IMinecraft.mc.theWorld == null) return;
         if (IMinecraft.mc.thePlayer == null) return;
         if (IMinecraft.mc.thePlayer.isDead) {
@@ -111,7 +113,7 @@ public class FeatureKillAura extends AbstractFeature {
                 }
 
                 case "Hypixel": {
-                    if (mcTarget != mc.thePlayer) {
+                    if (mcTarget != mc.thePlayer && hitTicks == 1) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
@@ -125,6 +127,7 @@ public class FeatureKillAura extends AbstractFeature {
                 IMinecraft.mc.thePlayer.swingItem();
                 IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
                 timer.reset();
+                this.hitTicks = 0;
             }
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
