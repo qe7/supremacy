@@ -125,11 +125,11 @@ public class FeatureKillAura extends AbstractFeature {
                 IMinecraft.mc.thePlayer.swingItem();
                 IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
                 timer.reset();
-            } else {
-                if (mcTarget == mc.thePlayer && isBlocking) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    isBlocking = false;
-                }
+            }
+        } else {
+            if (mcTarget == mc.thePlayer && isBlocking) {
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                isBlocking = false;
             }
         }
     }
