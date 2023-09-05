@@ -39,9 +39,9 @@ public class FeatureVelocity extends AbstractFeature {
     @CheckBox
     public boolean waterCheck = true;
 
-    @Serialize(name = "Hypixel OnGround")
+    @Serialize(name = "Hypixel 0,0 OnGround")
     @CheckBox
-    public boolean onGroundCheck = false;
+    public boolean onGroundCheck = true;
     private boolean reset;
     private boolean realVelocity, tookVelocity;
 
@@ -116,7 +116,7 @@ public class FeatureVelocity extends AbstractFeature {
                     return;
                 }
 
-                if (mc.thePlayer.onGround && onGroundCheck) {
+                if (mc.thePlayer.onGround && onGroundCheck) { //onGroundCheck is a checkbox u can toggle on/off for 0,0 on ground
                     reset = true;
                     event.setCancelled(true);
                     return;
@@ -151,6 +151,7 @@ public class FeatureVelocity extends AbstractFeature {
                 mc.thePlayer.motionX = 0;
                 mc.thePlayer.motionY = 0;
                 mc.thePlayer.motionZ = 0;
+                reset = false;
             }
         }
     }
