@@ -13,8 +13,8 @@ import net.minecraft.entity.Entity;
 public class FeatureAntiBot extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"None", "Hypixel"})
-    public String antiBotMode = "None";
+    @Mode(modes = {"Hypixel"})
+    public String antiBotMode = "Hypixel";
 
     @Override
     protected void onEnable() {
@@ -30,9 +30,6 @@ public class FeatureAntiBot extends AbstractFeature {
     public void eventUpdate(final UpdateEvent event) {
 
         switch (antiBotMode) {
-            case "None" -> {
-
-            }
             case "Hypixel" -> {
                 for (Object entity : this.mc.theWorld.loadedEntityList) {
                     if (((Entity) entity).isInvisible() && (Entity) entity != this.mc.thePlayer) {
@@ -41,5 +38,6 @@ public class FeatureAntiBot extends AbstractFeature {
                 }
             }
         }
+        this.setSuffix(antiBotMode);
     }
 }
