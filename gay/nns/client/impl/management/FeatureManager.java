@@ -44,6 +44,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				/* Combat */
 				new FeatureKillAura(),
 				new FeatureVelocity(),
+				new FeatureAntiBot(),
 
 				/* Ghost */
 				new FeatureAutoClicker(),
