@@ -3,10 +3,12 @@ package gay.nns.client.api.feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.feature.interfaces.IFeature;
 import gay.nns.client.api.feature.interfaces.IToggleable;
-import gay.nns.client.util.IMinecraft;
 import gay.nns.client.api.core.Core;
+import net.minecraft.client.Minecraft;
 
-public abstract class AbstractFeature implements IFeature, IToggleable, IMinecraft {
+public abstract class AbstractFeature implements IFeature, IToggleable {
+
+    protected final Minecraft mc = Minecraft.getMinecraft();
 
     private final FeatureInfo featureInfo;
     private boolean toggledState;

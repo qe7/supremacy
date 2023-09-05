@@ -10,7 +10,6 @@ import gay.nns.client.impl.event.packet.PacketSendEvent;
 import gay.nns.client.impl.event.player.MotionEvent;
 import gay.nns.client.impl.event.player.SlowDownEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
-import gay.nns.client.util.IMinecraft;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
@@ -54,17 +53,17 @@ public class FeatureNoSlowdown extends AbstractFeature {
 
     @Subscribe
     public void onMotion(final MotionEvent motionEvent) {
-        if (IMinecraft.mc.thePlayer.getHeldItem() != null && !(IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
+        if (mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
             return;
-        if (!IMinecraft.mc.thePlayer.isBlocking()) return;
+        if (!mc.thePlayer.isBlocking()) return;
 
         switch (mode.toLowerCase()) {
             case "ncp" -> {
                 if (motionEvent.isPre()) {
-                    IMinecraft.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE)), EnumFacing.DOWN));
+                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE)), EnumFacing.DOWN));
                 }
                 if (motionEvent.isPost()) {
-                    IMinecraft.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, IMinecraft.mc.thePlayer.getHeldItem(), 0, 0, 0));
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
                 }
             }
 

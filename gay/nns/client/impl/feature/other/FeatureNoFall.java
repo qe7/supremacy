@@ -8,7 +8,6 @@ import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.event.player.MotionEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
-import gay.nns.client.util.IMinecraft;
 
 @FeatureInfo(name = "NoFall", description = "Prevents fall damage.", category = FeatureCategory.OTHER)
 public class FeatureNoFall extends AbstractFeature {
@@ -40,15 +39,15 @@ public class FeatureNoFall extends AbstractFeature {
 	public void onMotionUpdate(final MotionEvent motionEvent) {
 		switch (mode.toLowerCase()) {
 			case "packet" -> {
-				if (IMinecraft.mc.thePlayer.fallDistance > 3.0F) {
+				if (mc.thePlayer.fallDistance > 3.0F) {
 					motionEvent.setGround(true);
-					IMinecraft.mc.thePlayer.fallDistance = 0.0F;
+					mc.thePlayer.fallDistance = 0.0F;
 				}
 			}
 			case "damage" -> {
-				if (IMinecraft.mc.thePlayer.fallDistance > 3.2F) {
+				if (mc.thePlayer.fallDistance > 3.2F) {
 					motionEvent.setGround(true);
-					IMinecraft.mc.thePlayer.fallDistance = 0.0F;
+					mc.thePlayer.fallDistance = 0.0F;
 				}
 			}
 		}

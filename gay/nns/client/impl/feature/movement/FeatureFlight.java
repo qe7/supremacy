@@ -9,7 +9,6 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
-import gay.nns.client.util.IMinecraft;
 import gay.nns.client.util.player.MovementUtil;
 import org.lwjgl.input.Keyboard;
 
@@ -34,14 +33,14 @@ public class FeatureFlight extends AbstractFeature {
 	protected void onEnable() {
 		super.onEnable();
 
-		savedFlyingCapabilityState = IMinecraft.mc.thePlayer.capabilities.allowFlying;
+		savedFlyingCapabilityState = mc.thePlayer.capabilities.allowFlying;
 	}
 
 	@Override
 	protected void onDisable() {
 		super.onDisable();
 
-		IMinecraft.mc.thePlayer.capabilities.allowFlying = savedFlyingCapabilityState;
+		mc.thePlayer.capabilities.allowFlying = savedFlyingCapabilityState;
 	}
 
 	@Subscribe
@@ -53,19 +52,19 @@ public class FeatureFlight extends AbstractFeature {
 	public void onUpdate(final UpdateEvent updateEvent) {
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
-				IMinecraft.mc.thePlayer.motionY = 0.0D;
+				mc.thePlayer.motionY = 0.0D;
 				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-					IMinecraft.mc.thePlayer.motionY += (speed / 2);
+					mc.thePlayer.motionY += (speed / 2);
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-					IMinecraft.mc.thePlayer.motionY -= (speed / 2);
-				if (IMinecraft.mc.thePlayer.moveForward != 0.F || IMinecraft.mc.thePlayer.moveStrafing != 0.F)
+					mc.thePlayer.motionY -= (speed / 2);
+				if (mc.thePlayer.moveForward != 0.F || mc.thePlayer.moveStrafing != 0.F)
 					MovementUtil.setSpeed(speed);
 				else
 					MovementUtil.setSpeed(0.0D);
 			}
 			case "creative" -> {
-				IMinecraft.mc.thePlayer.capabilities.allowFlying = true;
-				IMinecraft.mc.thePlayer.capabilities.isFlying = true;
+				mc.thePlayer.capabilities.allowFlying = true;
+				mc.thePlayer.capabilities.isFlying = true;
 			}
 		}
 	}

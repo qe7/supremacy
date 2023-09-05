@@ -1,10 +1,10 @@
 package gay.nns.client.util.chat;
 
-import gay.nns.client.util.IMinecraft;
 import gay.nns.client.api.core.Core;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 
-public class ChatUtil implements IMinecraft {
+public class ChatUtil {
 
 	private final String lightGrey = "\u00A77";
 	private final String reset = "\u00A7r";
@@ -12,7 +12,7 @@ public class ChatUtil implements IMinecraft {
 
 	public void chatCommand(String message) {
 		String text = prefix + message;
-		mc.thePlayer.addChatMessage(new ChatComponentText(text));
+		Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(text));
 	}
 
 }

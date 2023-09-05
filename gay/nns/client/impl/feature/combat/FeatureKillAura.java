@@ -5,16 +5,12 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.MotionEvent;
-import gay.nns.client.util.IMinecraft;
-import gay.nns.client.util.chat.ChatUtil;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.PlayerUtil;
 import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -78,26 +74,26 @@ public class FeatureKillAura extends AbstractFeature {
     @Subscribe
     public void onMotion(final MotionEvent motionEvent) {
         this.hitTicks++;
-        if (IMinecraft.mc.theWorld == null) return;
-        if (IMinecraft.mc.thePlayer == null) return;
-        if (IMinecraft.mc.thePlayer.isDead) {
+        if (mc.theWorld == null) return;
+        if (mc.thePlayer == null) return;
+        if (mc.thePlayer.isDead) {
             this.toggle();
         }
-        if (IMinecraft.mc.thePlayer.getHeldItem() != null && (IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {
+        if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {
             return;
         }
 
 
-        List<Entity> entities = new ArrayList<>(IMinecraft.mc.theWorld.getLoadedEntityList());
-        entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(IMinecraft.mc.thePlayer)));
-        entities.removeIf(e -> e == IMinecraft.mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.isDead);
+        List<Entity> entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
+        entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
+        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.isDead);
 
         Entity mcTarget;
-        if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(IMinecraft.mc.thePlayer) < attackRange)
+        if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < attackRange)
             mcTarget = entities.get(0);
-        else mcTarget = IMinecraft.mc.thePlayer;
+        else mcTarget = mc.thePlayer;
 
-        if (mcTarget != IMinecraft.mc.thePlayer && IMinecraft.mc.thePlayer.getDistanceToEntity(mcTarget) < attackRange && !mcTarget.isDead && !mcTarget.isInvisibleToPlayer(IMinecraft.mc.thePlayer) && !IMinecraft.mc.thePlayer.isInvisible()) {
+        if (mcTarget != mc.thePlayer && mc.thePlayer.getDistanceToEntity(mcTarget) < attackRange && !mcTarget.isDead && !mcTarget.isInvisibleToPlayer(mc.thePlayer) && !mc.thePlayer.isInvisible()) {
 
             Vector2f rotations = RotationUtil.getRotations(mcTarget);
 
@@ -124,8 +120,8 @@ public class FeatureKillAura extends AbstractFeature {
             }
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
-                IMinecraft.mc.thePlayer.swingItem();
-                IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
+                mc.thePlayer.swingItem();
+                mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 timer.reset();
                 this.hitTicks = 0;
             }

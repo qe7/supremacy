@@ -12,7 +12,6 @@ import gay.nns.client.impl.event.packet.PacketReceiveEvent;
 import gay.nns.client.impl.event.player.MotionEvent;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
-import gay.nns.client.util.IMinecraft;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S19PacketEntityStatus;
@@ -60,14 +59,14 @@ public class FeatureVelocity extends AbstractFeature {
 
     @Subscribe
     public void onPacketReceive(final PacketReceiveEvent event) {
-        if (IMinecraft.mc.theWorld == null) return;
-        if (IMinecraft.mc.thePlayer == null) return;
-        if (IMinecraft.mc.thePlayer.isInWater() && waterCheck) return;
+        if (mc.theWorld == null) return;
+        if (mc.thePlayer == null) return;
+        if (mc.thePlayer.isInWater() && waterCheck) return;
 
         switch (mode) {
             case "Standard": {
                 if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
-                    if (s12.getEntityID() == IMinecraft.mc.thePlayer.getEntityId()) {
+                    if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
                         s12.motionX *= (int) (horizontal / 100);
                         s12.motionY *= (int) (vertical / 100);
                         s12.motionZ *= (int) (horizontal / 100);

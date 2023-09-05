@@ -8,7 +8,6 @@ import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.util.IMinecraft;
 import gay.nns.client.util.math.TimerUtil;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.*;
@@ -52,7 +51,7 @@ public class FeatureAutoClicker extends AbstractFeature {
 	public void onUpdate(final UpdateEvent updateEvent) {
 
 		if (Mouse.isButtonDown(0) && leftClick) {
-			if (IMinecraft.mc.thePlayer.getHeldItem() != null && (IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemPickaxe || IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemAxe || IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemSpade)) return;
+			if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemPickaxe || mc.thePlayer.getHeldItem().getItem() instanceof ItemAxe || mc.thePlayer.getHeldItem().getItem() instanceof ItemSpade)) return;
 			long delay = 1000L / getRandom((int) minCPS, (int) maxCPS);
 			if (leftTimerUtil.hasTimeElapsed(delay)) {
 				sendClick(0, true);
@@ -64,7 +63,7 @@ public class FeatureAutoClicker extends AbstractFeature {
 		}
 
 		if (Mouse.isButtonDown(1) && rightClick) {
-			if (IMinecraft.mc.thePlayer.getHeldItem() != null && (IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemFood || IMinecraft.mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) return;
+			if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || mc.thePlayer.getHeldItem().getItem() instanceof ItemFood || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) return;
 			long delay = 1000L / getRandom((int) rightMinCPS, (int) rightMaxCPS);
 			if (rightTimerUtil.hasTimeElapsed(delay)) {
 				sendClick(1, true);
@@ -78,7 +77,7 @@ public class FeatureAutoClicker extends AbstractFeature {
 	}
 
 	private void sendClick(final int button, final boolean state) {
-		final int keyBind = button == 0 ? IMinecraft.mc.gameSettings.keyBindAttack.getKeyCode() : IMinecraft.mc.gameSettings.keyBindUseItem.getKeyCode();
+		final int keyBind = button == 0 ? mc.gameSettings.keyBindAttack.getKeyCode() : mc.gameSettings.keyBindUseItem.getKeyCode();
 
 		KeyBinding.setKeyBindState(keyBind, state);
 
