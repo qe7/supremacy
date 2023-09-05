@@ -54,11 +54,9 @@ public class FeatureKillAura extends AbstractFeature {
     @Slider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
 
-    @Serialize(name = "Ray_Trace")
-    @CheckBox
-    public boolean rayTrace = true;
-
     private final TimerUtil timer = new TimerUtil();
+
+    private boolean isBlocking = false;
 
     public FeatureKillAura() {
         super();
@@ -67,6 +65,8 @@ public class FeatureKillAura extends AbstractFeature {
     @Override
     protected void onEnable() {
         super.onEnable();
+
+        isBlocking = false;
     }
 
     @Override
@@ -105,10 +105,6 @@ public class FeatureKillAura extends AbstractFeature {
 
             Core.getSingleton().getRotationManager().setRotation(rotations);
 
-            if (mcTarget == mc.thePlayer) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-            }
-
             switch (autoBlock) {
                 case "None": {
                     break;
@@ -119,20 +115,21 @@ public class FeatureKillAura extends AbstractFeature {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        isBlocking = true;
                     }
                     break;
                 }
             }
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
-                if (rayTrace) {
-                    PlayerUtil.sendClick(0, true);
-                    PlayerUtil.sendClick(0, false);
-                } else {
-                    IMinecraft.mc.thePlayer.swingItem();
-                    IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
-                }
+                IMinecraft.mc.thePlayer.swingItem();
+                IMinecraft.mc.playerController.attackEntity(IMinecraft.mc.thePlayer, mcTarget);
                 timer.reset();
+            } else {
+                if (mcTarget == mc.thePlayer && isBlocking) {
+                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                    isBlocking = false;
+                }
             }
         }
     }
