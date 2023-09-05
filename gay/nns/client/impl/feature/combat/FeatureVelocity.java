@@ -40,7 +40,7 @@ public class FeatureVelocity extends AbstractFeature {
 
     @Serialize(name = "Hypixel 0,0 OnGround")
     @CheckBox
-    public boolean onGroundCheck = true;
+    public boolean onGroundCheck = false;
     private boolean reset;
     private boolean realVelocity, tookVelocity;
 
