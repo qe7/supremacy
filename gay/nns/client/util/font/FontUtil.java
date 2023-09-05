@@ -21,7 +21,7 @@ public class FontUtil {
 			if (locationMap.containsKey(location)) {
 				font = locationMap.get(location).deriveFont(Font.PLAIN, size);
 			} else {
-				InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("gustav/font/" + location)).getInputStream();
+				InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("sup/font/" + location)).getInputStream();
 				font = Font.createFont(0, is);
 				locationMap.put(location, font);
 				font = font.deriveFont(Font.PLAIN, size);

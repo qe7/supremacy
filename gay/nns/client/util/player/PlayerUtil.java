@@ -33,9 +33,9 @@ public class PlayerUtil {
 		BlockPos nearestGround = null;
 
 		for (int i = (int) Math.ceil(Minecraft.getMinecraft().thePlayer.posY); i > 0; --i) {
-			Block block = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(Minecraft.getMinecraft().thePlayer.posX, (double) i, Minecraft.getMinecraft().thePlayer.posZ)).getBlock();
+			Block block = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(Minecraft.getMinecraft().thePlayer.posX, i, Minecraft.getMinecraft().thePlayer.posZ)).getBlock();
 			if (block != Blocks.air && block != Blocks.water && block != Blocks.lava && block != Blocks.flowing_water && block != Blocks.flowing_lava) {
-				nearestGround = new BlockPos(Minecraft.getMinecraft().thePlayer.posX, (double) i, Minecraft.getMinecraft().thePlayer.posZ);
+				nearestGround = new BlockPos(Minecraft.getMinecraft().thePlayer.posX, i, Minecraft.getMinecraft().thePlayer.posZ);
 				break;
 			}
 		}
