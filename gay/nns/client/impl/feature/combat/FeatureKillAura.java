@@ -11,6 +11,7 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.MotionEvent;
 import gay.nns.client.util.IMinecraft;
+import gay.nns.client.util.chat.ChatUtil;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
 import gay.nns.client.util.player.PlayerUtil;
@@ -57,8 +58,6 @@ public class FeatureKillAura extends AbstractFeature {
     @CheckBox
     public boolean rayTrace = true;
 
-    public boolean canBlock;
-
     private final TimerUtil timer = new TimerUtil();
 
     public FeatureKillAura() {
@@ -86,6 +85,7 @@ public class FeatureKillAura extends AbstractFeature {
             return;
         }
 
+
         List<Entity> entities = new ArrayList<>(IMinecraft.mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(IMinecraft.mc.thePlayer)));
         entities.removeIf(e -> e == IMinecraft.mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.isDead);
@@ -105,22 +105,23 @@ public class FeatureKillAura extends AbstractFeature {
 
             Core.getSingleton().getRotationManager().setRotation(rotations);
 
+            if (mcTarget == mc.thePlayer) {
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+            }
+
             switch (autoBlock) {
                 case "None": {
                     break;
                 }
-                
+
                 case "Hypixel": {
                     if (mcTarget != mc.thePlayer) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                     }
-                    if (mcTarget == mc.thePlayer) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    }
+                    break;
                 }
-                break;
             }
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
@@ -136,4 +137,5 @@ public class FeatureKillAura extends AbstractFeature {
         }
     }
 }
+
 

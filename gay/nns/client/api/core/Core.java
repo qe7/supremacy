@@ -13,7 +13,6 @@ public final class Core {
 	private final static Core singleton = new Core();
 	private final String name, version;
 	private final String[] authors;
-
 	private final EventBus eventBus;
 	private final FeatureManager featureManager;
 	private final RotationManager rotationManager;
