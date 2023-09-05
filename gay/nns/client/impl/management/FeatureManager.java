@@ -65,6 +65,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureFakePlayer(),
 				new FeatureAmbience(),
 				new FeatureBrightness(),
+				new FeatureESP(),
 
 				/* Other */
 				new FeatureNoFall(),

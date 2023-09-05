@@ -107,7 +107,7 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "None" -> { }
                 case "Hypixel" -> {
-                    if (hitTicks == 1) {
+                    if (this.hitTicks == 1) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
