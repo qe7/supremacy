@@ -7,7 +7,8 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.event.packet.PacketSendEvent;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PostMotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.player.SlowDownEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import net.minecraft.item.ItemFood;
@@ -52,21 +53,15 @@ public class FeatureNoSlowdown extends AbstractFeature {
     }
 
     @Subscribe
-    public void onMotion(final MotionEvent motionEvent) {
+    public void onMotion(final PreMotionEvent motionEvent) {
         if (mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
             return;
         if (!mc.thePlayer.isBlocking()) return;
 
         switch (mode.toLowerCase()) {
             case "ncp" -> {
-                if (motionEvent.isPre()) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE)), EnumFacing.DOWN));
-                }
-                if (motionEvent.isPost()) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
-                }
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE), RandomUtils.nextDouble(Double.MIN_VALUE, Double.MAX_VALUE)), EnumFacing.DOWN));
             }
-
             case "hypixel" -> {
                 if (mc.thePlayer.isUsingItem() && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
                     mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
@@ -76,6 +71,20 @@ public class FeatureNoSlowdown extends AbstractFeature {
             }
         }
     }
+
+    @Subscribe
+    public void onPostMotion(final PostMotionEvent motionEvent) {
+        if (mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
+            return;
+        if (!mc.thePlayer.isBlocking()) return;
+
+        switch (mode.toLowerCase()) {
+            case "ncp" -> {
+                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
+            }
+        }
+    }
+
 
     @Subscribe
     public void packetSend(final PacketSendEvent event) {

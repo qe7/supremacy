@@ -1,10 +1,7 @@
-package gay.nns.client.altstuff;
+package gay.nns.client.util.account;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -12,20 +9,7 @@ public class Browser {
 
     public static String postExternal(final String url, final String post, final boolean json) {
         try {
-            final HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36");
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-
-            final byte[] out = post.getBytes(StandardCharsets.UTF_8);
-            final int length = out.length;
-            connection.setFixedLengthStreamingMode(length);
-            connection.addRequestProperty("Content-Type", json ? "application/json" : "application/x-www-form-urlencoded; charset=UTF-8");
-            connection.addRequestProperty("Accept", "application/json");
-            connection.connect();
-            try (final OutputStream os = connection.getOutputStream()) {
-                os.write(out);
-            }
+            final HttpsURLConnection connection = getHttpsURLConnection(url, post, json);
 
             final int responseCode = connection.getResponseCode();
 
@@ -51,6 +35,24 @@ public class Browser {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private static HttpsURLConnection getHttpsURLConnection(String url, String post, boolean json) throws IOException {
+        final HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
+        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36");
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+        final byte[] out = post.getBytes(StandardCharsets.UTF_8);
+        final int length = out.length;
+        connection.setFixedLengthStreamingMode(length);
+        connection.addRequestProperty("Content-Type", json ? "application/json" : "application/x-www-form-urlencoded; charset=UTF-8");
+        connection.addRequestProperty("Accept", "application/json");
+        connection.connect();
+        try (final OutputStream os = connection.getOutputStream()) {
+            os.write(out);
+        }
+        return connection;
     }
 
     public static String getBearerResponse(final String url, final String bearer) {

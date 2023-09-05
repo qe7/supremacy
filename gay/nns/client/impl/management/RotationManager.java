@@ -1,7 +1,7 @@
 package gay.nns.client.impl.management;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 
 import javax.vecmath.Vector2f;
 
@@ -20,7 +20,7 @@ public class RotationManager {
     }
 
     @Subscribe
-    public void onMotion(MotionEvent event) {
+    public void onMotion(PreMotionEvent event) {
         if(rotations != null && rotating) {
             event.setYaw(rotations.x);
             event.setPitch(rotations.y);

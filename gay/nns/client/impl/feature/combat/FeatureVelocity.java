@@ -9,7 +9,7 @@ import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.packet.PacketReceiveEvent;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -140,7 +140,7 @@ public class FeatureVelocity extends AbstractFeature {
     }
 
     @Subscribe
-    public void playerMotionEvent(MotionEvent event) {
+    public void playerMotionEvent(PreMotionEvent event) {
         switch (mode) {
             case "Hypixel": { //this should work
                 if (!reset) {

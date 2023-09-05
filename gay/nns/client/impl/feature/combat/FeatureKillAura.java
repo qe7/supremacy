@@ -8,7 +8,7 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
 import gay.nns.client.util.player.RotationUtil;
@@ -73,13 +73,12 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void onMotion(final MotionEvent motionEvent) {
+    public void onMotion(final PreMotionEvent motionEvent) {
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isDead) {
             this.toggle();
         }
-        if (!motionEvent.isPre()) return;
         if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {
             return;
         }

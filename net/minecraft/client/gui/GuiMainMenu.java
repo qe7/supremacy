@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import gay.nns.client.altstuff.MicroshitLogin;
+import gay.nns.client.util.account.MicrosoftLogin;
 import gay.nns.client.api.core.Core;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -225,10 +225,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
         if (button.id == 14 && this.realmsButton.visible)
         {
-            MicroshitLogin.getRefreshToken(refreshToken -> {
+            MicrosoftLogin.getRefreshToken(refreshToken -> {
                 if (refreshToken != null) {
                     new Thread(() -> {
-                        MicroshitLogin.LoginData loginData = loginWithRefreshToken(refreshToken);
+                        MicrosoftLogin.LoginData loginData = loginWithRefreshToken(refreshToken);
 
 
                     }).start();
@@ -258,8 +258,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             }
         }
     }
-    private MicroshitLogin.LoginData loginWithRefreshToken(String refreshToken) {
-        final MicroshitLogin.LoginData loginData = MicroshitLogin.login(refreshToken);
+    private MicrosoftLogin.LoginData loginWithRefreshToken(String refreshToken) {
+        final MicrosoftLogin.LoginData loginData = MicrosoftLogin.login(refreshToken);
         mc.session = new Session(loginData.username, loginData.uuid, loginData.mcToken, "microsoft");
         return loginData;
     }

@@ -1,10 +1,7 @@
 package net.minecraft.client.entity;
 
 import gay.nns.client.api.core.Core;
-import gay.nns.client.impl.event.player.MessageSentEvent;
-import gay.nns.client.impl.event.player.MotionEvent;
-import gay.nns.client.impl.event.player.SlowDownEvent;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.impl.event.player.*;
 import gay.nns.client.impl.feature.movement.FeatureSprint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -98,7 +95,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		}
 	}
 
-	public MotionEvent eventMotion;
+	public PreMotionEvent eventMotion;
 
 	public void onUpdateWalkingPlayer() {
 		boolean flag = this.isSprinting();
@@ -127,7 +124,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 		if (this.isCurrentViewEntity()) {
 
-			MotionEvent event = new MotionEvent(MotionEvent.Type.PRE, this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+			PreMotionEvent event = new PreMotionEvent(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
 			eventMotion = event;
 			Core.getSingleton().getEventBus().post(event);
 
@@ -168,7 +165,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 				this.lastReportedPitch = event.getPitch();
 			}
 
-			MotionEvent eventMotionPost = new MotionEvent(MotionEvent.Type.POST);
+			PostMotionEvent eventMotionPost = new PostMotionEvent();
 			Core.getSingleton().getEventBus().post(eventMotionPost);
 		}
 	}

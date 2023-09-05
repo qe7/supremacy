@@ -6,7 +6,7 @@ import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 
 @FeatureInfo(name = "NoFall", description = "Prevents fall damage.", category = FeatureCategory.OTHER)
@@ -36,7 +36,7 @@ public class FeatureNoFall extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onMotionUpdate(final MotionEvent motionEvent) {
+	public void onMotionUpdate(final PreMotionEvent motionEvent) {
 		switch (mode.toLowerCase()) {
 			case "packet" -> {
 				if (mc.thePlayer.fallDistance > 3.0F) {

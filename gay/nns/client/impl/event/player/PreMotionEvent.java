@@ -1,8 +1,6 @@
 package gay.nns.client.impl.event.player;
 
-import gay.nns.client.api.event.type.EventType;
-
-public class MotionEvent extends EventType {
+public class PreMotionEvent {
 
     private double x;
     private double y;
@@ -11,18 +9,14 @@ public class MotionEvent extends EventType {
     private float pitch;
     private boolean onGround;
 
-    public MotionEvent(EventType.Type type, double x, double y, double z, float yaw, float pitch, boolean onGround) {
-        super(type);
+    public PreMotionEvent(double x, double y, double z, float yaw, float pitch, boolean onGround) {
+        super();
         this.x = x;
         this.y = y;
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
         this.onGround = onGround;
-    }
-
-    public MotionEvent(EventType.Type type) {
-        super(type);
     }
 
     public double getX() {

@@ -34,7 +34,6 @@ public final class Core {
 
 		this.settingManager = new SettingManager();
 
-
 		this.fontUtil = new FontUtil();
 	}
 
@@ -57,7 +56,7 @@ public final class Core {
 
 		commandManager.initialize();
 
-		Minecraft.getMinecraft().getSession().setUsername("LowPoly420");
+		Minecraft.getMinecraft().getSession().setUsername(getName());
 	}
 
 	public String getName() {

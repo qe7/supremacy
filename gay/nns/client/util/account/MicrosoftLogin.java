@@ -1,4 +1,4 @@
-package gay.nns.client.altstuff;
+package gay.nns.client.util.account;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class MicroshitLogin {
+public class MicrosoftLogin {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -58,7 +58,7 @@ public class MicroshitLogin {
     }
 
     public static void getRefreshToken(final Consumer<String> callback) {
-        MicroshitLogin.callback = callback;
+        MicrosoftLogin.callback = callback;
 
         startServer();
         browse("https://login.live.com/oauth20_authorize.srf?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&response_type=code&redirect_uri=http://localhost:" + PORT + "&scope=XboxLive.signin%20offline_access");

@@ -8,7 +8,7 @@ import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.MotionEvent;
+import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.util.player.MovementUtil;
@@ -70,7 +70,7 @@ public class FeatureSpeed extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onMotion(final MotionEvent motionEvent) {
+	public void onMotion(final PreMotionEvent motionEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 		if (mc.thePlayer.isInWater() && waterCheck) return;
