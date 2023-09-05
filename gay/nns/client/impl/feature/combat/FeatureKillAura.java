@@ -21,6 +21,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
@@ -73,16 +74,17 @@ public class FeatureKillAura extends AbstractFeature {
 
     @Subscribe
     public void onMotion(final MotionEvent motionEvent) {
-        this.hitTicks++;
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isDead) {
             this.toggle();
         }
+        if (!motionEvent.isPre()) return;
         if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {
             return;
         }
 
+        this.hitTicks++;
 
         List<Entity> entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
@@ -104,30 +106,27 @@ public class FeatureKillAura extends AbstractFeature {
             Core.getSingleton().getRotationManager().setRotation(rotations);
 
             switch (autoBlock) {
-                case "None": {
-                    break;
-                }
-
-                case "Hypixel": {
-                    if (mcTarget != mc.thePlayer && hitTicks == 1) {
+                case "None" -> { }
+                case "Hypixel" -> {
+                    if (hitTicks == 1) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
                     }
-                    break;
-                }
+				}
             }
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
-                timer.reset();
                 this.hitTicks = 0;
+                timer.reset();
             }
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
                 mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                mc.thePlayer.addChatMessage(new ChatComponentText("Released"));
                 isBlocking = false;
             }
         }
