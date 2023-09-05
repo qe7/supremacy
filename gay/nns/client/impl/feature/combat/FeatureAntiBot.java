@@ -30,6 +30,9 @@ public class FeatureAntiBot extends AbstractFeature {
     public void eventUpdate(final UpdateEvent event) {
 
         switch (antiBotMode) {
+            case "None" -> {
+
+            }
             case "Hypixel" -> {
                 for (Object entity : this.mc.theWorld.loadedEntityList) {
                     if (((Entity) entity).isInvisible() && (Entity) entity != this.mc.thePlayer) {
