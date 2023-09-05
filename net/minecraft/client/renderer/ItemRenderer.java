@@ -354,6 +354,12 @@ public class ItemRenderer {
                                         GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                                         GlStateManager.rotate(10.0F, 0.0F, 1.0F, 0.0F);
                                     }
+                                    case "allah" -> { //this is from rise so credits to wood
+                                        this.transformFirstPersonItem(f, f1);
+                                        this.doBlockTransformations();
+                                        GL11.glTranslatef(-0.35F, 0.1F, 0.0F);
+                                        GL11.glTranslatef(-0.05F, -0.1F, 0.1F);
+                                    }
                                 }
                             } else {
                                 this.transformFirstPersonItem(f, 0.0F);

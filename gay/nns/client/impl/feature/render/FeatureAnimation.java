@@ -10,7 +10,7 @@ import gay.nns.client.api.setting.annotations.Serialize;
 public class FeatureAnimation extends AbstractFeature {
 
 	@Serialize(name = "Blocking_Animation")
-	@Mode(modes = {"1.7", "Shae"})
+	@Mode(modes = {"1.7", "Shae", "allah"})
 	public static String blockingAnimation = "1.7";
 
 	public FeatureAnimation() {
