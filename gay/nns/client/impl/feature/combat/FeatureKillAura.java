@@ -5,6 +5,7 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
@@ -49,6 +50,10 @@ public class FeatureKillAura extends AbstractFeature {
     @Serialize(name = "Min_CPS")
     @Slider(min = 1, max = 20, increment = 1)
     public double minCPS = 8;
+
+    @Serialize(name = "Keep_Sprint")
+    @CheckBox()
+    public static boolean keepSprint = false;
 
     @Serialize(name = "Rotation_Speed")
     @Slider(min = 0, max = 20, increment = 1)

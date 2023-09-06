@@ -6,6 +6,10 @@ import com.mojang.authlib.GameProfile;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import gay.nns.client.api.core.Core;
+import gay.nns.client.impl.feature.combat.FeatureKillAura;
+import gay.nns.client.impl.feature.render.FeatureAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -1180,12 +1184,19 @@ public abstract class EntityPlayer extends EntityLivingBase
 
                     if (flag2)
                     {
-                        if (i > 0)
-                        {
-                            targetEntity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-                            this.motionX *= 0.6D;
-                            this.motionZ *= 0.6D;
-                            this.setSprinting(false);
+                        if (i > 0) {
+                            targetEntity.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F));
+                            if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureKillAura.class).isEnabled()) {
+                                if (FeatureKillAura.keepSprint) {
+                                    this.motionX *= 1D;
+                                    this.motionZ *= 1D;
+                                    this.setSprinting(true);
+                                } else {
+                                    this.motionX *= 0.6D;
+                                    this.motionZ *= 0.6D;
+                                    this.setSprinting(false);
+                                }
+                            }
                         }
 
                         if (targetEntity instanceof EntityPlayerMP && targetEntity.velocityChanged)
