@@ -67,12 +67,14 @@ public class FeatureVelocity extends AbstractFeature {
             case "Standard": {
                 if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
                     if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
+                        event.setCancelled(true);
                         s12.motionX *= (int) (horizontal / 100);
                         s12.motionY *= (int) (vertical / 100);
                         s12.motionZ *= (int) (horizontal / 100);
                     }
                 }
                 if (event.getPacket() instanceof S27PacketExplosion s27) {
+                    event.setCancelled(true);
                     s27.posX *= horizontal / 100;
                     s27.posY *= vertical / 100;
                     s27.posZ *= horizontal / 100;

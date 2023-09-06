@@ -1,5 +1,6 @@
 package gay.nns.client.impl.feature.movement;
 
+import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
@@ -67,12 +68,24 @@ public class FeatureSpeed extends AbstractFeature {
 		if (mc.thePlayer == null) return;
 		if (mc.thePlayer.isInWater() && waterCheck) return;
 
+		float speed = 0f;
+
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
-				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) MovementUtil.setSpeed(speed);
+				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
+					speed = (float) this.speed;
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+						speed *= 0.2F;
+					}
+					MovementUtil.setSpeed(speed);
+				}
 			}
 			case "vanilla-hop" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
+					speed = (float) this.speed;
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+						speed *= 0.2F;
+					}
 					MovementUtil.setSpeed(speed);
 					if (mc.thePlayer.onGround) mc.thePlayer.jump();
 				}
@@ -84,9 +97,14 @@ public class FeatureSpeed extends AbstractFeature {
 
 					if (mc.thePlayer.onGround) {
 						if (mc.thePlayer.hurtTime > 2)
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.02f);
+							speed = (float) (MovementUtil.getBaseMoveSpeed() + 0.02f);
 						else
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.04f);
+							speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.04f);
+
+						if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+							speed *= 0.2F;
+						}
+						MovementUtil.setSpeed(speed);
 					}
 				}
 			}
@@ -95,21 +113,23 @@ public class FeatureSpeed extends AbstractFeature {
 					if (mc.thePlayer.onGround) {
 						stage = 0;
 						mc.thePlayer.jump();
-						if (mc.thePlayer.hurtTime > 2)
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.06f);
-						else
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.06f);
+						speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.06f);
 					} else {
 						stage++;
 						switch (stage) {
-							case 1 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.02f));
-							case 2 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.06f, -0.02f));
-							case 3 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.07f, -0.06f));
+							case 1 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.02f));
+							case 2 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.06f, -0.02f));
+							case 3 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.07f, -0.06f));
 						}
 						if (stage > 3) {
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
+							speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
 						}
 					}
+
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+						speed *= 0.2F;
+					}
+					MovementUtil.setSpeed(speed);
 				}
 			}
 		}
