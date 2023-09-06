@@ -28,6 +28,7 @@ public class FeatureNoSlowdown extends AbstractFeature {
     @Mode(modes = {"Vanilla", "NCP", "Hypixel"})
     public String mode = "Vanilla";
 
+
     public FeatureNoSlowdown() {
         super();
     }

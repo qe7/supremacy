@@ -72,6 +72,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureYaw(),
 				new FeatureNoRotate(),
 				new FeatureSecurityFeatures(),
+				new FeatureFastPlace(),
 
 				/* Exploit */
 				new FeatureFastBow(),
