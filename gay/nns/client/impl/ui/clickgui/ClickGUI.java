@@ -4,6 +4,7 @@ import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.setting.Setting;
+import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingCheckBox;
 import gay.nns.client.impl.setting.SettingColor;
 import gay.nns.client.impl.setting.SettingMode;

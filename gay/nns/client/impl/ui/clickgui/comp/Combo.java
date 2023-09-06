@@ -2,6 +2,7 @@ package gay.nns.client.impl.ui.clickgui.comp;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingMode;
 import gay.nns.client.impl.ui.clickgui.ClickGUI;
 import gay.nns.client.util.font.MinecraftFontRenderer;
@@ -11,7 +12,7 @@ import java.awt.*;
 
 public class Combo extends Comp<SettingMode> {
 
-    public boolean state = false; // if the dropdown should be open or not
+    public boolean state = false;
 
     private float dropdownHeight;
 
@@ -63,7 +64,7 @@ public class Combo extends Comp<SettingMode> {
         } else {
             Gui.drawRect(clickGUI.posX + x - 58, clickGUI.posY + y + 8, clickGUI.posX + x - 58 + 150, clickGUI.posY + y + 8 + 14, new Color(4, 4, 5).getRGB());
             Gui.drawGradientRect(clickGUI.posX + x - 58 + 0.5f, clickGUI.posY + y + 8 + 0.5f, clickGUI.posX + x - 58 + 150 - 0.5f, clickGUI.posY + y + 8 + 14 - 0.5f, new Color(42, 42, 43).getRGB(), new Color(42, 42, 43).darker().getRGB());
-            roboto.drawStringWithShadow("Open", clickGUI.posX + x - 58 + 4, clickGUI.posY + y + 8 + 5, new Color(162, 162, 161).getRGB());
+            robotoSmallBold.drawStringWithShadow(setting.getValue(), clickGUI.posX + x - 58 + 4, clickGUI.posY + y + 8 + 5, new Color(162, 162, 161).getRGB());
         }
     }
 

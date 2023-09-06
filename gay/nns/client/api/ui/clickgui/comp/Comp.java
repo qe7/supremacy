@@ -1,4 +1,4 @@
-package gay.nns.client.impl.ui.clickgui.comp;
+package gay.nns.client.api.ui.clickgui.comp;
 
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.impl.ui.clickgui.ClickGUI;

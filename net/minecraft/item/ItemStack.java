@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWeb;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;

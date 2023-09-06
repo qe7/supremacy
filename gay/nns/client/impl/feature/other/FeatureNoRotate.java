@@ -8,6 +8,7 @@ import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.event.packet.PacketReceiveEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
 @FeatureInfo(name = "NoRotate", description = "Prevents you from rotating your player", category = FeatureCategory.OTHER)
@@ -40,9 +41,15 @@ public class FeatureNoRotate extends AbstractFeature {
 	public void onPacket(final PacketReceiveEvent packetReceiveEvent) {
 		if (packetReceiveEvent.getPacket() instanceof S08PacketPlayerPosLook packet) {
 			switch (mode.toLowerCase()) {
-				case "packet", "edit" -> {
+				case "packet" -> {
+					packetReceiveEvent.setCancelled(true);
+					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(packet.getX(), packet.getY(), packet.getZ(), packet.getYaw(), packet.getPitch(), mc.thePlayer.onGround));
+					mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
+				}
+				case "edit" -> {
 					packet.yaw = mc.thePlayer.rotationYaw;
 					packet.pitch = mc.thePlayer.rotationPitch;
+					mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
 				}
 			}
 		}

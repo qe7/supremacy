@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
 public class FeatureAntiBot extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"Hypixel"})
+    @Mode(modes = {"Hypixel", "Novoline (troll)"})
     public String antiBotMode = "Hypixel";
 
     @Override
@@ -29,11 +29,18 @@ public class FeatureAntiBot extends AbstractFeature {
     @Subscribe
     public void eventUpdate(final UpdateEvent event) {
 
-        switch (antiBotMode) {
-            case "Hypixel" -> {
-                for (Object entity : this.mc.theWorld.loadedEntityList) {
-                    if (((Entity) entity).isInvisible() && (Entity) entity != this.mc.thePlayer) {
-                        this.mc.theWorld.removeEntity((Entity) entity);
+        switch (antiBotMode.toLowerCase()) {
+            case "hypixel" -> {
+                for (Entity entity : this.mc.theWorld.loadedEntityList) {
+                    if (entity.isInvisible() && entity.ticksExisted < 40 && entity != this.mc.thePlayer) {
+                        this.mc.theWorld.removeEntity(entity);
+                    }
+                }
+            }
+            case "novoline (troll)" -> {
+                for (Entity entity : this.mc.theWorld.loadedEntityList) {
+                    if (entity != this.mc.thePlayer) {
+                        this.mc.theWorld.removeEntity(entity);
                     }
                 }
             }

@@ -11,15 +11,15 @@ import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.player.MovementUtil;
-import net.minecraft.potion.Potion;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
 public class FeatureSpeed extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP", "NCP-Hop"})
+	@Mode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop"})
 	public String mode = "Vanilla";
 
 	@Serialize(name = "Speed")
@@ -30,8 +30,7 @@ public class FeatureSpeed extends AbstractFeature {
 	@CheckBox
 	public boolean waterCheck = true;
 
-	private int count = 0;
-	private double moveSpeed, lastDist;
+	private int stage = 0;
 
 	public FeatureSpeed() {
 		super();
@@ -41,9 +40,7 @@ public class FeatureSpeed extends AbstractFeature {
 	protected void onEnable() {
 		super.onEnable();
 
-		count = 0;
-		lastDist = 0;
-		moveSpeed = 0;
+		stage = 0;
 	}
 
 	@Override
@@ -52,7 +49,9 @@ public class FeatureSpeed extends AbstractFeature {
 
 		mc.timer.timerSpeed = 1.F;
 
-		if (mode.equalsIgnoreCase("hypixel")) {
+		stage = 0;
+
+		if (mode.equalsIgnoreCase("hypixel-hop")) {
 			mc.gameSettings.keyBindJump.pressed = Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode());
 		}
 	}
@@ -60,13 +59,6 @@ public class FeatureSpeed extends AbstractFeature {
 	@Subscribe
 	public void onRender(final Render2DEvent render2DEvent) {
 		this.setSuffix(mode);
-	}
-
-	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
-		final boolean tick = mc.thePlayer.ticksExisted % 2 == 0;
-		lastDist = Math.sqrt(((mc.thePlayer.posX - mc.thePlayer.prevPosX) * (mc.thePlayer.posX - mc.thePlayer.prevPosX)) + ((mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * (mc.thePlayer.posZ - mc.thePlayer.prevPosZ)));
-		if (lastDist > 5) lastDist = 0.0D;
 	}
 
 	@Subscribe
@@ -86,54 +78,37 @@ public class FeatureSpeed extends AbstractFeature {
 				}
 			}
 			case "hypixel-hop" -> {
-				// jumps with friction, me love this, we need this. - shae
-				mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
+				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
+					// jumps with friction, me love this, we need this. - shae
+					mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
 
-				if (mc.thePlayer.onGround) {
-					MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.02f);
-				}
-			}
-			case "ncp" -> {
-				switch (count) {
-					case 0 -> {
-						++count;
-						lastDist = 0.0D;
-					}
-					case 2 -> {
-						double motionY = 0.4025;
-						if ((mc.thePlayer.moveForward != 0.0F || mc.thePlayer.moveStrafing != 0.0F) && mc.thePlayer.onGround) {
-							if (mc.thePlayer.isPotionActive(Potion.jump))
-								motionY += ((mc.thePlayer.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
-							motionEvent.setY(mc.thePlayer.motionY = motionY);
-							moveSpeed *= 2;
-						}
-					}
-					case 3 -> moveSpeed = lastDist - (0.7 * (lastDist - MovementUtil.getBaseMoveSpeed()));
-					default -> {
-						if ((!mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.getEntityBoundingBox().offset(0.0D, mc.thePlayer.motionY, 0.0D)).isEmpty() || mc.thePlayer.isCollidedVertically) && count > 0) {
-							count = mc.thePlayer.moveForward == 0.0F && mc.thePlayer.moveStrafing == 0.0F ? 0 : 1;
-						}
-						moveSpeed = lastDist - lastDist / 159.0D;
+					if (mc.thePlayer.onGround) {
+						if (mc.thePlayer.hurtTime > 2)
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.02f);
+						else
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.04f);
 					}
 				}
-				moveSpeed = Math.max(moveSpeed, MovementUtil.getBaseMoveSpeed());
-				MovementUtil.setSpeed(moveSpeed);
-				++count;
 			}
 			case "ncp-hop" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
 					if (mc.thePlayer.onGround) {
+						stage = 0;
 						mc.thePlayer.jump();
-						MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.2f);
-						mc.timer.timerSpeed = 1.5f;
-					} else if (mc.thePlayer.fallDistance > 0.25f) {
-						mc.thePlayer.motionY = -63d;
-						mc.thePlayer.moveStrafing *= 2f;
-						MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() * 0.4f);
-						mc.timer.timerSpeed = 0.9f;
+						if (mc.thePlayer.hurtTime > 2)
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.06f);
+						else
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.04f);
 					} else {
-						MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed());
-						mc.timer.timerSpeed = 1.f;
+						stage++;
+						switch (stage) {
+							case 1 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(0.f, 0.02f));
+							case 2 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.f));
+							case 3 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
+						}
+						if (stage > 3) {
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
+						}
 					}
 				}
 			}

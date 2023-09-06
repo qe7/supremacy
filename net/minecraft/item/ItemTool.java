@@ -74,6 +74,18 @@ public class ItemTool extends Item
         return this.toolMaterial.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
     }
 
+    public Set<Block> getEffectiveBlocks() {
+        return effectiveBlocks;
+    }
+
+    public float getEfficiencyOnProperMaterial() {
+        return efficiencyOnProperMaterial;
+    }
+
+    public float getDamageVsEntity() {
+        return damageVsEntity;
+    }
+
     public Multimap<String, AttributeModifier> getItemAttributeModifiers()
     {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers();

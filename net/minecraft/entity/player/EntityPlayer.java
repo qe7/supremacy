@@ -1187,11 +1187,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                         if (i > 0) {
                             targetEntity.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F));
                             if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureKillAura.class).isEnabled()) {
-                                if (FeatureKillAura.keepSprint) {
-                                    this.motionX *= 1D;
-                                    this.motionZ *= 1D;
-                                    this.setSprinting(true);
-                                } else {
+                                if (!FeatureKillAura.keepSprint) {
                                     this.motionX *= 0.6D;
                                     this.motionZ *= 0.6D;
                                     this.setSprinting(false);

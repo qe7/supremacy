@@ -39,7 +39,8 @@ public class FeatureSprint extends AbstractFeature {
 
 		switch (mode) {
 			case "Legit" -> mc.gameSettings.keyBindSprint.setKeyPressed(true);
-			case "Omni" -> {
+			case "Rage" -> {
+				if (mc.currentScreen != null) return;
 				if (mc.thePlayer.moveForward != 0 || mc.thePlayer.moveStrafing != 0) {
 					mc.thePlayer.setSprinting(true);
 				}

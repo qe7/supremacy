@@ -25,7 +25,6 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
@@ -37,8 +36,9 @@ import java.util.List;
 public class FeatureKillAura extends AbstractFeature {
 
     @Serialize(name = "Auto_Block")
-    @Mode(modes = {"Fake", "Hypixel"})
-    public String autoBlock = "Fake";
+    @Mode(modes = {"None", "Fake", "Hypixel"})
+    public String autoBlock = "None";
+
     @Serialize(name = "Attack_Range")
     @Slider(min = 1, max = 6, increment = 0.1f)
     public double attackRange = 3.f;
@@ -51,13 +51,13 @@ public class FeatureKillAura extends AbstractFeature {
     @Slider(min = 1, max = 20, increment = 1)
     public double minCPS = 8;
 
-    @Serialize(name = "Keep_Sprint")
-    @CheckBox()
-    public static boolean keepSprint = false;
-
     @Serialize(name = "Rotation_Speed")
     @Slider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
+
+    @Serialize(name = "Keep_Sprint")
+    @CheckBox()
+    public static boolean keepSprint = false;
 
     private final TimerUtil timer = new TimerUtil();
 
@@ -73,11 +73,12 @@ public class FeatureKillAura extends AbstractFeature {
         super.onEnable();
 
         isBlocking = false;
+        timer.reset();
     }
 
     @Override
     protected void onDisable() {
-        if (this.isBlocking) {
+        if (autoBlock.equalsIgnoreCase("hypixel") && this.isBlocking) {
             mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             this.isBlocking = false;
         }
@@ -120,8 +121,10 @@ public class FeatureKillAura extends AbstractFeature {
                 case "Fake" -> {
                 }
                 case "Hypixel" -> {
-                    if (this.hitTicks == 1) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
+                    // @Ahru couldn't be bothered to add a check to see what you were holding when actually blocking ay? - Shae
+                    // Made some changes to make it work only with swords, and also fixed the bug where it'd select an invalid slot.
+                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem >= 6 ? mc.thePlayer.inventory.currentItem % 8 - 3 : mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
@@ -138,7 +141,6 @@ public class FeatureKillAura extends AbstractFeature {
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
                 mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                mc.thePlayer.addChatMessage(new ChatComponentText("Released"));
                 isBlocking = false;
             }
         }

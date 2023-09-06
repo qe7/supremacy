@@ -15,13 +15,7 @@ import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.IFeatureManagerApi;
 import gay.nns.client.impl.event.game.KeyEvent;
 
-import gay.nns.client.impl.feature.FeatureExample;
 import gay.nns.client.impl.feature.combat.*;
-import gay.nns.client.impl.feature.exploit.*;
-import gay.nns.client.impl.feature.ghost.*;
-import gay.nns.client.impl.feature.movement.*;
-import gay.nns.client.impl.feature.other.*;
-import gay.nns.client.impl.feature.render.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,9 +32,6 @@ public class FeatureManager implements IFeatureManagerApi {
 
 	public void initialize() {
 		Features = addFeatures(
-				/* Example */
-				new FeatureExample(),
-
 				/* Combat */
 				new FeatureKillAura(),
 				new FeatureVelocity(),
@@ -73,6 +64,9 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureNoRotate(),
 				new FeatureSecurityFeatures(),
 				new FeatureFastPlace(),
+				new FeatureAutoTool(),
+				new FeatureChestStealer(),
+				new FeatureInventoryManager(),
 
 				/* Exploit */
 				new FeatureFastBow(),

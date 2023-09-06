@@ -29,4 +29,12 @@ public class RotationManager {
         }
     }
 
+    public Vector2f getRotations() {
+        return rotations;
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
 }

@@ -1,5 +1,6 @@
 package gay.nns.client.impl.ui.clickgui.comp;
 
+import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingCheckBox;
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;

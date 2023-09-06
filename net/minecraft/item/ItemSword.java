@@ -101,6 +101,14 @@ public class ItemSword extends Item
         return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
     }
 
+    public float getAttackDamage() {
+        return attackDamage;
+    }
+
+    public ToolMaterial getMaterial() {
+        return material;
+    }
+
     public Multimap<String, AttributeModifier> getItemAttributeModifiers()
     {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers();

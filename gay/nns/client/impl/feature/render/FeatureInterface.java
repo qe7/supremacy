@@ -79,7 +79,7 @@ public class FeatureInterface extends AbstractFeature {
         if (time.startsWith("0")) {
             time = time.replaceFirst("0", "");
         }
-        String watermark = Core.getSingleton().getName() + " §w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
+        String watermark = Core.getSingleton().getName() + "§6 - Script Kiddie Edition" + " §w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
 
         fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
 
@@ -110,20 +110,7 @@ public class FeatureInterface extends AbstractFeature {
         double y = offset;
         for (AbstractFeature feature : featureList) {
             if (feature.isEnabled()) {
-                String arraylist = feature.getFeatureInfo().name();
-
-                if (feature.getSuffix() != null)
-                    switch (suffixMode) {
-                        case "Parenthesis" -> arraylist += " §7(" + feature.getSuffix() + ")";
-                        case "Squared_Brackets" -> arraylist += " §7[" + feature.getSuffix() + "]";
-                        case "Hyphen" -> arraylist += " §7- " + feature.getSuffix();
-                        case "Space" -> arraylist += " §7" + feature.getSuffix();
-                        case "None" -> arraylist += "";
-
-
-                    }
-                arraylist = arraylist.replace("_", " ");
-
+                String arraylist = getString(feature);
 
                 if (background)
                     Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y - 1), (float) ((float) sr.getScaledWidth() - offset + 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), new Color(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue(), backgroundColor.getAlpha()).getRGB());
@@ -163,6 +150,23 @@ public class FeatureInterface extends AbstractFeature {
                 y += fr.FONT_HEIGHT + spacing;
             }
         }
+    }
+
+    private String getString(AbstractFeature feature) {
+        String arraylist = feature.getFeatureInfo().name();
+
+        if (feature.getSuffix() != null) {
+            switch (suffixMode) {
+                case "Parenthesis" -> arraylist += " §7(" + feature.getSuffix() + ")";
+                case "Squared_Brackets" -> arraylist += " §7[" + feature.getSuffix() + "]";
+                case "Hyphen" -> arraylist += " §7- " + feature.getSuffix();
+                case "Space" -> arraylist += " §7" + feature.getSuffix();
+                case "None" -> arraylist += "";
+            }
+        }
+
+        arraylist = arraylist.replace("_", " ");
+        return arraylist;
     }
 
     @Subscribe
