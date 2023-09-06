@@ -32,7 +32,7 @@ public class FeatureInterface extends AbstractFeature {
     @Mode(modes = {"Default", "Category", "Rainbow", "Astolfo"})
     public String colorMode = "Default";
 
-    @Serialize(name = "Arraylist_Mode")
+    @Serialize(name = "Outline_Mode")
     @Mode(modes = {"Left", "Right", "Top", "Bottom", "All", "None"})
     public String arraylistMode = "All";
 
@@ -69,42 +69,28 @@ public class FeatureInterface extends AbstractFeature {
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
 
-        List<AbstractFeature> featureList = new ArrayList<>(Core.getSingleton().getFeatureManager().getEnabledFeatures());
-        ScaledResolution sr = render2DEvent.getScaledResolution();
-        FontRenderer fr = mc.fontRendererObj;
-
         this.setSuffix("Default");
+
+        List<AbstractFeature> featureList = new ArrayList<>(Core.getSingleton().getFeatureManager().getEnabledFeatures());
+        ScaledResolution sr = render2DEvent.scaledResolution();
+        FontRenderer fr = mc.fontRendererObj;
 
         String time = new SimpleDateFormat("hh:mm a").format(new Date());
         if (time.startsWith("0")) {
             time = time.replaceFirst("0", "");
         }
-        String watermark = Core.getSingleton().getName() + "§6 - Script Kiddie Edition" + " §w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
+        String watermark = Core.getSingleton().getName() + " §w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
 
         fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
 
         switch (suffixMode) {
-            case "Parenthesis" -> {
-                featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name().replace("_", " ") + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name().replace("_", " "))));
-                Collections.reverse(featureList);
-            }
-            case "Squared_Brackets" -> {
-                featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name().replace("_", " ") + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name().replace("_", " "))));
-                Collections.reverse(featureList);
-            }
-            case "Hyphen" -> {
-                featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name().replace("_", " ") + " §7- " + m.getSuffix(): m.getFeatureInfo().name().replace("_", " "))));
-                Collections.reverse(featureList);
-            }
-            case "Space" -> {
-                featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name().replace("_", " ") + " §7" + m.getSuffix(): m.getFeatureInfo().name().replace("_", " "))));
-                Collections.reverse(featureList);
-            }
-            case "None" -> {
-                featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getFeatureInfo().name().replace("_", " "))));
-                Collections.reverse(featureList);
-            }
+            case "Parenthesis" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
+            case "Squared_Brackets" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
+            case "Hyphen" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix(): m.getFeatureInfo().name())));
+            case "Space" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix(): m.getFeatureInfo().name())));
+            case "None" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getFeatureInfo().name())));
         }
+        Collections.reverse(featureList);
 
         double lastLength = 0;
         double y = offset;
@@ -165,7 +151,6 @@ public class FeatureInterface extends AbstractFeature {
             }
         }
 
-        arraylist = arraylist.replace("_", " ");
         return arraylist;
     }
 

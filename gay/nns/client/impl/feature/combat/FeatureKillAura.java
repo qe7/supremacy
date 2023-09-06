@@ -148,10 +148,14 @@ public class FeatureKillAura extends AbstractFeature {
 
     @Subscribe
     public void renderItemEvent(RenderItemEvent event) {
-        if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-            if (mc.thePlayer.isSwingInProgress) {
-                event.setUseItem(true);
-                event.setEnumAction(EnumAction.BLOCK);
+        switch (autoBlock) {
+            case "Fake", "Hypixel" -> {
+                if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                    if (mc.thePlayer.isSwingInProgress) {
+                        event.setUseItem(true);
+                        event.setEnumAction(EnumAction.BLOCK);
+                    }
+                }
             }
         }
     }

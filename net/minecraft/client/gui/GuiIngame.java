@@ -334,7 +334,7 @@ public class GuiIngame extends Gui
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
-        Core.getSingleton().getEventBus().post(new Render2DEvent(scaledresolution));
+        Core.getSingleton().getEventBus().post(new Render2DEvent(scaledresolution, partialTicks));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();

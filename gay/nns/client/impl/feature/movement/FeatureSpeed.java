@@ -98,13 +98,13 @@ public class FeatureSpeed extends AbstractFeature {
 						if (mc.thePlayer.hurtTime > 2)
 							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + 0.06f);
 						else
-							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.04f);
+							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() - 0.06f);
 					} else {
 						stage++;
 						switch (stage) {
-							case 1 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(0.f, 0.02f));
-							case 2 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.f));
-							case 3 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
+							case 1 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.02f));
+							case 2 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.06f, -0.02f));
+							case 3 -> MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.07f, -0.06f));
 						}
 						if (stage > 3) {
 							MovementUtil.setSpeed(MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
