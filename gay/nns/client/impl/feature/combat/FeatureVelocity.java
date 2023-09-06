@@ -64,15 +64,15 @@ public class FeatureVelocity extends AbstractFeature {
         if (mc.thePlayer.isInWater() && waterCheck) return;
 
         switch (mode) {
-            case "Standard": {
+            case "Standard" -> {
                 if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
                     if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
                         if (horizontal == 0 && vertical == 0)
                             event.setCancelled(true);
                         else {
-                            s12.motionX = (int) (s12.getMotionX() * (horizontal / 100));
-                            s12.motionY = (int) (s12.getMotionY() * (vertical / 100));
-                            s12.motionZ = (int) (s12.getMotionZ() * (horizontal / 100));
+                            s12.motionX *= (int) (horizontal / 100);
+                            s12.motionY *= (int) (vertical / 100);
+                            s12.motionZ *= (int) (horizontal / 100);
                         }
                     }
                 }
@@ -80,15 +80,13 @@ public class FeatureVelocity extends AbstractFeature {
                     if (horizontal == 0 && vertical == 0)
                         event.setCancelled(true);
                     else {
-                        s27.posX = (int) (s27.posX * (horizontal / 100));
-                        s27.posY = (int) (s27.posY * (vertical / 100));
-                        s27.posZ = (int) (s27.posZ * (horizontal / 100));
+                        s27.posX *= (int) (horizontal / 100);
+                        s27.posY *= (int) (vertical / 100);
+                        s27.posZ *= (int) (horizontal / 100);
                     }
                 }
-                break;
             }
-
-            case "Grim": {
+            case "Grim" -> {
                 if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 50 || mc.thePlayer.isInLava()) {
                     return;
                 }
@@ -110,11 +108,9 @@ public class FeatureVelocity extends AbstractFeature {
                     event.setCancelled(true);
                     this.tookVelocity = true;
                     this.realVelocity = false;
-
                 }
             }
-
-            case "Hypixel": { //this should work
+            case "Hypixel" -> { //this should work
                 if (!(event.getPacket() instanceof S12PacketEntityVelocity s12)) {
                     return;
                 }
