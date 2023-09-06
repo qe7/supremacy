@@ -126,6 +126,7 @@ public class FeatureKillAura extends AbstractFeature {
                 }
                 case "Hypixel" -> {
                     // @Ahru couldn't be bothered to add a check to see what you were holding when actually blocking ay? - Shae
+                    // fuck u im lazy - Ahru
                     // Made some changes to make it work only with swords, and also fixed the bug where it'd select an invalid slot.
                     if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem >= 6 ? mc.thePlayer.inventory.currentItem % 8 - 3 : mc.thePlayer.inventory.currentItem % 8 + 3));
