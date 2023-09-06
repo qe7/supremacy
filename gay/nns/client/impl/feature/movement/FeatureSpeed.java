@@ -74,7 +74,7 @@ public class FeatureSpeed extends AbstractFeature {
 			case "vanilla" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
 					speed = (float) this.speed;
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
 					MovementUtil.setSpeed(speed);
@@ -83,7 +83,7 @@ public class FeatureSpeed extends AbstractFeature {
 			case "vanilla-hop" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
 					speed = (float) this.speed;
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
 					MovementUtil.setSpeed(speed);
@@ -101,7 +101,7 @@ public class FeatureSpeed extends AbstractFeature {
 						else
 							speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.04f);
 
-						if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+						if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 							speed *= 0.2F;
 						}
 						MovementUtil.setSpeed(speed);
@@ -126,7 +126,7 @@ public class FeatureSpeed extends AbstractFeature {
 						}
 					}
 
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled()) {
+					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
 					MovementUtil.setSpeed(speed);
