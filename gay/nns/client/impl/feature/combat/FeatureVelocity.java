@@ -23,7 +23,7 @@ import net.minecraft.util.EnumFacing;
 public class FeatureVelocity extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"Standard", "Grim", "Hypixel"})
+    @Mode(modes = {"Standard", "Grim"})
     public String mode = "Standard";
 
     @Serialize(name = "Horizontal")
@@ -37,11 +37,6 @@ public class FeatureVelocity extends AbstractFeature {
     @Serialize(name = "Water_Check")
     @CheckBox
     public boolean waterCheck = true;
-
-    @Serialize(name = "Hypixel 0,0 OnGround")
-    @CheckBox
-    public boolean onGroundCheck = false;
-    private boolean reset;
     private boolean realVelocity, tookVelocity;
 
     public FeatureVelocity() {
@@ -113,24 +108,6 @@ public class FeatureVelocity extends AbstractFeature {
 
                 }
             }
-
-            case "Hypixel": { //this should work
-                if (!(event.getPacket() instanceof S12PacketEntityVelocity s12)) {
-                    return;
-                }
-
-                if (s12.getEntityID() != mc.thePlayer.getEntityId()) {
-                    return;
-                }
-
-                if (mc.thePlayer.onGround && onGroundCheck) { //onGroundCheck is a checkbox u can toggle on/off for 0,0 on ground
-                    reset = true;
-                    event.setCancelled(true);
-                    return;
-                }
-                event.setCancelled(true);
-                mc.thePlayer.motionY = s12.getMotionY() / 8000D;
-            }
         }
     }
 
@@ -143,22 +120,6 @@ public class FeatureVelocity extends AbstractFeature {
                 }
                 mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), EnumFacing.DOWN));
                 this.tookVelocity = false;
-            }
-        }
-    }
-
-    @Subscribe
-    public void playerMotionEvent(PreMotionEvent event) {
-        switch (mode) {
-            case "Hypixel": { //this should work
-                if (!reset) {
-                    return;
-                }
-
-                mc.thePlayer.motionX = 0;
-                mc.thePlayer.motionY = 0;
-                mc.thePlayer.motionZ = 0;
-                reset = false;
             }
         }
     }
