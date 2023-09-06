@@ -10,6 +10,7 @@ import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.PreMotionEvent;
+import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.impl.event.render.RenderItemEvent;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
@@ -61,6 +62,8 @@ public class FeatureKillAura extends AbstractFeature {
 
     private final TimerUtil timer = new TimerUtil();
 
+    List<Entity> entities;
+
     private boolean isBlocking = false;
     private int hitTicks;
 
@@ -91,6 +94,7 @@ public class FeatureKillAura extends AbstractFeature {
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isDead) {
             this.toggle();
+            return;
         }
         if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemBow || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {
             return;
@@ -98,9 +102,9 @@ public class FeatureKillAura extends AbstractFeature {
 
         this.hitTicks++;
 
-        List<Entity> entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
+        entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
-        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.isDead);
+        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.getDistanceToEntity(mc.thePlayer) > 6.0f || e.isDead);
 
         Entity mcTarget;
         if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < attackRange)
@@ -148,7 +152,12 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void renderItemEvent(RenderItemEvent event) {
+    public void onRender2D(final Render2DEvent render2DEvent) {
+        this.setSuffix(String.valueOf(entities.size()));
+    }
+
+    @Subscribe
+    public void onRenderItem(RenderItemEvent event) {
         switch (autoBlock) {
             case "Fake", "Hypixel" -> {
                 if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
@@ -160,6 +169,7 @@ public class FeatureKillAura extends AbstractFeature {
             }
         }
     }
+
 }
 
 
