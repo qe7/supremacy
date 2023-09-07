@@ -66,6 +66,7 @@ public class FeatureKillAura extends AbstractFeature {
 
     private boolean isBlocking = false;
     private int hitTicks;
+    private boolean attacked;
 
     public FeatureKillAura() {
         super();
@@ -129,7 +130,7 @@ public class FeatureKillAura extends AbstractFeature {
                     // fuck u im lazy - Ahru
                     // Made some changes to make it work only with swords, and also fixed the bug where it'd select an invalid slot.
                     if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem >= 6 ? mc.thePlayer.inventory.currentItem % 8 - 3 : mc.thePlayer.inventory.currentItem % 8 + 3));
+                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
@@ -169,7 +170,6 @@ public class FeatureKillAura extends AbstractFeature {
             }
         }
     }
-
 }
 
 

@@ -8,11 +8,15 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.*;
 import gay.nns.client.impl.event.game.KeyEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.util.player.MovementUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import oshi.util.FormatUtil;
 
 import java.awt.*;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -40,6 +44,10 @@ public class FeatureInterface extends AbstractFeature {
     @Mode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Space", "None"})
     public String suffixMode = "Parenthesis";
 
+    @Serialize(name = "Info")
+    @CheckBox
+    public boolean info = false;
+
     @Serialize(name = "Arraylist_Brightness")
     @Slider(min = 0, max = 1, increment = 0.05)
     public double brightness = 0.7;
@@ -60,6 +68,7 @@ public class FeatureInterface extends AbstractFeature {
     @CheckBox
     public boolean background = true;
 
+    public String coordinates;
     public FeatureInterface() {
         this.toggle();
     }
@@ -83,11 +92,23 @@ public class FeatureInterface extends AbstractFeature {
 
         fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
 
+        coordinates = (int) mc.thePlayer.posX + ", " + (int) mc.thePlayer.posY + ", " + (int) mc.thePlayer.posZ;
+
+        int infoOffset = 10;
+        if (info) {
+            fr.drawStringWithShadow("XYZ: §7" + coordinates , 2, sr.getScaledHeight() - infoOffset, getColor().getRGB());
+            fr.drawStringWithShadow("FPS: §7" + Minecraft.getDebugFPS(), 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT, getColor().getRGB());
+        }
+
         switch (suffixMode) {
-            case "Parenthesis" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
-            case "Squared_Brackets" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
-            case "Hyphen" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix(): m.getFeatureInfo().name())));
-            case "Space" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix(): m.getFeatureInfo().name())));
+            case "Parenthesis" ->
+                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
+            case "Squared_Brackets" ->
+                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
+            case "Hyphen" ->
+                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix() : m.getFeatureInfo().name())));
+            case "Space" ->
+                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix() : m.getFeatureInfo().name())));
             case "None" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getFeatureInfo().name())));
         }
         Collections.reverse(featureList);
