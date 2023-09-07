@@ -127,6 +127,13 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "Fake" -> {
                 }
+                case "Hypixel" -> {
+                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        isBlocking = true;
+                    }
+                }
             }
 
 
@@ -136,16 +143,6 @@ public class FeatureKillAura extends AbstractFeature {
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;
                 timer.reset();
-            }
-
-            switch (autoBlock) {
-                case "Hypixel" -> {
-                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
-                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
-                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                        isBlocking = true;
-                    }
-                }
             }
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
