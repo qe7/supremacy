@@ -67,6 +67,7 @@ public class FeatureKillAura extends AbstractFeature {
     private boolean isBlocking = false;
     private int hitTicks;
     private boolean attacked;
+    public boolean afterAttack;
 
     public FeatureKillAura() {
         super();
@@ -102,6 +103,7 @@ public class FeatureKillAura extends AbstractFeature {
         }
 
         this.hitTicks++;
+        this.afterAttack = false;
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
@@ -125,24 +127,24 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "Fake" -> {
                 }
+            }
+
+
+            if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
+                mc.thePlayer.swingItem();
+                this.afterAttack = true;
+                mc.playerController.attackEntity(mc.thePlayer, mcTarget);
+                this.hitTicks = 0;
+                timer.reset();
+            }
+
+            switch (autoBlock) {
                 case "Hypixel" -> {
-                    // @Ahru couldn't be bothered to add a check to see what you were holding when actually blocking ay? - Shae
-                    // fuck u im lazy - Ahru
-                    // Made some changes to make it work only with swords, and also fixed the bug where it'd select an invalid slot.
-                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
                     }
                 }
-            }
-
-            if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
-                mc.thePlayer.swingItem();
-                mc.playerController.attackEntity(mc.thePlayer, mcTarget);
-                this.hitTicks = 0;
-                timer.reset();
             }
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
