@@ -225,8 +225,8 @@ public class FeatureInventoryManager extends AbstractFeature {
 	}
 
 	private void manage() {
-		manageWeapon();
 		manageArmor();
+		manageWeapon();
 		manageTools();
 		manageBlocks();
 		manageGaps();
