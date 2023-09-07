@@ -141,7 +141,7 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "Hypixel" -> {
                     if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
-                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget)
+                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
                     }
