@@ -67,6 +67,7 @@ public class FeatureKillAura extends AbstractFeature {
     private boolean isBlocking = false;
     private int hitTicks;
     private boolean attacked;
+    public boolean afterAttack;
 
     public FeatureKillAura() {
         super();
@@ -102,6 +103,7 @@ public class FeatureKillAura extends AbstractFeature {
         }
 
         this.hitTicks++;
+        this.afterAttack = false;
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
@@ -125,21 +127,25 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "Fake" -> {
                 }
-                case "Hypixel" -> {
-                    if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                        isBlocking = true;
-                    }
-                }
             }
 
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
+                this.afterAttack = true;
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;
                 timer.reset();
+            }
+
+            switch (autoBlock) {
+                case "Hypixel" -> {
+                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
+                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget)
+                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        isBlocking = true;
+                    }
+                }
             }
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
