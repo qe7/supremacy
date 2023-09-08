@@ -7,17 +7,21 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.Slider;
 import gay.nns.client.impl.event.player.PostMotionEvent;
 import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.player.UpdateEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.util.chat.ChatUtil;
+import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
+import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
 
 import javax.vecmath.Vector2f;
@@ -35,6 +39,14 @@ public class FeatureScaffold extends AbstractFeature {
 	@Serialize(name = "Mode")
 	@Mode(modes = {"Vanilla", "Hypixel"})
 	public String mode = "Vanilla";
+
+	@Serialize(name = "Place_Delay")
+	@Slider(min = 0, max = 1000, increment = 1)
+	public double placeDelay = 0;
+
+	@Serialize(name = "Rotation_Speed")
+	@Slider(min = 0, max = 20, increment = 1)
+	public double rotationSpeed = 17;
 
 	private final ChatUtil chatUtil = new ChatUtil();
 	private final TimerUtil timerUtil = new TimerUtil();
@@ -56,14 +68,14 @@ public class FeatureScaffold extends AbstractFeature {
 	protected void onEnable() {
 		super.onEnable();
 
-		this.oldSlot = mc.thePlayer.inventory.currentItem;
+		oldSlot = mc.thePlayer.inventory.currentItem;
 	}
 
 	@Override
 	protected void onDisable() {
 		super.onDisable();
 
-		mc.thePlayer.inventory.currentItem = this.oldSlot;
+		mc.thePlayer.inventory.currentItem = oldSlot;
 	}
 
 	@Subscribe
@@ -73,25 +85,25 @@ public class FeatureScaffold extends AbstractFeature {
 		String blocks = "blocks: " + getBlockCount() + " | " + getBlockSlot();
 
 		fr.drawStringWithShadow(blocks, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth(blocks) / 2), (float) mc.displayHeight / 4 + 10, -1);
-
-		fr.drawStringWithShadow("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch) / 2), (float) mc.displayHeight / 4 + 20, -1);
-
-		fr.drawStringWithShadow("yaw: " + yaw + " pitch: " + pitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + yaw + " pitch: " + pitch) / 2), (float) mc.displayHeight / 4 + 30, -1);
-
-		if (this.blockData != null) {
-			fr.drawStringWithShadow("facing: " + this.blockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("facing: " + this.blockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 40, -1);
-		}
-
-		if (this.prevBlockData != null) {
-			fr.drawStringWithShadow("prev facing: " + this.prevBlockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("prev facing: " + this.prevBlockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 50, -1);
-		}
+//
+//		fr.drawStringWithShadow("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch) / 2), (float) mc.displayHeight / 4 + 20, -1);
+//
+//		fr.drawStringWithShadow("yaw: " + yaw + " pitch: " + pitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + yaw + " pitch: " + pitch) / 2), (float) mc.displayHeight / 4 + 30, -1);
+//
+//		if (blockData != null) {
+//			fr.drawStringWithShadow("facing: " + blockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("facing: " + blockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 40, -1);
+//		}
+//
+//		if (prevBlockData != null) {
+//			fr.drawStringWithShadow("prev facing: " + prevBlockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("prev facing: " + prevBlockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 50, -1);
+//		}
 	}
 
 	@Subscribe
 	public void onUpdate(final UpdateEvent updateEvent) {
-		if (this.getBlockCount() <= 0) {
+		if (getBlockCount() <= 0) {
 			chatUtil.chatCommand("Toggling '" + getFeatureInfo().name() + "' as you are out of blocks!");
-			this.toggle();
+			toggle();
 		}
 	}
 
@@ -99,67 +111,72 @@ public class FeatureScaffold extends AbstractFeature {
 	public void onPreMotion(final PreMotionEvent preMotionEvent) {
 
 		BlockPos blockUnder = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ);
-		this.blockData = getBlockData(blockUnder);
+		blockData = getBlockData(blockUnder);
 
-		if (this.blockData == null) {
+		if (blockData == null) {
 			return;
 		}
 
-		if (this.prevBlockData == null) {
-			this.prevBlockData = this.blockData;
+		if (prevBlockData == null) {
+			prevBlockData = blockData;
 		}
 
-		if (this.prevBlockData != this.blockData) {
-			this.prevBlockData = this.blockData;
+		if (prevBlockData != blockData) {
+			prevBlockData = blockData;
 		}
 
-		pitch = 80.0F;
+		pitch = MathUtil.getRandom(80.0F, 82.0F);
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
 				switch (blockData.getFacing()) {
-					case NORTH -> this.yaw = 0.0F;
-					case EAST -> this.yaw = 90.0F;
-					case SOUTH -> this.yaw = 180.0F;
-					case WEST -> this.yaw = 270.0F;
+					case NORTH -> yaw = 0.0F;
+					case EAST -> yaw = 90.0F;
+					case SOUTH -> yaw = 180.0F;
+					case WEST -> yaw = 270.0F;
 					case UP -> {
-						this.yaw = mc.thePlayer.rotationYaw;
-						this.pitch = 90.0F;
+						yaw = mc.thePlayer.rotationYaw;
+						pitch = 90.0F;
 					}
 				}
 			}
 			case "hypixel" -> {
 				// Calculate the yaw and pitch needed to look at the block, these should use as legit values as possible
 
-				this.pitch = 82.0F;
-				this.yaw = mc.thePlayer.rotationYaw - 180.0F;
+				yaw = mc.thePlayer.rotationYaw - MathUtil.getRandom(178.0F, 182.0F);;
 				if (Objects.requireNonNull(blockData.getFacing()) == EnumFacing.UP) {
-					this.yaw = mc.thePlayer.rotationYaw;
-					this.pitch = 90.0F;
+					yaw = mc.thePlayer.rotationYaw;
+					pitch = 90.0F;
 				}
 			}
 		}
 
-		Core.getSingleton().getRotationManager().setRotation(new Vector2f(yaw, pitch));
+		Vector2f rotations = new Vector2f(yaw, pitch);
+		Vector2f smoothRotations = RotationUtil.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
+
+		smoothRotations = RotationUtil.applySanity(smoothRotations);
+
+		smoothRotations = RotationUtil.applyGCD(smoothRotations);
+
+		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
 
 		if (!rayCast(yaw, pitch)) {
 			timerUtil.reset();
 			return;
 		}
 
-		if (timerUtil.hasTimeElapsed(100)) {
+		if (timerUtil.hasTimeElapsed(MathUtil.getRandom((int) placeDelay, (int) placeDelay + 10))) {
 			if (getBlockSlot() != -1 && rayCast(yaw, pitch)) {
 				if (mc.thePlayer.inventory.currentItem != getBlockSlot()) {
 					mc.thePlayer.inventory.currentItem = getBlockSlot();
 				}
 
-				Vec3i vec3 = this.blockData.getFacing().getDirectionVec();
 				if (mc.playerController.onPlayerRightClick(
 						mc.thePlayer,
 						mc.theWorld,
 						mc.thePlayer.getHeldItem(),
-						this.blockData.getPosition().add(vec3.getX(), vec3.getY(), vec3.getZ()),
-						this.blockData.getFacing(),
-						new Vec3(this.blockData.getPosition()).addVector(0.5, 0.5, 0.5).add(new Vec3((double)vec3.getX() * 0.5, (double)vec3.getY() * 0.5, (double)vec3.getZ() * 0.5))
+						blockData.getPosition(),
+						blockData.enumFacing,
+						getHitVec()
 				)) {
 					mc.thePlayer.swingItem();
 					timerUtil.reset();
@@ -189,7 +206,7 @@ public class FeatureScaffold extends AbstractFeature {
 		Vec3 eyePosition = mc.thePlayer.getPositionEyes(1.0F);
 
 		// Calculate the direction vector based on yaw and pitch
-		Vec3 directionVector = this.getVectorForRotation(yaw, pitch);
+		Vec3 directionVector = getVectorForRotation(yaw, pitch);
 
 		// Calculate the endpoint of the ray-cast
 		Vec3 rayEndPoint = eyePosition.addVector(directionVector.xCoord * 5.0, directionVector.yCoord * 5.0, directionVector.zCoord * 5.0);
@@ -198,7 +215,7 @@ public class FeatureScaffold extends AbstractFeature {
 		MovingObjectPosition result = mc.theWorld.rayTraceBlocks(eyePosition, rayEndPoint, false);
 
 		// Check if the ray-cast hit a block and if it's the expected block position
-		return result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.blockData.getPosition().equals(result.getBlockPos());
+		return result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && blockData.getPosition().equals(result.getBlockPos());
 	}
 
 
@@ -250,7 +267,7 @@ public class FeatureScaffold extends AbstractFeature {
 
 		for (BlockPos offset : offsets) {
 			BlockPos adjacentPos = pos.add(offset);
-			if (this.isPosSolid(adjacentPos)) {
+			if (isPosSolid(adjacentPos)) {
 				if (offset.equals(new BlockPos(0, -1, 0))) {
 					return new BlockData(adjacentPos, EnumFacing.UP);
 				} else if (offset.equals(new BlockPos(-1, 0, 0))) {
@@ -268,6 +285,28 @@ public class FeatureScaffold extends AbstractFeature {
 		return null; // Return null if no solid block is found in adjacent positions.
 	}
 
+	public Vec3 getHitVec() {
+		/* Correct HitVec */
+		Vec3 hitVec = new Vec3(blockData.getPosition().getX() + Math.random(), blockData.getPosition().getY() + Math.random(), blockData.getPosition().getZ() + Math.random());
+
+		final MovingObjectPosition movingObjectPosition = rayCast(yaw, pitch) ? mc.theWorld.rayTraceBlocks(mc.thePlayer.getPositionEyes(1.0F), hitVec, false, false, true) : null;
+
+		switch (blockData.enumFacing) {
+			case DOWN -> hitVec.yCoord = blockData.getPosition().getY();
+			case UP -> hitVec.yCoord = blockData.getPosition().getY() + 1;
+			case NORTH -> hitVec.zCoord = blockData.getPosition().getZ();
+			case EAST -> hitVec.xCoord = blockData.getPosition().getX() + 1;
+			case SOUTH -> hitVec.zCoord = blockData.getPosition().getZ() + 1;
+			case WEST -> hitVec.xCoord = blockData.getPosition().getX();
+		}
+
+		if (movingObjectPosition != null && movingObjectPosition.getBlockPos().equals(blockData.getPosition()) &&
+				movingObjectPosition.sideHit == blockData.enumFacing) {
+			hitVec = movingObjectPosition.hitVec;
+		}
+
+		return hitVec;
+	}
 
 	public static class BlockData {
 		private final BlockPos blockPos;
