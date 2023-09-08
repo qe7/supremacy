@@ -135,9 +135,10 @@ public class FeatureKillAura extends AbstractFeature {
 				case "Fake" -> {
 				}
 				case "Hypixel" -> {
-					if (this.hitTicks == 2 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+					if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
 						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
 						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+						mc.thePlayer.addChatMessage(new ChatComponentText("Sent C09"));
 						this.isBlocking = false;
 					}
 				}
@@ -199,7 +200,7 @@ public class FeatureKillAura extends AbstractFeature {
 		if (mcTarget == null || mc.thePlayer == null || mcTarget == mc.thePlayer) return;
 
 		if (autoBlock.equals("Hypixel")) {
-			if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+			if (this.hitTicks == 2 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
 				if (packet instanceof C03PacketPlayer) {
 					packets.add(packet);
 					event.setCancelled(true);
