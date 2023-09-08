@@ -169,7 +169,7 @@ public class FeatureKillAura extends AbstractFeature {
 			mcTarget = entities.get(0);
 		else mcTarget = mc.thePlayer;
 
-		if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
+		if ((mcTarget != null && mcTarget != mc.thePlayer) && mcTarget instanceof EntityPlayer) {
 			String string = mcTarget.getName();
 			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), new Color(255, 255, 255, 175).getRGB());
 			string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
