@@ -126,24 +126,20 @@ public class FeatureKillAura extends AbstractFeature {
         if (mcTarget != mc.thePlayer && mc.thePlayer.getDistanceToEntity(mcTarget) < attackRange && !mcTarget.isDead && !mcTarget.isInvisibleToPlayer(mc.thePlayer) && !mc.thePlayer.isInvisible()) {
 
             Vector2f rotations = RotationUtil.getRotations(mcTarget);
+            Vector2f smoothRotations = RotationUtil.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
 
-            rotations = RotationUtil.applySanity(rotations);
+            smoothRotations = RotationUtil.applySanity(smoothRotations);
 
-            rotations = RotationUtil.applyGCD(rotations);
+            smoothRotations = RotationUtil.applyGCD(smoothRotations);
 
-            Core.getSingleton().getRotationManager().setRotation(rotations);
+            Core.getSingleton().getRotationManager().setRotation(smoothRotations);
 
-            switch (autoBlock) {
+            /*switch (autoBlock) {
                 case "Fake" -> {
                 }
                 case "Hypixel" -> {
-                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                        //mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
-                        //mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                        //this.isBlocking = false;
-                    }
                 }
-            }
+            }*/
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
@@ -157,6 +153,7 @@ public class FeatureKillAura extends AbstractFeature {
                 mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                 isBlocking = false;
             }
+            hitTicks = 0;
         }
     }
 
