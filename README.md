@@ -17,7 +17,7 @@ This project demonstrates the structure and usage of features and commands withi
 
 1. **FeatureExample**: A sample feature class that showcases various settings such as color, mode, slider, and toggle. It also includes event handling for the `UpdateEvent`.
 
-2. **CommandToggle**: A sample command class that toggles features on and off. This command takes a feature's name as an argument and toggles its state.
+2. **CommandToggle**: A sample abstractCommand class that toggles features on and off. This abstractCommand takes a feature's name as an argument and toggles its state.
 
 ## Features
 
@@ -44,14 +44,14 @@ The `FeatureExample` class also subscribes to the `UpdateEvent` to demonstrate e
 
 #### CommandToggle
 
-The `CommandToggle` class provides a command for toggling features on and off. It has the following attributes:
+The `CommandToggle` class provides a abstractCommand for toggling features on and off. It has the following attributes:
 
 - **Name**: Toggle
 - **Description**: Toggles a feature.
 - **Usage**: toggle <feature>
 - **Aliases**: t
 
-This command takes the name of a feature as an argument and toggles its state. It provides feedback on the feature's state after toggling.
+This abstractCommand takes the name of a feature as an argument and toggles its state. It provides feedback on the feature's state after toggling.
 
 ## Getting Started
 
@@ -69,7 +69,7 @@ To get started with "Supremacy," you will need:
 
 3. Explore the `FeatureExample` class to understand how to create a feature with various settings and event handling.
 
-4. Examine the `CommandToggle` class to see how to create a command for toggling features.
+4. Examine the `CommandToggle` class to see how to create a abstractCommand for toggling features.
 
 5. Modify and extend these classes to suit your "Supremacy" project's requirements.
 

@@ -1,12 +1,12 @@
 package gay.nns.client.impl.command;
 
-import gay.nns.client.api.command.Command;
+import gay.nns.client.api.command.AbstractCommand;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 
 @CommandInfo(name = "Toggle", description = "Toggles a feature.", usage = "toggle <feature>", aliases = {"t"})
-public class CommandToggle extends Command {
+public class CommandToggle extends AbstractCommand {
 
 	public CommandToggle() {
 		super();
@@ -21,13 +21,13 @@ public class CommandToggle extends Command {
 				for (AbstractFeature feature : Core.getSingleton().getFeatureManager().getFeatures()) {
 					if (feature.getFeatureInfo().name().equalsIgnoreCase(args[1])) {
 						feature.toggle();
-						this.chatCommand("Toggled " + feature.getFeatureInfo().name() + " to " + feature.isEnabled());
+						chatUtil.chatCommand("Toggled " + feature.getFeatureInfo().name() + " to " + feature.isEnabled());
 						return;
 					}
 				}
 			} catch (Exception e) {
-				this.chatCommand("Invalid command.");
-				this.chatCommand("E: " + e.getMessage());
+				chatUtil.chatCommand("Invalid command.");
+				chatUtil.chatCommand("E: " + e.getMessage());
 			}
 		}
 	}

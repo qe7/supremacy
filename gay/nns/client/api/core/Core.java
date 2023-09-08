@@ -11,7 +11,8 @@ import net.minecraft.client.Minecraft;
 public final class Core {
 
 	private final static Core singleton = new Core();
-	private final String name, version;
+	private String name;
+	private final String version;
 	private final String[] authors;
 	private final EventBus eventBus;
 	private final FeatureManager featureManager;
@@ -26,11 +27,11 @@ public final class Core {
 		this.featureManager = new FeatureManager();
 		this.eventBus.register(featureManager);
 
-		this.rotationManager = new RotationManager();
-		this.eventBus.register(rotationManager);
-
 		this.commandManager = new CommandManager();
 		this.eventBus.register(commandManager);
+
+		this.rotationManager = new RotationManager();
+		this.eventBus.register(rotationManager);
 
 		this.settingManager = new SettingManager();
 
@@ -52,15 +53,19 @@ public final class Core {
 	public void initialize() {
 		featureManager.initialize();
 
-		fontUtil.initialize();
-
 		commandManager.initialize();
+
+		fontUtil.initialize();
 
 		Minecraft.getMinecraft().getSession().setUsername(getName());
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getVersion() {

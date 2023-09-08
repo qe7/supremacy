@@ -53,6 +53,8 @@ public abstract class AbstractFeature implements IFeature, IToggleable {
 
     @Override
     public FeatureInfo getFeatureInfo() {
+        if (featureInfo == null)
+            return getClass().getAnnotation(FeatureInfo.class);
         return featureInfo;
     }
 

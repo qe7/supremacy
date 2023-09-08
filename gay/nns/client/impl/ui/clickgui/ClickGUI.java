@@ -34,12 +34,10 @@ public class ClickGUI extends GuiScreen {
 
     // Selected category and module variables
     public FeatureCategory selectedCategory;
-    private AbstractFeature selectedModule;
-
 
     // Scroll variables
     private float scrollY;
-    private AnimateUtil scrollAnimate = new AnimateUtil(0, 1);
+    private final AnimateUtil scrollAnimate = new AnimateUtil(0, 1);
 
     // List of components (settings) to be displayed on the GUI
     public final List<Comp<?>> comps = new ArrayList<>();
@@ -65,7 +63,6 @@ public class ClickGUI extends GuiScreen {
         MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("clean");
         MinecraftFontRenderer robotoSmall = Core.getSingleton().getFontUtil().getFont("menu");
         MinecraftFontRenderer robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
-        MinecraftFontRenderer robotoBig = Core.getSingleton().getFontUtil().getFont("menuwatermark");
 
         // Dragging behavior
         if (dragging) {
@@ -99,7 +96,7 @@ public class ClickGUI extends GuiScreen {
                 Gui.drawRect(posX + offset - 1, posY, (float) (posX + roboto.getStringWidth(category.getName()) + offset + 3), (float) (posY + 0.5), new Color(17, 18, 16, 255).getRGB());
             }
             roboto.drawStringWithShadow(category.getName(),posX + 1 + offset, posY + 9, category.equals(selectedCategory) ? new Color(162, 162, 161).getRGB() : new Color(79, 81, 82).getRGB());
-            offset += roboto.getStringWidth(category.getName()) + 6;
+            offset += (float) (roboto.getStringWidth(category.getName()) + 6);
         }
 
         Gui.drawRect(posX + 10 - 1, posY + 30 - 1, posX + 90 + 1, height - 10 + 1, new Color(0, 0, 0, 255).getRGB());
@@ -178,18 +175,17 @@ public class ClickGUI extends GuiScreen {
                     comps.clear();
                     scrollY = 0;
                     for (Setting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
-                        selectedModule = m;
                         if (setting instanceof SettingMode settingMode) {
-                            comps.add(new Combo(this, selectedModule, settingMode));
+                            comps.add(new Combo(this, m, settingMode));
                         }
                         if (setting instanceof SettingSlider settingSlider) {
-                            comps.add(new Slider(this, selectedModule, settingSlider));
+                            comps.add(new Slider(this, m, settingSlider));
                         }
                         if (setting instanceof SettingCheckBox settingCheckBox) {
-                            comps.add(new CheckBox(this, selectedModule, settingCheckBox));
+                            comps.add(new CheckBox(this, m, settingCheckBox));
                         }
                         if (setting instanceof SettingColor settingColor) {
-                            comps.add(new ColorPicker(this, selectedModule, settingColor));
+                            comps.add(new ColorPicker(this, m, settingColor));
                         }
                     }
                 }

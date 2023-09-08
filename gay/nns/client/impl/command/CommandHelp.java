@@ -1,11 +1,11 @@
 package gay.nns.client.impl.command;
 
-import gay.nns.client.api.command.Command;
+import gay.nns.client.api.command.AbstractCommand;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 import gay.nns.client.api.core.Core;
 
 @CommandInfo(name = "Help", description = "Displays a list of commands.", usage = ".help", aliases = {"?"})
-public class CommandHelp extends Command {
+public class CommandHelp extends AbstractCommand {
 
 	public CommandHelp() {
 		super();
@@ -16,8 +16,8 @@ public class CommandHelp extends Command {
 		super.onCommand(args);
 
 		if (args.length == 1) {
-			for (Command command : Core.getSingleton().getCommandManager().getCommands()) {
-				this.chatCommand(command.getName() + " - " + command.getDescription());
+			for (AbstractCommand abstractCommand : Core.getSingleton().getCommandManager().getCommands()) {
+				chatUtil.chatCommand(abstractCommand.getCommandInfo().name() + " - " + abstractCommand.getCommandInfo().usage());
 			}
 		}
 	}

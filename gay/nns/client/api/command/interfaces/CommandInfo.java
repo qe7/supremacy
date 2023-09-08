@@ -9,12 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface CommandInfo {
 
-	String name();
-
-	String description() default "";
-
-	String usage() default "";
-
+	String name() default "ERROR: No name provided";
+	String description() default "ERROR: No description provided";
+	String usage() default "ERROR: No usage provided";
 	String[] aliases() default {};
 
 }

@@ -13,6 +13,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import oshi.util.FormatUtil;
 
 import java.awt.*;
@@ -98,22 +101,27 @@ public class FeatureInterface extends AbstractFeature {
 
         bps = String.valueOf(Math.round(MovementUtil.getBPS() * 100.0) / 100.0);
 
-        int infoOffset = 10;
+        int infoOffset = fr.FONT_HEIGHT - 1;
         if (info) {
             fr.drawStringWithShadow("XYZ: §7" + coordinates , 2, sr.getScaledHeight() - infoOffset, getColor().getRGB());
             fr.drawStringWithShadow("FPS: §7" + Minecraft.getDebugFPS(), 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT, getColor().getRGB());
             fr.drawStringWithShadow("BPS: §7" + bps, 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT * 2, getColor().getRGB());
+
+            List<PotionEffect> potions = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
+            potions.sort(Comparator.comparingInt(m -> fr.getStringWidth("§7" + m.getEffectName() + " " + m.getAmplifier() + " : " + m.getDuration())));
+
+            int timeOffset = 1;
+            for (PotionEffect potion : potions) {
+//                fr.drawStringWithShadow(potion.getEffectName(), sr.getScaledWidth() - fr.getStringWidth(potion.getEffectName()) - infoOffset, sr.getScaledHeight() - infoOffset - timeOffset, getColor().getRGB());
+                timeOffset += fr.FONT_HEIGHT;
+            }
         }
 
         switch (suffixMode) {
-            case "Parenthesis" ->
-                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
-            case "Squared_Brackets" ->
-                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
-            case "Hyphen" ->
-                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix() : m.getFeatureInfo().name())));
-            case "Space" ->
-                    featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix() : m.getFeatureInfo().name())));
+            case "Parenthesis" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
+            case "Squared_Brackets" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
+            case "Hyphen" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix() : m.getFeatureInfo().name())));
+            case "Space" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix() : m.getFeatureInfo().name())));
             case "None" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getFeatureInfo().name())));
         }
         Collections.reverse(featureList);

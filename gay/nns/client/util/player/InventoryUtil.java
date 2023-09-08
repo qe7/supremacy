@@ -56,7 +56,7 @@ public class InventoryUtil {
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		ContainerPlayer container = (ContainerPlayer) player.openContainer; 
 
-		for (int i = 0; i < 45; ++i) {
+		for (int i = 0; i < container.inventorySlots.size(); ++i) {
 			Slot slot = container.getSlot(i);
 			if (!slot.getHasStack()) {
 				continue; // Skip empty slots

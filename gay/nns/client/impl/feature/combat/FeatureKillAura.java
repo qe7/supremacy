@@ -34,6 +34,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -44,23 +45,30 @@ public class FeatureKillAura extends AbstractFeature {
 	@Serialize(name = "Keep_Sprint")
 	@CheckBox()
 	public static boolean keepSprint = false;
-	private final TimerUtil timer = new TimerUtil();
-	private final ArrayList<Packet> packets = new ArrayList<>();
+
 	@Serialize(name = "Auto_Block")
 	@Mode(modes = {"None", "Fake", "Hypixel"})
 	public String autoBlock = "None";
+
 	@Serialize(name = "Attack_Range")
 	@Slider(min = 1, max = 6, increment = 0.1f)
 	public double attackRange = 3.f;
+
 	@Serialize(name = "Max_CPS")
 	@Slider(min = 1, max = 20, increment = 1)
 	public double maxCPS = 12;
+
 	@Serialize(name = "Min_CPS")
 	@Slider(min = 1, max = 20, increment = 1)
 	public double minCPS = 8;
+
 	@Serialize(name = "Rotation_Speed")
 	@Slider(min = 0, max = 20, increment = 1)
 	public double rotationSpeed = 17;
+
+	private final TimerUtil timer = new TimerUtil();
+	private final ArrayList<Packet> packets = new ArrayList<>();
+
 	public boolean afterAttack;
 	List<Entity> entities;
 	private Entity mcTarget;
@@ -130,7 +138,6 @@ public class FeatureKillAura extends AbstractFeature {
 					if (this.hitTicks == 2 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
 						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
 						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-						mc.thePlayer.addChatMessage(new ChatComponentText("da c09"));
 						this.isBlocking = false;
 					}
 				}
@@ -161,13 +168,13 @@ public class FeatureKillAura extends AbstractFeature {
 			mcTarget = entities.get(0);
 		else mcTarget = mc.thePlayer;
 
-		if ((mcTarget != null && mcTarget != mc.thePlayer) && mcTarget instanceof EntityPlayer) {
+		if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
 			String string = mcTarget.getName();
-			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), -1);
+			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), new Color(255, 255, 255, 175).getRGB());
 			string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
-			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), -1);
+			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), new Color(255, 255, 255, 175).getRGB());
 			string = "HT: " + hitTicks;
-			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), -1);
+			fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), new Color(255, 255, 255, 175).getRGB());
 		}
 	}
 
@@ -191,23 +198,19 @@ public class FeatureKillAura extends AbstractFeature {
 
 		if (mcTarget == null || mc.thePlayer == null || mcTarget == mc.thePlayer) return;
 
-		switch (autoBlock) {
-			case "Hypixel" -> {
-				if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-					if (packet instanceof C03PacketPlayer) {
-						mc.thePlayer.addChatMessage(new ChatComponentText("Packet cancelled: " + packet.getClass().getSimpleName()));
-						packets.add(packet);
-						event.setCancelled(true);
-					}
-				} else if (!packets.isEmpty()) {
-					mc.thePlayer.addChatMessage(new ChatComponentText("Sent packets: " + packets.size()));
-					for (Packet<?> packet1 : packets) {
-						mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
-					}
-					packets.clear();
-					mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-					this.isBlocking = true;
+		if (autoBlock.equals("Hypixel")) {
+			if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+				if (packet instanceof C03PacketPlayer) {
+					packets.add(packet);
+					event.setCancelled(true);
 				}
+			} else if (!packets.isEmpty()) {
+				for (Packet<?> packet1 : packets) {
+					mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
+				}
+				packets.clear();
+				mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+				this.isBlocking = true;
 			}
 		}
 	}

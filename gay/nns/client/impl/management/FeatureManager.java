@@ -50,6 +50,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureSpeed(),
 				new FeatureNoWeb(),
 				new FeatureScreenWalk(),
+				new FeatureSafeWalk(),
 
 				/* Render */
 				new FeatureAnimation(),
