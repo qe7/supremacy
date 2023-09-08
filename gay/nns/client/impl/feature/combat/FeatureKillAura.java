@@ -9,6 +9,7 @@ import gay.nns.client.api.setting.annotations.CheckBox;
 import gay.nns.client.api.setting.annotations.Mode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.Slider;
+import gay.nns.client.impl.event.packet.PacketSendEvent;
 import gay.nns.client.impl.event.player.PreMotionEvent;
 import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.impl.event.render.RenderItemEvent;
@@ -22,6 +23,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -63,6 +66,8 @@ public class FeatureKillAura extends AbstractFeature {
     private final TimerUtil timer = new TimerUtil();
 
     List<Entity> entities;
+
+    private final ArrayList<Packet> packets = new ArrayList<>();
 
     private boolean isBlocking = false;
     private int hitTicks;
@@ -141,7 +146,6 @@ public class FeatureKillAura extends AbstractFeature {
             switch (autoBlock) {
                 case "Hypixel" -> {
                     if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
-                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
                         mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         isBlocking = true;
                     }
@@ -169,6 +173,24 @@ public class FeatureKillAura extends AbstractFeature {
                         event.setUseItem(true);
                         event.setEnumAction(EnumAction.BLOCK);
                     }
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void onPacketSend(PacketSendEvent event) {
+        final Packet<?> packet = event.getPacket();
+        switch (autoBlock) {
+            case "Hypixel" -> {
+                if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
+                    if (event.getPacket() instanceof C03PacketPlayer) {
+                        packets.add(packet);
+                        event.setCancelled(true);
+                        mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                    }
+                } else if (!packets.isEmpty()) {
+                    mc.thePlayer.sendQueue.addToSendQueueNoEvent((Packet) packets);
                 }
             }
         }
