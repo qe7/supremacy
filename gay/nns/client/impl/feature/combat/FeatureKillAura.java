@@ -107,7 +107,7 @@ public class FeatureKillAura extends AbstractFeature {
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
-        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityLiving || e instanceof EntityPlayer) || e.getDistanceToEntity(mc.thePlayer) > 6.0f || e.isDead);
+        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityPlayer || e instanceof EntityLiving) || e.getDistanceToEntity(mc.thePlayer) > 6.0f || e.isDead);
 
         Entity mcTarget;
         if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < attackRange)

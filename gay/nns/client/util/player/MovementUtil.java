@@ -19,10 +19,8 @@ public class MovementUtil {
 				0.419999986886978;
 	}
 
-	public static String getBPS() {
-		return String.valueOf(Math.hypot(Minecraft.getMinecraft().thePlayer.posX - Minecraft.getMinecraft().thePlayer.prevPosX,
-				Minecraft.getMinecraft().thePlayer.posZ - Minecraft.getMinecraft().thePlayer.prevPosZ) *
-				Minecraft.getMinecraft().timer.timerSpeed * 20.0);
+	public static double getBPS() {
+		return Math.hypot(Minecraft.getMinecraft().thePlayer.posX - Minecraft.getMinecraft().thePlayer.prevPosX, Minecraft.getMinecraft().thePlayer.posZ - Minecraft.getMinecraft().thePlayer.prevPosZ) * Minecraft.getMinecraft().timer.timerSpeed * 20.0;
 	}
 
 	public static void setSpeed(double moveSpeed) {

@@ -13,7 +13,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.*;
 import org.lwjgl.input.Mouse;
 
-@FeatureInfo(name = "Auto_Clicker", category = FeatureCategory.GHOST, description = "Automatically clicks")
+@FeatureInfo(name = "AutoClicker", category = FeatureCategory.GHOST, description = "Automatically clicks")
 public class FeatureAutoClicker extends AbstractFeature {
 
 	@Serialize(name = "Left_Click")

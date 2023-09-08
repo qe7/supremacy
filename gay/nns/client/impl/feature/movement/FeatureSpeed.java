@@ -96,10 +96,7 @@ public class FeatureSpeed extends AbstractFeature {
 					mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
 
 					if (mc.thePlayer.onGround) {
-						if (mc.thePlayer.hurtTime > 2)
-							speed = (float) (MovementUtil.getBaseMoveSpeed() + 0.02f);
-						else
-							speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.04f);
+						speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.04f);
 
 						if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 							speed *= 0.2F;

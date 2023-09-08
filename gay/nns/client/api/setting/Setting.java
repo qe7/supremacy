@@ -25,8 +25,7 @@ public abstract class Setting<A, V> {
 
 	protected V getFieldValue() {
 		try {
-			V v = (V) this.field.get(this.object);
-			return v;
+			return (V) this.field.get(this.object);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

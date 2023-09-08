@@ -72,13 +72,6 @@ public class InventoryUtil {
 				removedBlocks += itemStack.stackSize;
 			}
 
-			if (itemStack.getItem() instanceof ItemArmor) {
-				int[] bestArmorSlots = ItemUtil.getBestArmorInInventoryAsSlots();
-				if (i != bestArmorSlots[0] && i != bestArmorSlots[1] && i != bestArmorSlots[2] && i != bestArmorSlots[3]) {
-					trash.add(i);
-				}
-			}
-
 			if (itemStack.getItem() instanceof ItemSword) {
 				if (i != ItemUtil.getBestWeaponInInventoryAsSlot()) {
 					trash.add(i);
@@ -88,6 +81,13 @@ public class InventoryUtil {
 			if (itemStack.getItem() instanceof ItemTool) {
 				int[] bestToolSlots = ItemUtil.getBestToolsInInventoryAsSlots();
 				if (i != ItemUtil.getBestWeaponInInventoryAsSlot() && i != bestToolSlots[0] && i != bestToolSlots[1] && i != bestToolSlots[2]) {
+					trash.add(i);
+				}
+			}
+
+			if (itemStack.getItem() instanceof ItemArmor) {
+				int[] bestArmorSlots = ItemUtil.getBestArmorInInventoryAsSlots();
+				if (i != bestArmorSlots[0] && i != bestArmorSlots[1] && i != bestArmorSlots[2] && i != bestArmorSlots[3]) {
 					trash.add(i);
 				}
 			}

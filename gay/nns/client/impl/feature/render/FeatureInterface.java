@@ -69,6 +69,8 @@ public class FeatureInterface extends AbstractFeature {
     public boolean background = true;
 
     public String coordinates;
+    public String bps;
+
     public FeatureInterface() {
         this.toggle();
     }
@@ -94,10 +96,13 @@ public class FeatureInterface extends AbstractFeature {
 
         coordinates = (int) mc.thePlayer.posX + ", " + (int) mc.thePlayer.posY + ", " + (int) mc.thePlayer.posZ;
 
+        bps = String.valueOf(Math.round(MovementUtil.getBPS() * 100.0) / 100.0);
+
         int infoOffset = 10;
         if (info) {
             fr.drawStringWithShadow("XYZ: §7" + coordinates , 2, sr.getScaledHeight() - infoOffset, getColor().getRGB());
             fr.drawStringWithShadow("FPS: §7" + Minecraft.getDebugFPS(), 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT, getColor().getRGB());
+            fr.drawStringWithShadow("BPS: §7" + bps, 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT * 2, getColor().getRGB());
         }
 
         switch (suffixMode) {

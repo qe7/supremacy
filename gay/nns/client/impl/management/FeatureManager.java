@@ -4,6 +4,7 @@ import gay.nns.client.impl.feature.combat.FeatureKillAura;
 import gay.nns.client.impl.feature.combat.FeatureVelocity;
 import gay.nns.client.impl.feature.exploit.FeatureAntiVoid;
 import gay.nns.client.impl.feature.exploit.FeatureFastBow;
+import gay.nns.client.impl.feature.ghost.FeatureAimAssist;
 import gay.nns.client.impl.feature.ghost.FeatureAutoClicker;
 import gay.nns.client.impl.feature.ghost.FeatureNoClickDelay;
 import gay.nns.client.impl.feature.movement.*;
@@ -40,6 +41,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				/* Ghost */
 				new FeatureAutoClicker(),
 				new FeatureNoClickDelay(),
+				new FeatureAimAssist(),
 
 				/* Movement */
 				new FeatureSprint(),
@@ -67,6 +69,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureAutoTool(),
 				new FeatureChestStealer(),
 				new FeatureInventoryManager(),
+				new FeatureScaffold(),
 
 				/* Exploit */
 				new FeatureFastBow(),

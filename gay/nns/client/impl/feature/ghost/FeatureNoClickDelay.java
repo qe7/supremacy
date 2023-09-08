@@ -6,7 +6,7 @@ import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.player.UpdateEvent;
 
-@FeatureInfo(name = "No_Click_Delay", category = FeatureCategory.GHOST, description = "Removes the click delay")
+@FeatureInfo(name = "NoClickDelay", category = FeatureCategory.GHOST, description = "Removes the click delay")
 public class FeatureNoClickDelay extends AbstractFeature {
 
 	public FeatureNoClickDelay() {
