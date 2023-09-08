@@ -29,6 +29,8 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
@@ -108,7 +110,6 @@ public class FeatureKillAura extends AbstractFeature {
         }
 
         this.hitTicks++;
-        this.afterAttack = false;
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
@@ -137,7 +138,6 @@ public class FeatureKillAura extends AbstractFeature {
 
             if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
-                this.afterAttack = true;
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;
                 timer.reset();
@@ -145,10 +145,9 @@ public class FeatureKillAura extends AbstractFeature {
 
             switch (autoBlock) {
                 case "Hypixel" -> {
-                    if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                        isBlocking = true;
-                    }
+                    //if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
+
+                    //isBlocking = true;
                 }
             }
         } else {
@@ -183,18 +182,20 @@ public class FeatureKillAura extends AbstractFeature {
         final Packet<?> packet = event.getPacket();
         switch (autoBlock) {
             case "Hypixel" -> {
-                if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && afterAttack) {
+                if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
                     if (event.getPacket() instanceof C03PacketPlayer) {
                         packets.add(packet);
                         event.setCancelled(true);
-                        mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
+                    // mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                 } else if (!packets.isEmpty()) {
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent((Packet) packets);
+                    //mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                 }
             }
         }
     }
+}
 }
 
 
