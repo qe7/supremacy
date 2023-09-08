@@ -15,6 +15,7 @@ import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.impl.event.render.RenderItemEvent;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
+import gay.nns.client.util.player.PlayerUtil;
 import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
@@ -207,8 +208,7 @@ public class FeatureKillAura extends AbstractFeature {
                 }
             } else if (!packets.isEmpty()) {
                 for (Packet<?> packet1 : packets) {
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     this.isBlocking = false;
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
                 }
