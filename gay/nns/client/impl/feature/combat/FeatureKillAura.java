@@ -127,9 +127,11 @@ public class FeatureKillAura extends AbstractFeature {
 				case "Fake" -> {
 				}
 				case "Hypixel" -> {
-					if (this.hitTicks > 0 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-						this.isBlocking = true;
+					if (this.hitTicks == 2 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
+						mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+						mc.thePlayer.addChatMessage(new ChatComponentText("da c09"));
+						this.isBlocking = false;
 					}
 				}
 			}
@@ -203,9 +205,8 @@ public class FeatureKillAura extends AbstractFeature {
 						mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
 					}
 					packets.clear();
-					mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
-					mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-					this.isBlocking = false;
+					mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+					this.isBlocking = true;
 				}
 			}
 		}
