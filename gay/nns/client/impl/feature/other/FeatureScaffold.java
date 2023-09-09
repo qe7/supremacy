@@ -15,16 +15,16 @@ import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.util.chat.ChatUtil;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.MovementUtil;
 import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 
 import javax.vecmath.Vector2f;
@@ -163,7 +163,7 @@ public class FeatureScaffold extends AbstractFeature {
 		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
 
 		// get current speed and get around 10% less
-		if (mc.thePlayer.onGround && !Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+		if (mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) && Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
 			double speed = currentSpeed * 0.95D;
 

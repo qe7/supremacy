@@ -93,7 +93,8 @@ public class FeatureInterface extends AbstractFeature {
         if (time.startsWith("0")) {
             time = time.replaceFirst("0", "");
         }
-        String watermark = Core.getSingleton().getName() + " §w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
+        String watermark = Core.getSingleton().getName() + " §r§w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
+        watermark = watermark.replace("&", "§");
 
         fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
 
