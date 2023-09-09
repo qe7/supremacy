@@ -5,8 +5,6 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
-import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.event.render.Event3DRender;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
