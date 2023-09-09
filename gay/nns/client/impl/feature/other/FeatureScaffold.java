@@ -150,7 +150,7 @@ public class FeatureScaffold extends AbstractFeature {
 
 		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
 
-		// get current speed and get around 10% less
+		// get current speed and set to around 10% less
 		if (mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) && Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
 			double speed = currentSpeed * 0.95D;
