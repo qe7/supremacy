@@ -61,7 +61,7 @@ public class FeatureChestStealer extends AbstractFeature {
 
 				ArrayList<Integer> bestItems = PlayerUtil.getBestItems(chest);
 
-				if (!chest.getLowerChestInventory().getName().contains("Chest") && titleCheck) {
+				if (!(chest.getLowerChestInventory().getName().contains("Chest") || chest.getLowerChestInventory().getName().contains("Container") || chest.getLowerChestInventory().getName().contains("Storage")) && titleCheck) {
 					return;
 				}
 

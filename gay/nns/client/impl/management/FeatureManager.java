@@ -60,6 +60,7 @@ public class FeatureManager implements IFeatureManagerApi {
 				new FeatureAmbience(),
 				new FeatureBrightness(),
 				new FeatureESP(),
+				new FeatureRotate(),
 
 				/* Other */
 				new FeatureNoFall(),

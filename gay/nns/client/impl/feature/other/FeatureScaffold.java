@@ -15,14 +15,17 @@ import gay.nns.client.impl.event.render.Render2DEvent;
 import gay.nns.client.util.chat.ChatUtil;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
+import gay.nns.client.util.player.MovementUtil;
 import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
+import org.lwjgl.input.Keyboard;
 
 import javax.vecmath.Vector2f;
 import java.util.Arrays;
@@ -158,6 +161,23 @@ public class FeatureScaffold extends AbstractFeature {
 		smoothRotations = RotationUtil.applyGCD(smoothRotations);
 
 		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
+
+		// get current speed and get around 10% less
+		if (mc.thePlayer.onGround && !Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+			double speed = currentSpeed * 0.95D;
+
+			// get direction
+			float direction = mc.thePlayer.rotationYaw;
+
+			// get motion
+			double motionX = -Math.sin(direction / 180.0F * Math.PI) * speed;
+			double motionZ = Math.cos(direction / 180.0F * Math.PI) * speed;
+
+			// set motion
+			mc.thePlayer.motionX = motionX;
+			mc.thePlayer.motionZ = motionZ;
+		}
 
 		if (!rayCast(yaw, pitch)) {
 			timerUtil.reset();
