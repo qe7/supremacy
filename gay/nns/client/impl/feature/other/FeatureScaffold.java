@@ -103,8 +103,7 @@ public class FeatureScaffold extends AbstractFeature {
 	public void onRender2D(final EventRender2D render2DEvent) {
 		FontRenderer fr = mc.fontRendererObj;
 		String blocks = "blocks: " + getBlockCount() + " | " + getBlockSlot();
-		fr.drawStringWithShadow(blocks, (float) mc.displayWidth / 4 - (fr.getStringWidth(blocks) / 2f),
-				(float) mc.displayHeight / 4 + 10, -1);
+		fr.drawStringWithShadow(blocks, (float) mc.displayWidth / 4 - (fr.getStringWidth(blocks) / 2f), (float) mc.displayHeight / 4 + 10, -1);
 	}
 
 	@Subscribe
