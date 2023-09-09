@@ -201,9 +201,9 @@ public class FeatureKillAura extends AbstractFeature {
                     event.setCancelled(true);
                 }
             } else if (!packets.isEmpty()) {
+                mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                this.isBlocking = false;
                 for (Packet<?> packet1 : packets) {
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    this.isBlocking = false;
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
                 }
                 packets.clear();
