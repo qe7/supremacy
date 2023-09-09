@@ -169,11 +169,11 @@ public class FeatureKillAura extends AbstractFeature {
 
         if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
             String string = mcTarget.getName();
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), new Color(255, 255, 255, 175).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), new Color(255, 255, 255, 150).getRGB());
             string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), new Color(255, 255, 255, 175).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), new Color(255, 255, 255, 150).getRGB());
             string = "HT: " + hitTicks;
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), new Color(255, 255, 255, 175).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), new Color(255, 255, 255, 150).getRGB());
         }
     }
 

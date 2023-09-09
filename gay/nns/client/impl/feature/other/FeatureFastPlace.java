@@ -27,6 +27,7 @@ public class FeatureFastPlace extends AbstractFeature {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        mc.rightClickDelayTimer = (int)delay;
+        if (mc.rightClickDelayTimer > delay)
+            mc.rightClickDelayTimer = (int)delay;
     }
 }
