@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.render;
 
 
-import com.google.common.eventbus.Subscribe;
+import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
@@ -19,24 +19,19 @@ import org.lwjgl.opengl.GL11;
 @FeatureInfo(name = "ESP", category = FeatureCategory.RENDER, description = "Blah blah blah this isnt done")
 public class FeatureESP extends AbstractFeature {
 
-    @Serialize(name = "ESP_Mode")
-    @Mode(modes = {"Box"})
-    public static String espMode = "Box";
-
     public FeatureESP() {
         super();
     }
 
     @Subscribe
     public void onRender3D(Event3DRender event) {
-        if (isEnabled()) {
-            for (Entity entity : mc.theWorld.loadedEntityList) {
-                if (entity == mc.thePlayer || !(entity instanceof EntityPlayer)) continue;
-                double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosX;
-                double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosY;
-                double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosZ;
-                drawEntityESP(posX, posY, posZ, 0.4, entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY, 0 / 255f, 255 / 255f, 50 / 255f, 0.2f);
-            }
+
+        for (Entity entity : mc.theWorld.loadedEntityList) {
+            if (entity == mc.thePlayer || !(entity instanceof EntityPlayer)) continue;
+            double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosX;
+            double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosY;
+            double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) event.getPartialTicks() - this.mc.getRenderManager().renderPosZ;
+            drawEntityESP(posX, posY, posZ, 0.4, entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY, 0 / 255f, 255 / 255f, 50 / 255f, 0.2f);
         }
     }
 
