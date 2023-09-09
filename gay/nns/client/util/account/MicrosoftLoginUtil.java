@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class MicrosoftLogin {
+public class MicrosoftLoginUtil {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -58,7 +58,7 @@ public class MicrosoftLogin {
     }
 
     public static void getRefreshToken(final Consumer<String> callback) {
-        MicrosoftLogin.callback = callback;
+        MicrosoftLoginUtil.callback = callback;
 
         startServer();
         browse("https://login.live.com/oauth20_authorize.srf?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&response_type=code&redirect_uri=http://localhost:" + PORT + "&scope=XboxLive.signin%20offline_access");
@@ -69,7 +69,7 @@ public class MicrosoftLogin {
     public static LoginData login(String refreshToken) {
         // Refresh access token
         final AuthTokenResponse res = gson.fromJson(
-                Browser.postExternal("https://login.live.com/oauth20_token.srf", "client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&refresh_token=" + refreshToken + "&grant_type=refresh_token&redirect_uri=http://localhost:" + PORT, false),
+                BrowserUtil.postExternal("https://login.live.com/oauth20_token.srf", "client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&refresh_token=" + refreshToken + "&grant_type=refresh_token&redirect_uri=http://localhost:" + PORT, false),
                 AuthTokenResponse.class
         );
 
@@ -80,7 +80,7 @@ public class MicrosoftLogin {
 
         // XBL
         final XblXstsResponse xblRes = gson.fromJson(
-                Browser.postExternal("https://user.auth.xboxlive.com/user/authenticate",
+                BrowserUtil.postExternal("https://user.auth.xboxlive.com/user/authenticate",
                         "{\"Properties\":{\"AuthMethod\":\"RPS\",\"SiteName\":\"user.auth.xboxlive.com\",\"RpsTicket\":\"d=" + accessToken + "\"},\"RelyingParty\":\"http://auth.xboxlive.com\",\"TokenType\":\"JWT\"}", true),
                 XblXstsResponse.class);
 
@@ -88,7 +88,7 @@ public class MicrosoftLogin {
 
         // XSTS
         final XblXstsResponse xstsRes = gson.fromJson(
-                Browser.postExternal("https://xsts.auth.xboxlive.com/xsts/authorize",
+                BrowserUtil.postExternal("https://xsts.auth.xboxlive.com/xsts/authorize",
                         "{\"Properties\":{\"SandboxId\":\"RETAIL\",\"UserTokens\":[\"" + xblRes.Token + "\"]},\"RelyingParty\":\"rp://api.minecraftservices.com/\",\"TokenType\":\"JWT\"}", true),
                 XblXstsResponse.class);
 
@@ -96,7 +96,7 @@ public class MicrosoftLogin {
 
         // Minecraft
         final McResponse mcRes = gson.fromJson(
-                Browser.postExternal("https://api.minecraftservices.com/authentication/login_with_xbox",
+                BrowserUtil.postExternal("https://api.minecraftservices.com/authentication/login_with_xbox",
                         "{\"identityToken\":\"XBL3.0 x=" + xblRes.DisplayClaims.xui[0].uhs + ";" + xstsRes.Token + "\"}", true),
                 McResponse.class);
 
@@ -104,14 +104,14 @@ public class MicrosoftLogin {
 
         // Check game ownership
         final GameOwnershipResponse gameOwnershipRes = gson.fromJson(
-                Browser.getBearerResponse("https://api.minecraftservices.com/entitlements/mcstore", mcRes.access_token),
+                BrowserUtil.getBearerResponse("https://api.minecraftservices.com/entitlements/mcstore", mcRes.access_token),
                 GameOwnershipResponse.class);
 
         if (gameOwnershipRes == null || !gameOwnershipRes.hasGameOwnership()) return new LoginData();
 
         // Profile
         final ProfileResponse profileRes = gson.fromJson(
-                Browser.getBearerResponse("https://api.minecraftservices.com/minecraft/profile", mcRes.access_token),
+                BrowserUtil.getBearerResponse("https://api.minecraftservices.com/minecraft/profile", mcRes.access_token),
                 ProfileResponse.class);
 
         if (profileRes == null) return new LoginData();
@@ -170,7 +170,7 @@ public class MicrosoftLogin {
 
         private void handleCode(final String code) {
             //System.out.println(code);
-            final String response = Browser.postExternal("https://login.live.com/oauth20_token.srf",
+            final String response = BrowserUtil.postExternal("https://login.live.com/oauth20_token.srf",
                     "client_id=" + CLIENT_ID + "&code=" + code + "&client_secret=" + CLIENT_SECRET + "&grant_type=authorization_code&redirect_uri=http://localhost:" + PORT, false);
             final AuthTokenResponse res = gson.fromJson(
                     response,

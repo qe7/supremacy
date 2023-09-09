@@ -14,7 +14,7 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.IFeatureManagerApi;
-import gay.nns.client.impl.event.game.KeyEvent;
+import gay.nns.client.impl.event.game.EventKeyInput;
 
 import gay.nns.client.impl.feature.combat.*;
 
@@ -23,11 +23,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeatureManager implements IFeatureManagerApi {
+public class ManagerFeature implements IFeatureManagerApi {
 
 	private Map<String, AbstractFeature> Features;
 
-	public FeatureManager() {
+	public ManagerFeature() {
 
 	}
 
@@ -117,7 +117,7 @@ public class FeatureManager implements IFeatureManagerApi {
 	}
 
 	@Subscribe
-	public void onKey(final KeyEvent event) {
+	public void onKey(final EventKeyInput event) {
 		getFeatures().forEach(Features -> {
 			if (event.key() == Features.getKey())
 				Features.toggle();

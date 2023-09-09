@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class Browser {
+public class BrowserUtil {
 
     public static String postExternal(final String url, final String post, final boolean json) {
         try {

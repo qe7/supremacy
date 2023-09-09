@@ -1,36 +1,28 @@
 package gay.nns.client.impl.management;
 
 import gay.nns.client.api.setting.annotations.*;
-import gay.nns.client.impl.setting.SettingSlider;
-import gay.nns.client.api.setting.Setting;
-import gay.nns.client.api.setting.annotations.*;
-import gay.nns.client.impl.setting.SettingCheckBox;
-import gay.nns.client.impl.setting.SettingColor;
-import gay.nns.client.impl.setting.SettingMode;
+import gay.nns.client.api.setting.AbstractSetting;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Annotation based setting system.
- * <br/><br/>
- * The system was created by Eternal, but I (Shae) had to make some modifications to get it functioning properly due to recurring crashes, possibly stemming from using a different version of Lombok. However, the issue should now be resolved.
- * <br/><br/>
+ * @author Eternal
  *
- * @author Eternal and Shae
+ * some changes by **Shae**zbreizh
  */
-public class SettingManager {
+public class ManagerSetting {
 
-	private final List<Setting<?, ?>> settings = new ArrayList<>();
-	private final Map<Class<? extends Annotation>, Class<? extends Setting<?, ?>>>
+	private final List<AbstractSetting<?, ?>> settings = new ArrayList<>();
+	private final Map<Class<? extends Annotation>, Class<? extends AbstractSetting<?, ?>>>
 			annotationToSetting =
 			new HashMap() {
 				{
-					put(CheckBox.class, SettingCheckBox.class);
-					put(Slider.class, SettingSlider.class);
-					put(Mode.class, SettingMode.class);
-					put(ColorBox.class, SettingColor.class);
+					put(SettingBoolean.class, gay.nns.client.impl.setting.SettingBoolean.class);
+					put(SettingSlider.class, gay.nns.client.impl.setting.SettingSlider.class);
+					put(SettingMode.class, gay.nns.client.impl.setting.SettingMode.class);
+					put(SettingColor.class, gay.nns.client.impl.setting.SettingColor.class);
 				}
 			};
 
@@ -39,12 +31,12 @@ public class SettingManager {
 		settings.forEach(
 				setting -> {
 					if (setting.getField().isAnnotationPresent(Parent.class)) {
-						Setting<?, ?> parent =
+						AbstractSetting<?, ?> parent =
 								getSetting(
 										setting.getObject().getClass(),
 										setting.getField().getAnnotation(Parent.class).parent());
 						setting.setParent(parent);
-						if (parent instanceof SettingMode) setting.setParentMode(parent.getName());
+						if (parent instanceof gay.nns.client.impl.setting.SettingMode) setting.setParentMode(parent.getName());
 					} else if (setting.getField().isAnnotationPresent(SettingGroup.class)) {
 						setting.setGroup(setting.getField().getAnnotation(SettingGroup.class).groupName());
 					}
@@ -55,10 +47,10 @@ public class SettingManager {
 		for (Field field : o.getClass().getFields()) {
 			if (field.isAnnotationPresent(Serialize.class)) {
 				Class<? extends Annotation> settingType = field.getAnnotations()[1].annotationType();
-				Class<? extends Setting<?, ?>> setting = annotationToSetting.get(settingType);
+				Class<? extends AbstractSetting<?, ?>> setting = annotationToSetting.get(settingType);
 
 				try {
-					Setting<?, ?> instance = setting.getConstructor(Field.class, Object.class).newInstance(field, o);
+					AbstractSetting<?, ?> instance = setting.getConstructor(Field.class, Object.class).newInstance(field, o);
 					settings.add(instance);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,7 +59,7 @@ public class SettingManager {
 		}
 	}
 
-	public Setting<?, ?> getSetting(Class<?> clazz, String name) {
+	public AbstractSetting<?, ?> getSetting(Class<?> clazz, String name) {
 		return settings.stream()
 				.filter(
 						setting -> setting.getObject().getClass() == clazz && setting.getName().equalsIgnoreCase(name))
@@ -75,7 +67,7 @@ public class SettingManager {
 				.orElseThrow(NoSuchElementException::new);
 	}
 
-	public List<Setting<?, ?>> getSettingsFromType(Class<?> clazz) {
+	public List<AbstractSetting<?, ?>> getSettingsFromType(Class<?> clazz) {
 		return settings.stream().filter(setting -> setting.getObject().getClass() == clazz).toList();
 	}
 }

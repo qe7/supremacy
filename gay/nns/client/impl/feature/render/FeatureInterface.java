@@ -6,20 +6,16 @@ import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.*;
-import gay.nns.client.impl.event.game.KeyEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.game.EventKeyInput;
+import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.player.MovementUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import oshi.util.FormatUtil;
 
 import java.awt.*;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -28,47 +24,47 @@ import java.util.*;
 public class FeatureInterface extends AbstractFeature {
 
     @Serialize(name = "Arraylist_Color")
-    @ColorBox
+    @SettingColor
     public Color color = new Color(255, 255, 255);
 
     @Serialize(name = "Background_Color")
-    @ColorBox
+    @SettingColor
     public Color backgroundColor = new Color(0, 0, 0, 100);
 
     @Serialize(name = "Color_Mode")
-    @Mode(modes = {"Default", "Category", "Rainbow", "Astolfo"})
+    @SettingMode(modes = {"Default", "Category", "Rainbow", "Astolfo"})
     public String colorMode = "Default";
 
     @Serialize(name = "Outline_Mode")
-    @Mode(modes = {"Left", "Right", "Top", "Bottom", "All", "None"})
+    @SettingMode(modes = {"Left", "Right", "Top", "Bottom", "All", "None"})
     public String arraylistMode = "All";
 
     @Serialize(name = "Suffix_Mode")
-    @Mode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Space", "None"})
+    @SettingMode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Space", "None"})
     public String suffixMode = "Parenthesis";
 
     @Serialize(name = "Info")
-    @CheckBox
+    @SettingBoolean
     public boolean info = false;
 
     @Serialize(name = "Arraylist_Brightness")
-    @Slider(min = 0, max = 1, increment = 0.05)
+    @SettingSlider(min = 0, max = 1, increment = 0.05)
     public double brightness = 0.7;
 
     @Serialize(name = "Arraylist_Saturation")
-    @Slider(min = 0, max = 1, increment = 0.05)
+    @SettingSlider(min = 0, max = 1, increment = 0.05)
     public double saturation = 0.5;
 
     @Serialize(name = "Offset")
-    @Slider(min = 0, max = 10, increment = 1)
+    @SettingSlider(min = 0, max = 10, increment = 1)
     public double offset = 1;
 
     @Serialize(name = "Spacing")
-    @Slider(min = 0, max = 10, increment = 1)
+    @SettingSlider(min = 0, max = 10, increment = 1)
     public double spacing = 2;
 
     @Serialize(name = "Background")
-    @CheckBox
+    @SettingBoolean
     public boolean background = true;
 
     public String coordinates;
@@ -79,7 +75,7 @@ public class FeatureInterface extends AbstractFeature {
     }
 
     @Subscribe
-    public void onRender2D(final Render2DEvent render2DEvent) {
+    public void onRender2D(final EventRender2D render2DEvent) {
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
 
@@ -190,7 +186,7 @@ public class FeatureInterface extends AbstractFeature {
     }
 
     @Subscribe
-    public void onKey(final KeyEvent keyEvent) {
+    public void onKey(final EventKeyInput keyEvent) {
         // todo: handle TabUI key inputs
     }
 

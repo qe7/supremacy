@@ -4,10 +4,10 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.TimerUtil;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.*;
@@ -17,27 +17,27 @@ import org.lwjgl.input.Mouse;
 public class FeatureAutoClicker extends AbstractFeature {
 
 	@Serialize(name = "Left_Click")
-	@CheckBox
+	@SettingBoolean
 	public boolean leftClick = false;
 
 	@Serialize(name = "Right_Click")
-	@CheckBox
+	@SettingBoolean
 	public boolean rightClick = false;
 
 	@Serialize(name = "Left_Max_CPS")
-	@Slider(min = 1, max = 20, increment = 1)
+	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double maxCPS = 18;
 
 	@Serialize(name = "Left_Min_CPS")
-	@Slider(min = 1, max = 20, increment = 1)
+	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double minCPS = 14;
 
 	@Serialize(name = "Right_Max_CPS")
-	@Slider(min = 1, max = 20, increment = 1)
+	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double rightMaxCPS = 18;
 
 	@Serialize(name = "Right_Min_CPS")
-	@Slider(min = 1, max = 20, increment = 1)
+	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double rightMinCPS = 14;
 
 	private final TimerUtil leftTimerUtil = new TimerUtil();
@@ -48,7 +48,7 @@ public class FeatureAutoClicker extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 
 		if (Mouse.isButtonDown(0) && leftClick) {
 			if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemPickaxe || mc.thePlayer.getHeldItem().getItem() instanceof ItemAxe || mc.thePlayer.getHeldItem().getItem() instanceof ItemSpade)) return;

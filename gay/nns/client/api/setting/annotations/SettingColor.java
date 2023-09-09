@@ -7,12 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Slider {
-
-	double min();
-
-	double max();
-
-	double increment();
+public @interface SettingColor {
 
 }

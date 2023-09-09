@@ -83,7 +83,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
 			super.onUpdate();
 
-			UpdateEvent updateEvent = new UpdateEvent();
+			EventUpdate updateEvent = new EventUpdate();
 			Core.getSingleton().getEventBus().post(updateEvent);
 
 			if (this.isRiding()) {
@@ -95,7 +95,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		}
 	}
 
-	public PreMotionEvent eventMotion;
+	public EventPreMotion eventMotion;
 
 	public void onUpdateWalkingPlayer() {
 		boolean flag = this.isSprinting();
@@ -124,7 +124,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 		if (this.isCurrentViewEntity()) {
 
-			PreMotionEvent event = new PreMotionEvent(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+			EventPreMotion event = new EventPreMotion(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
 			eventMotion = event;
 			Core.getSingleton().getEventBus().post(event);
 
@@ -165,7 +165,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 				this.lastReportedPitch = event.getPitch();
 			}
 
-			PostMotionEvent eventMotionPost = new PostMotionEvent();
+			EventPostMotion eventMotionPost = new EventPostMotion();
 			Core.getSingleton().getEventBus().post(eventMotionPost);
 		}
 	}
@@ -184,7 +184,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 	}
 
 	public void sendChatMessage(String message) {
-		MessageSentEvent eventSentMessage = new MessageSentEvent(message);
+		EventMessageSent eventSentMessage = new EventMessageSent(message);
 		Core.getSingleton().getEventBus().post(eventSentMessage);
 
 		if (eventSentMessage.isCancelled()) return;
@@ -525,7 +525,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 		if (this.isUsingItem() && !this.isRiding()) {
 
-			SlowDownEvent slowDownEvent = new SlowDownEvent();
+			EventSlowdown slowDownEvent = new EventSlowdown();
 			Core.getSingleton().getEventBus().post(slowDownEvent);
 
 			if (!slowDownEvent.isCancelled()) {

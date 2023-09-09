@@ -3,14 +3,14 @@ package gay.nns.client.impl.ui.clickgui;
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.setting.Setting;
+import gay.nns.client.api.setting.AbstractSetting;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
-import gay.nns.client.impl.setting.SettingCheckBox;
+import gay.nns.client.impl.setting.SettingBoolean;
 import gay.nns.client.impl.setting.SettingColor;
 import gay.nns.client.impl.setting.SettingMode;
 import gay.nns.client.impl.setting.SettingSlider;
 import gay.nns.client.impl.ui.clickgui.comp.*;
-import gay.nns.client.util.font.MinecraftFontRenderer;
+import gay.nns.client.util.font.CustomFontRendererUtil;
 import gay.nns.client.util.render.AnimateUtil;
 import gay.nns.client.util.render.ScissorUtil;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClickGUI extends GuiScreen {
+public class GuiClick extends GuiScreen {
 
     // GUI position and dragging variables
     public float posX, posY, width, height, dragX, dragY;
@@ -42,7 +42,7 @@ public class ClickGUI extends GuiScreen {
     // List of components (settings) to be displayed on the GUI
     public final List<Comp<?>> comps = new ArrayList<>();
 
-    public ClickGUI() {
+    public GuiClick() {
         dragging = false;
         posX = getScaledRes().getScaledWidth() / 2f - 150;
         posY = getScaledRes().getScaledHeight() / 2f - 100;
@@ -60,9 +60,9 @@ public class ClickGUI extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Font renderers
-        MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("clean");
-        MinecraftFontRenderer robotoSmall = Core.getSingleton().getFontUtil().getFont("menu");
-        MinecraftFontRenderer robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
+        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("clean");
+        CustomFontRendererUtil robotoSmall = Core.getSingleton().getFontUtil().getFont("menu");
+        CustomFontRendererUtil robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
 
         // Dragging behavior
         if (dragging) {
@@ -149,7 +149,7 @@ public class ClickGUI extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("clean");
+        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("clean");
 
         if (isInside(mouseX, mouseY, posX, posY + 20, width, height) && !isInside(mouseX, mouseY, posX + 10 - 1, posY + 30 - 1, posX + 90 + 1, height - 10 + 1) && !isInside(mouseX, mouseY, posX + 100 - 1, posY + 30 - 1, width - 10 + 1, height - 10 + 1) && mouseButton == 0) {
             dragging = true;
@@ -174,18 +174,18 @@ public class ClickGUI extends GuiScreen {
                 if (mouseButton == 1) {
                     comps.clear();
                     scrollY = 0;
-                    for (Setting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
+                    for (AbstractSetting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
                         if (setting instanceof SettingMode settingMode) {
-                            comps.add(new Combo(this, m, settingMode));
+                            comps.add(new CompDropdown(this, m, settingMode));
                         }
                         if (setting instanceof SettingSlider settingSlider) {
-                            comps.add(new Slider(this, m, settingSlider));
+                            comps.add(new CompSlider(this, m, settingSlider));
                         }
-                        if (setting instanceof SettingCheckBox settingCheckBox) {
-                            comps.add(new CheckBox(this, m, settingCheckBox));
+                        if (setting instanceof SettingBoolean settingCheckBox) {
+                            comps.add(new CompCheckBox(this, m, settingCheckBox));
                         }
                         if (setting instanceof SettingColor settingColor) {
-                            comps.add(new ColorPicker(this, m, settingColor));
+                            comps.add(new CompColorPicker(this, m, settingColor));
                         }
                     }
                 }

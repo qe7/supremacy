@@ -4,14 +4,13 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.packet.PacketReceiveEvent;
-import gay.nns.client.impl.event.player.PreMotionEvent;
-import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.packet.EventPacketReceive;
+import gay.nns.client.impl.event.player.EventUpdate;
+import gay.nns.client.impl.event.render.EventRender2D;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S19PacketEntityStatus;
@@ -23,19 +22,19 @@ import net.minecraft.util.EnumFacing;
 public class FeatureVelocity extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"Standard", "Grim"})
+    @SettingMode(modes = {"Standard", "Grim"})
     public String mode = "Standard";
 
     @Serialize(name = "Horizontal")
-    @Slider(min = -100, max = 100, increment = 1)
+    @SettingSlider(min = -100, max = 100, increment = 1)
     public double horizontal = 0;
 
     @Serialize(name = "Vertical")
-    @Slider(min = -100, max = 100, increment = 1)
+    @SettingSlider(min = -100, max = 100, increment = 1)
     public double vertical = 0;
 
     @Serialize(name = "Water_Check")
-    @CheckBox
+    @SettingBoolean
     public boolean waterCheck = true;
     private boolean realVelocity, tookVelocity;
 
@@ -44,7 +43,7 @@ public class FeatureVelocity extends AbstractFeature {
     }
 
     @Subscribe
-    public void onRender(final Render2DEvent render2DEvent) {
+    public void onRender(final EventRender2D render2DEvent) {
         if (mode.equals("Standard")) {
             this.setSuffix((int) horizontal + "% " + (int) vertical + "%");
         } else {
@@ -53,7 +52,7 @@ public class FeatureVelocity extends AbstractFeature {
     }
 
     @Subscribe
-    public void onPacketReceive(final PacketReceiveEvent event) {
+    public void onPacketReceive(final EventPacketReceive event) {
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isInWater() && waterCheck) return;
@@ -112,7 +111,7 @@ public class FeatureVelocity extends AbstractFeature {
     }
 
     @Subscribe
-    public void UpdateEvent(final UpdateEvent event) {
+    public void UpdateEvent(final EventUpdate event) {
         switch (mode) {
             case "Grim": {
                 if (!this.tookVelocity) {

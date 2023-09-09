@@ -5,13 +5,12 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.PreMotionEvent;
-import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.player.MovementUtil;
 import org.lwjgl.input.Keyboard;
@@ -20,15 +19,15 @@ import org.lwjgl.input.Keyboard;
 public class FeatureSpeed extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop"})
+	@SettingMode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop"})
 	public String mode = "Vanilla";
 
 	@Serialize(name = "Speed")
-	@Slider(min = 0.0D, max = 1.0D, increment = 0.01D)
+	@SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
 	public double speed = 0.3D;
 
 	@Serialize(name = "Water_Check")
-	@CheckBox
+	@SettingBoolean
 	public boolean waterCheck = true;
 
 	private int stage = 0;
@@ -58,12 +57,12 @@ public class FeatureSpeed extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender(final Render2DEvent render2DEvent) {
+	public void onRender(final EventRender2D render2DEvent) {
 		this.setSuffix(mode);
 	}
 
 	@Subscribe
-	public void onMotion(final PreMotionEvent motionEvent) {
+	public void onMotion(final EventPreMotion motionEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 		if (mc.thePlayer.isInWater() && waterCheck) return;

@@ -7,8 +7,12 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Mode {
+public @interface SettingSlider {
 
-	String[] modes();
+	double min();
+
+	double max();
+
+	double increment();
 
 }

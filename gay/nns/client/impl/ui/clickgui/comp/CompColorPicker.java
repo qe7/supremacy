@@ -4,8 +4,8 @@ import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingColor;
-import gay.nns.client.impl.ui.clickgui.ClickGUI;
-import gay.nns.client.util.font.MinecraftFontRenderer;
+import gay.nns.client.impl.ui.clickgui.GuiClick;
+import gay.nns.client.util.font.CustomFontRendererUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.awt.*;
  * @Author Shae
  * A color picker component
  */
-public class ColorPicker extends Comp<SettingColor> {
+public class CompColorPicker extends Comp<SettingColor> {
 
 	private boolean state; // if the color box is enabled or not
 	private boolean dragging_hue; // if the color should be being set
@@ -23,7 +23,7 @@ public class ColorPicker extends Comp<SettingColor> {
 
 	private float hue; // the hue of the color
 
-	public ColorPicker(ClickGUI clickGUI, AbstractFeature abstractFeature, SettingColor setting) {
+	public CompColorPicker(GuiClick clickGUI, AbstractFeature abstractFeature, SettingColor setting) {
 		super(clickGUI, abstractFeature, setting);
 	}
 
@@ -61,7 +61,7 @@ public class ColorPicker extends Comp<SettingColor> {
 	public void drawScreen(int mouseX, int mouseY, float x, float y) {
 		super.drawScreen(mouseX, mouseY, x, y);
 
-		MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("menu");
+		CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("menu");
 
 		roboto.drawStringWithShadow(setting.getName().replace("_", " "), (int) (clickGUI.posX + x - 58), (int) (clickGUI.posY + y + 1), new Color(162, 162, 161).getRGB());
 

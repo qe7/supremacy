@@ -4,19 +4,19 @@ import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingMode;
-import gay.nns.client.impl.ui.clickgui.ClickGUI;
-import gay.nns.client.util.font.MinecraftFontRenderer;
+import gay.nns.client.impl.ui.clickgui.GuiClick;
+import gay.nns.client.util.font.CustomFontRendererUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
 
-public class Combo extends Comp<SettingMode> {
+public class CompDropdown extends Comp<SettingMode> {
 
     public boolean state = false;
 
     private float dropdownHeight;
 
-    public Combo(ClickGUI parent, AbstractFeature module, SettingMode settingMode) {
+    public CompDropdown(GuiClick parent, AbstractFeature module, SettingMode settingMode) {
         super(parent, module, settingMode);
     }
 
@@ -41,8 +41,8 @@ public class Combo extends Comp<SettingMode> {
     public void drawScreen(int mouseX, int mouseY, float x, float y) {
         super.drawScreen(mouseX, mouseY, x, y);
 
-        MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("menu");
-        MinecraftFontRenderer robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
+        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("menu");
+        CustomFontRendererUtil robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
 
         roboto.drawStringWithShadow(setting.getName().replace("_", " "), clickGUI.posX + x - 58, clickGUI.posY + y + 1, new Color(162, 162, 161).getRGB());
 

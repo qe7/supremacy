@@ -8,13 +8,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MinecraftFontRenderer extends CustomFont {
+public class CustomFontRendererUtil extends CustomFont {
 	CustomFont.CharData[] boldChars = new CustomFont.CharData[256], italicChars = new CustomFont.CharData[256], boldItalicChars = new CustomFont.CharData[256];
 	int[] colorCode = new int[32];
 	String colorcodeIdentifiers = "0123456789abcdefklmnor";
 	DynamicTexture texBold, texItalic, texItalicBold;
 
-	public MinecraftFontRenderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
+	public CustomFontRendererUtil(Font font, boolean antiAlias, boolean fractionalMetrics) {
 		super(font, antiAlias, fractionalMetrics);
 		this.setupMinecraftColorcodes();
 		this.setupBoldItalicIDs();

@@ -10,7 +10,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import gay.nns.client.api.core.Core;
-import gay.nns.client.impl.event.game.KeyEvent;
+import gay.nns.client.impl.event.game.EventKeyInput;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -1429,7 +1429,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 						this.currentScreen.handleKeyboardInput();
 					} else {
 
-						KeyEvent keyEvent = new KeyEvent(k);
+						EventKeyInput keyEvent = new EventKeyInput(k);
 						Core.getSingleton().getEventBus().post(keyEvent);
 
 						if (k == 1) {

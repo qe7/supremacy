@@ -4,7 +4,7 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.render.EventRender2D;
 
 @FeatureInfo(name = "Brightness", description = "Like Ahru it brightens my world. >w<", category = FeatureCategory.RENDER)
 public class FeatureBrightness extends AbstractFeature {
@@ -30,7 +30,7 @@ public class FeatureBrightness extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender2D(final Render2DEvent render2DEvent) {
+	public void onRender2D(final EventRender2D render2DEvent) {
 		mc.gameSettings.gammaSetting = 100.0F;
 	}
 

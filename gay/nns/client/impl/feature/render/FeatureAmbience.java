@@ -4,33 +4,33 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.render.EventRender2D;
 
 @FeatureInfo(name = "Ambience", description = "Ambience", category = FeatureCategory.RENDER)
 public class FeatureAmbience extends AbstractFeature {
 
 	@Serialize(name = "Weather")
-	@Mode(modes = {"Clear", "Rain", "Thunder"})
+	@SettingMode(modes = {"Clear", "Rain", "Thunder"})
 	public String weather = "Clear";
 
 	@Serialize(name = "Amount")
-	@Slider(min = 0d, max = 1d, increment = 0.1d)
+	@SettingSlider(min = 0d, max = 1d, increment = 0.1d)
 	public double amount = 0.5d;
 
 	@Serialize(name = "Strength")
-	@Slider(min = 0d, max = 1d, increment = 0.1d)
+	@SettingSlider(min = 0d, max = 1d, increment = 0.1d)
 	public double strength = 0.5d;
 
 	@Serialize(name = "Time")
-	@CheckBox
+	@SettingBoolean
 	public static boolean timeToggle = false;
 
 	@Serialize(name = "Time")
-	@Slider(min = 0d, max = 24000d, increment = 1000d)
+	@SettingSlider(min = 0d, max = 24000d, increment = 1000d)
 	public static double time = 18000d;
 
 
@@ -49,7 +49,7 @@ public class FeatureAmbience extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender(final Render2DEvent render2DEvent) {
+	public void onRender(final EventRender2D render2DEvent) {
 		this.setSuffix(weather);
 
 		switch (weather.toLowerCase()) {

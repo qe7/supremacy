@@ -4,14 +4,14 @@ import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.PostMotionEvent;
-import gay.nns.client.impl.event.player.PreMotionEvent;
-import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventPostMotion;
+import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.player.EventUpdate;
+import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.chat.ChatUtil;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
@@ -36,19 +36,23 @@ import java.util.Objects;
 public class FeatureScaffold extends AbstractFeature {
 
 	@Serialize(name = "Safe_Walk")
-	@CheckBox
+	@SettingBoolean
 	public static boolean safeWalk = true;
 
+	@Serialize(name = "Limit_Speed")
+	@SettingBoolean
+	public boolean limitSpeed = true;
+
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Vanilla", "Hypixel"})
+	@SettingMode(modes = {"Vanilla", "Hypixel"})
 	public String mode = "Vanilla";
 
 	@Serialize(name = "Place_Delay")
-	@Slider(min = 0, max = 1000, increment = 1)
+	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double placeDelay = 0;
 
 	@Serialize(name = "Rotation_Speed")
-	@Slider(min = 0, max = 20, increment = 1)
+	@SettingSlider(min = 0, max = 20, increment = 1)
 	public double rotationSpeed = 17;
 
 	private final ChatUtil chatUtil = new ChatUtil();
@@ -82,7 +86,7 @@ public class FeatureScaffold extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender2D(final Render2DEvent render2DEvent) {
+	public void onRender2D(final EventRender2D render2DEvent) {
 		FontRenderer fr = mc.fontRendererObj;
 
 		String blocks = "blocks: " + getBlockCount() + " | " + getBlockSlot();
@@ -91,7 +95,7 @@ public class FeatureScaffold extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 		if (getBlockCount() <= 0) {
 			chatUtil.chatCommand("Toggling '" + getFeatureInfo().name() + "' as you are out of blocks!");
 			toggle();
@@ -99,7 +103,7 @@ public class FeatureScaffold extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onPreMotion(final PreMotionEvent preMotionEvent) {
+	public void onPreMotion(final EventPreMotion preMotionEvent) {
 
 		BlockPos blockUnder = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ);
 		blockData = getBlockData(blockUnder);
@@ -151,7 +155,7 @@ public class FeatureScaffold extends AbstractFeature {
 		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
 
 		// get current speed and set to around 10% less
-		if (mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) && Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
+		if (limitSpeed && mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) && Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
 			double speed = currentSpeed * 0.95D;
 
@@ -194,7 +198,7 @@ public class FeatureScaffold extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onPostMotion(final PostMotionEvent postMotionEvent) {
+	public void onPostMotion(final EventPostMotion postMotionEvent) {
 
 	}
 
@@ -266,11 +270,15 @@ public class FeatureScaffold extends AbstractFeature {
 
 	private BlockData getBlockData(BlockPos pos) {
 		BlockPos[] offsets = {
-				new BlockPos(0, -1, 0),
-				new BlockPos(-1, 0, 0),
-				new BlockPos(1, 0, 0),
-				new BlockPos(0, 0, 1),
-				new BlockPos(0, 0, -1)
+				new BlockPos(0, -1, 0),   // Below
+				new BlockPos(-1, 0, 0),  // East
+				new BlockPos(1, 0, 0),   // West
+				new BlockPos(0, 0, 1),   // North
+				new BlockPos(0, 0, -1),  // South
+				new BlockPos(-1, 0, -1), // South-East
+				new BlockPos(1, 0, -1),  // South-West
+				new BlockPos(-1, 0, 1),  // North-East
+				new BlockPos(1, 0, 1)    // North-West
 		};
 
 		for (BlockPos offset : offsets) {
@@ -286,12 +294,22 @@ public class FeatureScaffold extends AbstractFeature {
 					return new BlockData(adjacentPos, EnumFacing.NORTH);
 				} else if (offset.equals(new BlockPos(0, 0, -1))) {
 					return new BlockData(adjacentPos, EnumFacing.SOUTH);
+				} else if (offset.equals(new BlockPos(-1, 0, -1))) {
+					return new BlockData(adjacentPos, EnumFacing.SOUTH);
+				} else if (offset.equals(new BlockPos(1, 0, -1))) {
+					return new BlockData(adjacentPos, EnumFacing.SOUTH);
+				} else if (offset.equals(new BlockPos(-1, 0, 1))) {
+					return new BlockData(adjacentPos, EnumFacing.NORTH);
+				} else if (offset.equals(new BlockPos(1, 0, 1))) {
+					return new BlockData(adjacentPos, EnumFacing.NORTH);
 				}
 			}
 		}
 
 		return null; // Return null if no solid block is found in adjacent positions.
 	}
+
+
 
 	public Vec3 getHitVec() {
 		/* Correct HitVec */

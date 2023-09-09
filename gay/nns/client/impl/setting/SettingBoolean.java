@@ -1,13 +1,12 @@
 package gay.nns.client.impl.setting;
 
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.Setting;
+import gay.nns.client.api.setting.AbstractSetting;
 
 import java.lang.reflect.Field;
 
-public class SettingCheckBox extends Setting<CheckBox, Boolean> {
+public class SettingBoolean extends AbstractSetting<gay.nns.client.api.setting.annotations.SettingBoolean, Boolean> {
 
-	public SettingCheckBox(Field field, Object object) {
+	public SettingBoolean(Field field, Object object) {
 		super(field, object);
 	}
 

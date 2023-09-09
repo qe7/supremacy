@@ -5,14 +5,14 @@ import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventUpdate;
 
 @FeatureInfo(name = "FastPlace", description = "Lowers block place cooldown", category = FeatureCategory.OTHER)
 public class FeatureFastPlace extends AbstractFeature {
 
     @Serialize(name = "Delay")
-    @Slider(min = 0, max = 4, increment = 1)
+    @SettingSlider(min = 0, max = 4, increment = 1)
     public double delay = 3;
 
     public FeatureFastPlace() {
@@ -26,7 +26,7 @@ public class FeatureFastPlace extends AbstractFeature {
     }
 
     @Subscribe
-    public void onUpdate(UpdateEvent event) {
+    public void onUpdate(EventUpdate event) {
         if (mc.rightClickDelayTimer > delay)
             mc.rightClickDelayTimer = (int)delay;
     }

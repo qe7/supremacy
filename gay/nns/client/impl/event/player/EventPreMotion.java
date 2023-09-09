@@ -1,6 +1,6 @@
 package gay.nns.client.impl.event.player;
 
-public class PreMotionEvent {
+public class EventPreMotion {
 
     private double x;
     private double y;
@@ -9,7 +9,7 @@ public class PreMotionEvent {
     private float pitch;
     private boolean onGround;
 
-    public PreMotionEvent(double x, double y, double z, float yaw, float pitch, boolean onGround) {
+    public EventPreMotion(double x, double y, double z, float yaw, float pitch, boolean onGround) {
         super();
         this.x = x;
         this.y = y;

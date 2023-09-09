@@ -5,17 +5,16 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.packet.PacketSendEvent;
-import gay.nns.client.impl.event.player.PreMotionEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
-import gay.nns.client.impl.event.render.RenderItemEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.packet.EventPacketSend;
+import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.render.EventRender2D;
+import gay.nns.client.impl.event.render.EventRenderItem;
 import gay.nns.client.util.math.MathUtil;
 import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.PlayerUtil;
 import gay.nns.client.util.player.RotationUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
@@ -29,9 +28,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
@@ -44,27 +41,27 @@ import java.util.List;
 public class FeatureKillAura extends AbstractFeature {
 
     @Serialize(name = "Keep_Sprint")
-    @CheckBox()
+    @SettingBoolean()
     public static boolean keepSprint = false;
 
     @Serialize(name = "Auto_Block")
-    @Mode(modes = {"None", "Fake", "Hypixel"})
+    @SettingMode(modes = {"None", "Fake", "Hypixel"})
     public String autoBlock = "None";
 
     @Serialize(name = "Attack_Range")
-    @Slider(min = 1, max = 6, increment = 0.1f)
+    @SettingSlider(min = 1, max = 6, increment = 0.1f)
     public double attackRange = 3.f;
 
     @Serialize(name = "Max_CPS")
-    @Slider(min = 1, max = 20, increment = 1)
+    @SettingSlider(min = 1, max = 20, increment = 1)
     public double maxCPS = 12;
 
     @Serialize(name = "Min_CPS")
-    @Slider(min = 1, max = 20, increment = 1)
+    @SettingSlider(min = 1, max = 20, increment = 1)
     public double minCPS = 8;
 
     @Serialize(name = "Rotation_Speed")
-    @Slider(min = 0, max = 20, increment = 1)
+    @SettingSlider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
 
     private final TimerUtil timer = new TimerUtil();
@@ -102,7 +99,7 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void onMotion(final PreMotionEvent motionEvent) {
+    public void onMotion(final EventPreMotion motionEvent) {
         if (mc.theWorld == null) return;
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isDead) {
@@ -158,7 +155,7 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void onRender2D(final Render2DEvent render2DEvent) {
+    public void onRender2D(final EventRender2D render2DEvent) {
         this.setSuffix(String.valueOf(entities.size()));
 
         FontRenderer fr = mc.fontRendererObj;
@@ -178,7 +175,7 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void onRenderItem(RenderItemEvent event) {
+    public void onRenderItem(EventRenderItem event) {
         switch (autoBlock) {
             case "Fake", "Hypixel" -> {
                 if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
@@ -192,7 +189,7 @@ public class FeatureKillAura extends AbstractFeature {
     }
 
     @Subscribe
-    public void onPacketSend(PacketSendEvent event) {
+    public void onPacketSend(EventPacketSend event) {
         final Packet<?> packet = event.getPacket();
 
         if (mcTarget == null || mc.thePlayer == null || mcTarget == mc.thePlayer) return;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import gay.nns.client.api.core.Core;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.render.EventRender2D;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -334,7 +334,7 @@ public class GuiIngame extends Gui
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
-        Core.getSingleton().getEventBus().post(new Render2DEvent(scaledresolution, partialTicks));
+        Core.getSingleton().getEventBus().post(new EventRender2D(scaledresolution, partialTicks));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();

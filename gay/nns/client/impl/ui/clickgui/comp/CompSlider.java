@@ -5,21 +5,21 @@ import gay.nns.client.impl.setting.SettingSlider;
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.impl.feature.render.FeatureClickGUI;
-import gay.nns.client.impl.ui.clickgui.ClickGUI;
-import gay.nns.client.util.font.MinecraftFontRenderer;
+import gay.nns.client.impl.ui.clickgui.GuiClick;
+import gay.nns.client.util.font.CustomFontRendererUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Slider extends Comp<SettingSlider> {
+public class CompSlider extends Comp<SettingSlider> {
 
     private boolean dragging = false;
     private double renderWidth;
     private double renderWidth2;
 
-    public Slider(ClickGUI parent, AbstractFeature module, SettingSlider settingSlider) {
+    public CompSlider(GuiClick parent, AbstractFeature module, SettingSlider settingSlider) {
         super(parent, module, settingSlider);
     }
 
@@ -39,8 +39,8 @@ public class Slider extends Comp<SettingSlider> {
     @Override
     public void drawScreen(int mouseX, int mouseY, float x, float y) {
 
-        MinecraftFontRenderer roboto = Core.getSingleton().getFontUtil().getFont("menu");
-        MinecraftFontRenderer robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
+        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("menu");
+        CustomFontRendererUtil robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
 
         double min = setting.min();
         double max = setting.max();

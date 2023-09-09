@@ -4,19 +4,18 @@ import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.player.EventUpdate;
+import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.impl.feature.other.FeatureScaffold;
-import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Sprint", description = "Automatically sprints for the player.", category = FeatureCategory.MOVEMENT)
 public class FeatureSprint extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Legit", "Rage"})
+	@SettingMode(modes = {"Legit", "Rage"})
 	public static String mode = "Legit";
 
 	public FeatureSprint() {
@@ -35,7 +34,7 @@ public class FeatureSprint extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 		if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureScaffold.class).isEnabled()) {
@@ -57,7 +56,7 @@ public class FeatureSprint extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender2D(final Render2DEvent render2DEvent) {
+	public void onRender2D(final EventRender2D render2DEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 

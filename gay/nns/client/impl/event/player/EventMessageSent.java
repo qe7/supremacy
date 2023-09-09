@@ -2,11 +2,11 @@ package gay.nns.client.impl.event.player;
 
 import gay.nns.client.api.event.type.EventCancelable;
 
-public class MessageSentEvent extends EventCancelable {
+public class EventMessageSent extends EventCancelable {
 
 	private final String message;
 
-	public MessageSentEvent(String message) {
+	public EventMessageSent(String message) {
 		this.message = message;
 	}
 

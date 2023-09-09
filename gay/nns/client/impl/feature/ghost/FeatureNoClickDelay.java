@@ -4,7 +4,7 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.impl.event.player.EventUpdate;
 
 @FeatureInfo(name = "NoClickDelay", category = FeatureCategory.GHOST, description = "Removes the click delay")
 public class FeatureNoClickDelay extends AbstractFeature {
@@ -24,7 +24,7 @@ public class FeatureNoClickDelay extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent event) {
+	public void onUpdate(final EventUpdate event) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 

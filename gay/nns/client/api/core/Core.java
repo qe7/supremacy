@@ -1,11 +1,11 @@
 package gay.nns.client.api.core;
 
 import gay.nns.client.api.event.EventBus;
-import gay.nns.client.impl.management.FeatureManager;
-import gay.nns.client.impl.management.RotationManager;
-import gay.nns.client.impl.management.SettingManager;
+import gay.nns.client.impl.management.ManagerFeature;
+import gay.nns.client.impl.management.ManagerRotation;
+import gay.nns.client.impl.management.ManagerSetting;
 import gay.nns.client.util.font.FontUtil;
-import gay.nns.client.impl.management.CommandManager;
+import gay.nns.client.impl.management.ManagerCommand;
 import net.minecraft.client.Minecraft;
 
 public final class Core {
@@ -15,25 +15,25 @@ public final class Core {
 	private final String version;
 	private final String[] authors;
 	private final EventBus eventBus;
-	private final FeatureManager featureManager;
-	private final RotationManager rotationManager;
-	private final CommandManager commandManager;
-	private final SettingManager settingManager;
+	private final ManagerFeature featureManager;
+	private final ManagerRotation rotationManager;
+	private final ManagerCommand commandManager;
+	private final ManagerSetting settingManager;
 	private final FontUtil fontUtil;
 
 	Core() {
 		this.eventBus = new EventBus();
 
-		this.featureManager = new FeatureManager();
+		this.featureManager = new ManagerFeature();
 		this.eventBus.register(featureManager);
 
-		this.commandManager = new CommandManager();
+		this.commandManager = new ManagerCommand();
 		this.eventBus.register(commandManager);
 
-		this.rotationManager = new RotationManager();
+		this.rotationManager = new ManagerRotation();
 		this.eventBus.register(rotationManager);
 
-		this.settingManager = new SettingManager();
+		this.settingManager = new ManagerSetting();
 
 		this.fontUtil = new FontUtil();
 	}
@@ -78,19 +78,19 @@ public final class Core {
 		return eventBus;
 	}
 
-	public FeatureManager getFeatureManager() {
+	public ManagerFeature getFeatureManager() {
 		return featureManager;
 	}
 
-	public RotationManager getRotationManager() {
+	public ManagerRotation getRotationManager() {
 		return rotationManager;
 	}
 
-	public CommandManager getCommandManager() {
+	public ManagerCommand getCommandManager() {
 		return commandManager;
 	}
 
-	public SettingManager getSettingManager() {
+	public ManagerSetting getSettingManager() {
 		return settingManager;
 	}
 

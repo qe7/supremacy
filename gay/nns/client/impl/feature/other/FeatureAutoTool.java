@@ -3,11 +3,9 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.*;
-import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Mouse;
 
 @FeatureInfo(name = "AutoTool", description = "Automatically switches to the best tool for the block you're mining")
@@ -35,7 +33,7 @@ public class FeatureAutoTool extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 		if (mc.objectMouseOver != null && mc.objectMouseOver.getBlockPos() != null && mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()) != null && Mouse.isButtonDown(0)) {
 			Block block = mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 			if (!savedOldSlot) {

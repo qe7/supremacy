@@ -4,13 +4,13 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.event.packet.PacketSendEvent;
-import gay.nns.client.impl.event.player.PostMotionEvent;
-import gay.nns.client.impl.event.player.PreMotionEvent;
-import gay.nns.client.impl.event.player.SlowDownEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.packet.EventPacketSend;
+import gay.nns.client.impl.event.player.EventPostMotion;
+import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.player.EventSlowdown;
+import gay.nns.client.impl.event.render.EventRender2D;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
@@ -25,7 +25,7 @@ import org.apache.commons.lang3.RandomUtils;
 public class FeatureNoSlowdown extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"Vanilla", "NCP", "Hypixel"})
+    @SettingMode(modes = {"Vanilla", "NCP", "Hypixel"})
     public String mode = "Vanilla";
 
 
@@ -44,17 +44,17 @@ public class FeatureNoSlowdown extends AbstractFeature {
     }
 
     @Subscribe
-    public void onRender(final Render2DEvent render2DEvent) {
+    public void onRender(final EventRender2D render2DEvent) {
         this.setSuffix(mode);
     }
 
     @Subscribe
-    public void onSlowdown(final SlowDownEvent slowDownEvent) {
+    public void onSlowdown(final EventSlowdown slowDownEvent) {
         slowDownEvent.setCancelled(true);
     }
 
     @Subscribe
-    public void onMotion(final PreMotionEvent motionEvent) {
+    public void onMotion(final EventPreMotion motionEvent) {
         if (mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
             return;
         if (!mc.thePlayer.isBlocking()) return;
@@ -74,7 +74,7 @@ public class FeatureNoSlowdown extends AbstractFeature {
     }
 
     @Subscribe
-    public void onPostMotion(final PostMotionEvent motionEvent) {
+    public void onPostMotion(final EventPostMotion motionEvent) {
         if (mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword))
             return;
         if (!mc.thePlayer.isBlocking()) return;
@@ -88,7 +88,7 @@ public class FeatureNoSlowdown extends AbstractFeature {
 
 
     @Subscribe
-    public void packetSend(final PacketSendEvent event) {
+    public void packetSend(final EventPacketSend event) {
         switch (mode.toLowerCase()) {
             case "hypixel" -> {
                 if (mc.thePlayer.getHeldItem() != null && (mc.thePlayer.getHeldItem().getItem() instanceof ItemFood || mc.thePlayer.getHeldItem().getItem() instanceof ItemPotion)) {

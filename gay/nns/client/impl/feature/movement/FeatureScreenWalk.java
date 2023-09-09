@@ -1,13 +1,13 @@
 package gay.nns.client.impl.feature.movement;
 
-import gay.nns.client.api.setting.annotations.CheckBox;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.ui.clickgui.ClickGUI;
+import gay.nns.client.impl.ui.clickgui.GuiClick;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
@@ -15,15 +15,15 @@ import org.lwjgl.input.Keyboard;
 public class FeatureScreenWalk extends AbstractFeature {
 
 	@Serialize(name = "ClickGUI_only")
-	@CheckBox
+	@SettingBoolean
 	public boolean clickGUIOnly = true;
 
 	@Serialize(name = "Rotate")
-	@CheckBox
+	@SettingBoolean
 	public boolean rotate = true;
 
 	@Serialize(name = "Allow_Sprinting")
-	@CheckBox
+	@SettingBoolean
 	public boolean allowSprinting = true;
 
 	public FeatureScreenWalk() {
@@ -41,10 +41,10 @@ public class FeatureScreenWalk extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 		if (mc.currentScreen == null) return;
 		if (mc.currentScreen instanceof GuiChat) return;
-		if (clickGUIOnly && !(mc.currentScreen instanceof ClickGUI)) return;
+		if (clickGUIOnly && !(mc.currentScreen instanceof GuiClick)) return;
 
 		if (!allowSprinting) {
 			mc.thePlayer.setSprinting(false);

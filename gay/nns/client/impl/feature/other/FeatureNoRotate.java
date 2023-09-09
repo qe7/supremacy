@@ -4,10 +4,10 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.event.packet.PacketReceiveEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.impl.event.packet.EventPacketReceive;
+import gay.nns.client.impl.event.render.EventRender2D;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
@@ -15,7 +15,7 @@ import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 public class FeatureNoRotate extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Packet", "Edit"})
+	@SettingMode(modes = {"Packet", "Edit"})
 	public String mode = "Edit";
 
 	public FeatureNoRotate() {
@@ -33,12 +33,12 @@ public class FeatureNoRotate extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender(final Render2DEvent render2DEvent) {
+	public void onRender(final EventRender2D render2DEvent) {
 		this.setSuffix(mode);
 	}
 
 	@Subscribe
-	public void onPacket(final PacketReceiveEvent packetReceiveEvent) {
+	public void onPacket(final EventPacketReceive packetReceiveEvent) {
 		if (packetReceiveEvent.getPacket() instanceof S08PacketPlayerPosLook packet) {
 			switch (mode.toLowerCase()) {
 				case "packet" -> {

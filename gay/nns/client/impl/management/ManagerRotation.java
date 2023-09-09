@@ -2,18 +2,18 @@ package gay.nns.client.impl.management;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.impl.event.player.PreMotionEvent;
+import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.feature.render.FeatureRotate;
 import net.minecraft.client.Minecraft;
 
 import javax.vecmath.Vector2f;
 
-public class RotationManager {
+public class ManagerRotation {
 
     private Vector2f rotations;
     private boolean rotating;
 
-    public RotationManager() {
+    public ManagerRotation() {
 
     }
 
@@ -23,7 +23,7 @@ public class RotationManager {
     }
 
     @Subscribe
-    public void onMotion(PreMotionEvent event) {
+    public void onMotion(EventPreMotion event) {
         if(rotations != null && rotating) {
             event.setYaw(rotations.x);
             event.setPitch(rotations.y);

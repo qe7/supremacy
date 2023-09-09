@@ -11,7 +11,7 @@ import java.util.Map;
 public class FontUtil {
 	public volatile int completed;
 
-	public MinecraftFontRenderer menuWatermarkFont, clean, menuFont, menuFontBold;
+	public CustomFontRendererUtil menuWatermarkFont, clean, menuFont, menuFontBold;
 	private Font menuWatermarkFont_, clean_, menuFont_, menuFontBold_;
 
 	private Font getFont(Map<String, Font> locationMap, String location, int size) {
@@ -68,14 +68,14 @@ public class FontUtil {
 		}
 
 		//Fan fonts
-		clean = new MinecraftFontRenderer(clean_, true, true);
-		menuWatermarkFont = new MinecraftFontRenderer(menuWatermarkFont_, true, true);
-		menuFont = new MinecraftFontRenderer(menuFont_, true, true);
-		menuFontBold = new MinecraftFontRenderer(menuFontBold_, true, true);
+		clean = new CustomFontRendererUtil(clean_, true, true);
+		menuWatermarkFont = new CustomFontRendererUtil(menuWatermarkFont_, true, true);
+		menuFont = new CustomFontRendererUtil(menuFont_, true, true);
+		menuFontBold = new CustomFontRendererUtil(menuFontBold_, true, true);
 
 	}
 
-	public MinecraftFontRenderer getFont(String font) {
+	public CustomFontRendererUtil getFont(String font) {
 		return switch (font.toLowerCase()) {
 			case "clean" -> clean;
 			case "menuwatermark" -> menuWatermarkFont;

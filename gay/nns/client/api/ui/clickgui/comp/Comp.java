@@ -1,16 +1,16 @@
 package gay.nns.client.api.ui.clickgui.comp;
 
 import gay.nns.client.api.feature.AbstractFeature;
-import gay.nns.client.impl.ui.clickgui.ClickGUI;
+import gay.nns.client.impl.ui.clickgui.GuiClick;
 
 public abstract class Comp<T> {
 
     public double width, height;
-    public ClickGUI clickGUI;
+    public GuiClick clickGUI;
     public AbstractFeature abstractFeature;
     public T setting;
 
-    public Comp(ClickGUI clickGUI, AbstractFeature abstractFeature, T setting) {
+    public Comp(GuiClick clickGUI, AbstractFeature abstractFeature, T setting) {
         this.clickGUI = clickGUI;
         this.abstractFeature = abstractFeature;
         this.setting = setting;

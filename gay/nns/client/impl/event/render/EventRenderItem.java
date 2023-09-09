@@ -4,11 +4,11 @@ import gay.nns.client.api.event.type.EventCancelable;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemEvent extends EventCancelable {
+public class EventRenderItem extends EventCancelable {
 
     private EnumAction enumAction;
 
-    public RenderItemEvent(EnumAction enumAction, boolean useItem, float animationProgression, float partialTicks, float swingProgress, ItemStack itemToRender) {
+    public EventRenderItem(EnumAction enumAction, boolean useItem, float animationProgression, float partialTicks, float swingProgress, ItemStack itemToRender) {
         this.enumAction = enumAction;
         this.useItem = useItem;
         this.animationProgression = animationProgression;

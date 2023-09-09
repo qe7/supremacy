@@ -1,8 +1,8 @@
 package gay.nns.client.impl.event.player;
 
-public class PostMotionEvent {
+public class EventPostMotion {
 
-	public PostMotionEvent() {
+	public EventPostMotion() {
 		super();
 	}
 

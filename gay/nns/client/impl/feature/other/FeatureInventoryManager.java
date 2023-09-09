@@ -3,11 +3,11 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.TimerUtil;
 import gay.nns.client.util.player.InventoryUtil;
 import gay.nns.client.util.player.ItemUtil;
@@ -25,39 +25,39 @@ import java.util.ArrayList;
 public class FeatureInventoryManager extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Normal", "Spoof", "Inventory"})
+	@SettingMode(modes = {"Normal", "Spoof", "Inventory"})
 	public String mode = "Inventory";
 
 	@Serialize(name = "No_Move")
-	@CheckBox
+	@SettingBoolean
 	public boolean noMove = true;
 
 	@Serialize(name = "Delay")
-	@Slider(min = 0, max = 1000, increment = 1)
+	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double delay = 0;
 
 	@Serialize(name = "Sword_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double swordSlot = 1;
 
 	@Serialize(name = "Pickaxe_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double pickaxeSlot = 2;
 
 	@Serialize(name = "Axe_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double axeSlot = 3;
 
 	@Serialize(name = "Shovel_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double shovelSlot = 4;
 
 	@Serialize(name = "Block_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double blockSlot = 5;
 
 	@Serialize(name = "Food_Slot")
-	@Slider(min = 1, max = 9, increment = 1)
+	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double foodSlot = 9;
 
 	private final TimerUtil timerUtil = new TimerUtil();
@@ -79,7 +79,7 @@ public class FeatureInventoryManager extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 
 		if (!(mc.currentScreen instanceof GuiChest) && mc.thePlayer != null && mc.theWorld != null) {
 			boolean canDo = false;

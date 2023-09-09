@@ -4,16 +4,16 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.entity.Entity;
 
 @FeatureInfo(name = "AntiBot", category = FeatureCategory.COMBAT, description = "Prevents Killaura from hitting bots")
 public class FeatureAntiBot extends AbstractFeature {
 
     @Serialize(name = "Mode")
-    @Mode(modes = {"Hypixel", "Novoline (troll)"})
+    @SettingMode(modes = {"Hypixel", "Novoline (troll)"})
     public String antiBotMode = "Hypixel";
 
     @Override
@@ -27,7 +27,7 @@ public class FeatureAntiBot extends AbstractFeature {
     }
 
     @Subscribe
-    public void eventUpdate(final UpdateEvent event) {
+    public void eventUpdate(final EventUpdate event) {
 
         switch (antiBotMode.toLowerCase()) {
             case "hypixel" -> {

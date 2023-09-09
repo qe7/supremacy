@@ -19,7 +19,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import gay.nns.client.api.core.Core;
-import gay.nns.client.impl.event.packet.PacketReceiveEvent;
+import gay.nns.client.impl.event.packet.EventPacketReceive;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -105,7 +105,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 	protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception {
 		if (this.channel.isOpen()) {
 			try {
-				PacketReceiveEvent event = new PacketReceiveEvent(p_channelRead0_2_);
+				EventPacketReceive event = new EventPacketReceive(p_channelRead0_2_);
 				Core.getSingleton().getEventBus().post(event);
 
 				if (!event.isCancelled()) event.getPacket().processPacket(this.packetListener);

@@ -1,13 +1,12 @@
 package gay.nns.client.impl.setting;
 
-import gay.nns.client.api.setting.Setting;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.AbstractSetting;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-public class SettingMode extends Setting<Mode, String> {
+public class SettingMode extends AbstractSetting<gay.nns.client.api.setting.annotations.SettingMode, String> {
 
 	int index;
 

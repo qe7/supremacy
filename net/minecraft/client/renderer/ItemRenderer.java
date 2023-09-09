@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer;
 
 import gay.nns.client.api.core.Core;
-import gay.nns.client.impl.event.render.RenderItemEvent;
+import gay.nns.client.impl.event.render.EventRenderItem;
 import gay.nns.client.impl.feature.render.FeatureAnimation;
 import gay.nns.client.impl.feature.render.FeatureViewModel;
 import net.minecraft.block.Block;
@@ -317,7 +317,7 @@ public class ItemRenderer {
                 final int itemInUseCount = abstractclientplayer.getItemInUseCount();
                 boolean useItem = itemInUseCount > 0;
 
-                final RenderItemEvent event = new RenderItemEvent(enumaction, useItem, f, partialTicks, f1, itemToRender);
+                final EventRenderItem event = new EventRenderItem(enumaction, useItem, f, partialTicks, f1, itemToRender);
                 Core.getSingleton().getEventBus().post(event);
                 enumaction = event.getEnumAction();
                 useItem = event.isUseItem();

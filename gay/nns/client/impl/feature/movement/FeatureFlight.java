@@ -4,11 +4,11 @@ import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Mode;
+import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.UpdateEvent;
-import gay.nns.client.impl.event.render.Render2DEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventUpdate;
+import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.player.MovementUtil;
 import org.lwjgl.input.Keyboard;
 
@@ -16,11 +16,11 @@ import org.lwjgl.input.Keyboard;
 public class FeatureFlight extends AbstractFeature {
 
 	@Serialize(name = "Mode")
-	@Mode(modes = {"Vanilla", "Creative"})
+	@SettingMode(modes = {"Vanilla", "Creative"})
 	public String mode = "Vanilla";
 
 	@Serialize(name = "Speed")
-	@Slider(min = 0.0D, max = 1.0D, increment = 0.01D)
+	@SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
 	public double speed = 0.3D;
 
 	private boolean savedFlyingCapabilityState;
@@ -44,12 +44,12 @@ public class FeatureFlight extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onRender(final Render2DEvent render2DEvent) {
+	public void onRender(final EventRender2D render2DEvent) {
 		this.setSuffix(mode);
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent updateEvent) {
+	public void onUpdate(final EventUpdate updateEvent) {
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
 				mc.thePlayer.motionY = 0.0D;

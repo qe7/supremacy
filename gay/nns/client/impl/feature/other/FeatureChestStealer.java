@@ -3,10 +3,10 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.AbstractFeature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.CheckBox;
+import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
-import gay.nns.client.api.setting.annotations.Slider;
-import gay.nns.client.impl.event.player.UpdateEvent;
+import gay.nns.client.api.setting.annotations.SettingSlider;
+import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.TimerUtil;
 import gay.nns.client.util.player.ContainerUtil;
 import gay.nns.client.util.player.PlayerUtil;
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 public class FeatureChestStealer extends AbstractFeature {
 
 	@Serialize(name = "Title_Check")
-	@CheckBox
+	@SettingBoolean
 	public boolean titleCheck = true;
 
 	@Serialize(name = "No_Move")
-	@CheckBox
+	@SettingBoolean
 	public boolean noMove = true;
 
 	@Serialize(name = "Delay")
-	@Slider(min = 0, max = 1000, increment = 1)
+	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double delay = 0;
 
 	private final TimerUtil timerUtil = new TimerUtil();
@@ -49,7 +49,7 @@ public class FeatureChestStealer extends AbstractFeature {
 	}
 
 	@Subscribe
-	public void onUpdate(final UpdateEvent ignoredUpdateEvent) {
+	public void onUpdate(final EventUpdate ignoredUpdateEvent) {
 		if (mc.currentScreen != null) {
 			// Check if the current screen is a chest
 			if (mc.currentScreen instanceof GuiChest) {
