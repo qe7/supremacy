@@ -72,6 +72,7 @@ public class ManagerFeature implements FeatureManagerApi {
 				new FeatureChestStealer(),
 				new FeatureInventoryManager(),
 				new FeatureScaffold(),
+				new FeatureSnake(),
 
 				/* Exploit */
 				new FeatureFastBow(),
