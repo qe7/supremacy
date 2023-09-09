@@ -31,7 +31,6 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 
 import javax.vecmath.Vector2f;
@@ -204,9 +203,9 @@ public class FeatureKillAura extends AbstractFeature {
                     event.setCancelled(true);
                 }
             } else if (!packets.isEmpty()) {
+                mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                this.isBlocking = false;
                 for (Packet<?> packet1 : packets) {
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    this.isBlocking = false;
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
                 }
                 packets.clear();
