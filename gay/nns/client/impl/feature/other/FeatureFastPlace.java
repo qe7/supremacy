@@ -12,8 +12,8 @@ import gay.nns.client.impl.event.player.UpdateEvent;
 public class FeatureFastPlace extends AbstractFeature {
 
     @Serialize(name = "Delay")
-    @Slider(min = 0, max = 4, increment = 1f)
-    public double delay = 3.f;
+    @Slider(min = 0, max = 4, increment = 1)
+    public double delay = 3;
 
     public FeatureFastPlace() {
         super();

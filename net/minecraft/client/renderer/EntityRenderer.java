@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import gay.nns.client.api.core.Core;
+import gay.nns.client.impl.event.render.Event3DRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1811,6 +1814,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("forge_render_last");
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
+
+        Core.getSingleton().getEventBus().post(new Event3DRender(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 
