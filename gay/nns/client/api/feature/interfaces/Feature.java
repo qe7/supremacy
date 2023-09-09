@@ -1,6 +1,6 @@
 package gay.nns.client.api.feature.interfaces;
 
-public interface IFeature {
+public interface Feature {
 
     FeatureInfo getFeatureInfo();
     boolean isEnabled();

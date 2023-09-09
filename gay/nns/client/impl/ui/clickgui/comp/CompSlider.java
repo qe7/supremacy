@@ -3,7 +3,7 @@ package gay.nns.client.impl.ui.clickgui.comp;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingSlider;
 import gay.nns.client.api.core.Core;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.impl.feature.render.FeatureClickGUI;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
 import gay.nns.client.util.font.CustomFontRendererUtil;
@@ -19,7 +19,7 @@ public class CompSlider extends Comp<SettingSlider> {
     private double renderWidth;
     private double renderWidth2;
 
-    public CompSlider(GuiClick parent, AbstractFeature module, SettingSlider settingSlider) {
+    public CompSlider(GuiClick parent, Feature module, SettingSlider settingSlider) {
         super(parent, module, settingSlider);
     }
 

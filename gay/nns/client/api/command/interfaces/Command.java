@@ -1,6 +1,6 @@
 package gay.nns.client.api.command.interfaces;
 
-public interface ICommand {
+public interface Command {
 
 	CommandInfo getCommandInfo();
 	void onCommand(String[] args);

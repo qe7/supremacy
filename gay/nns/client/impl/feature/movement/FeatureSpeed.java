@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.movement;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
@@ -16,7 +16,7 @@ import gay.nns.client.util.player.MovementUtil;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
-public class FeatureSpeed extends AbstractFeature {
+public class FeatureSpeed extends Feature {
 
 	@Serialize(name = "Mode")
 	@SettingMode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop"})

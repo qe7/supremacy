@@ -1,12 +1,12 @@
 package gay.nns.client.impl.command;
 
-import gay.nns.client.api.command.AbstractCommand;
+import gay.nns.client.api.command.Command;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 
 @CommandInfo(name = "Say", description = "Sends a message to the chat.", usage = "say <message>")
-public class CommandSay extends AbstractCommand {
+public class CommandSay extends Command {
 
 	public CommandSay() {
 		super();

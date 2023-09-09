@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.movement;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingMode;
@@ -13,7 +13,7 @@ import gay.nns.client.util.player.MovementUtil;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Flight", description = "Allows you to fly.", category = FeatureCategory.MOVEMENT)
-public class FeatureFlight extends AbstractFeature {
+public class FeatureFlight extends Feature {
 
 	@Serialize(name = "Mode")
 	@SettingMode(modes = {"Vanilla", "Creative"})

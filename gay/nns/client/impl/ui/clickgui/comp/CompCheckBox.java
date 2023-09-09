@@ -3,7 +3,7 @@ package gay.nns.client.impl.ui.clickgui.comp;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingBoolean;
 import gay.nns.client.api.core.Core;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.impl.feature.render.FeatureClickGUI;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
 import gay.nns.client.util.font.CustomFontRendererUtil;
@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class CompCheckBox extends Comp<SettingBoolean> {
 
-    public CompCheckBox(GuiClick parent, AbstractFeature module, SettingBoolean settingCheckBox) {
+    public CompCheckBox(GuiClick parent, Feature module, SettingBoolean settingCheckBox) {
         super(parent, module, settingCheckBox);
     }
 

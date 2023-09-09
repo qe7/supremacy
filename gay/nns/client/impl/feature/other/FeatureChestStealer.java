@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
@@ -18,7 +18,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 
 @FeatureInfo(name = "Stealer", description = "Automatically steals items from chests")
-public class FeatureChestStealer extends AbstractFeature {
+public class FeatureChestStealer extends Feature {
 
 	@Serialize(name = "Title_Check")
 	@SettingBoolean

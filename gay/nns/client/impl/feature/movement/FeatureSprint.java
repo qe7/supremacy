@@ -8,11 +8,11 @@ import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.impl.event.render.EventRender2D;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.impl.feature.other.FeatureScaffold;
 
 @FeatureInfo(name = "Sprint", description = "Automatically sprints for the player.", category = FeatureCategory.MOVEMENT)
-public class FeatureSprint extends AbstractFeature {
+public class FeatureSprint extends Feature {
 
 	@Serialize(name = "Mode")
 	@SettingMode(modes = {"Legit", "Rage"})

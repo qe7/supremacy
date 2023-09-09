@@ -1,12 +1,11 @@
 package gay.nns.client.api.feature;
 
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.feature.interfaces.IFeature;
-import gay.nns.client.api.feature.interfaces.IToggleable;
+import gay.nns.client.api.feature.interfaces.Toggleable;
 import gay.nns.client.api.core.Core;
 import net.minecraft.client.Minecraft;
 
-public abstract class AbstractFeature implements IFeature, IToggleable {
+public abstract class Feature implements gay.nns.client.api.feature.interfaces.Feature, Toggleable {
 
     protected final Minecraft mc = Minecraft.getMinecraft();
 
@@ -15,7 +14,7 @@ public abstract class AbstractFeature implements IFeature, IToggleable {
     private String suffix;
     private int key;
 
-    protected AbstractFeature() {
+    protected Feature() {
         this.featureInfo = getClass().getAnnotation(FeatureInfo.class);
         this.key = getFeatureInfo().key();
         Core.getSingleton().getSettingManager().addToSettingManager(this);

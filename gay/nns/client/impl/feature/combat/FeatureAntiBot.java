@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.combat;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingMode;
@@ -10,7 +10,7 @@ import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.entity.Entity;
 
 @FeatureInfo(name = "AntiBot", category = FeatureCategory.COMBAT, description = "Prevents Killaura from hitting bots")
-public class FeatureAntiBot extends AbstractFeature {
+public class FeatureAntiBot extends Feature {
 
     @Serialize(name = "Mode")
     @SettingMode(modes = {"Hypixel", "Novoline (troll)"})

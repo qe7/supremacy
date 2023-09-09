@@ -1,6 +1,6 @@
 package gay.nns.client.api.feature.interfaces;
 
-public interface IToggleable {
+public interface Toggleable {
 
     boolean getToggleable();
 

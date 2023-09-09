@@ -1,13 +1,13 @@
 package gay.nns.client.impl.feature.render;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.render.EventRender2D;
 
 @FeatureInfo(name = "Brightness", description = "Like Ahru it brightens my world. >w<", category = FeatureCategory.RENDER)
-public class FeatureBrightness extends AbstractFeature {
+public class FeatureBrightness extends Feature {
 
 	private float oldGamma;
 

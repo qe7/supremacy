@@ -1,11 +1,11 @@
 package gay.nns.client.impl.setting;
 
-import gay.nns.client.api.setting.AbstractSetting;
+import gay.nns.client.api.setting.Setting;
 
 import java.awt.*;
 import java.lang.reflect.Field;
 
-public class SettingColor extends AbstractSetting<SettingColor, Color> {
+public class SettingColor extends Setting<SettingColor, Color> {
 
 	public SettingColor(Field field, Object object) {
 		super(field, object);

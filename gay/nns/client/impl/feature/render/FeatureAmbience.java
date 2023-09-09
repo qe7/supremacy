@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.render;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
@@ -11,7 +11,7 @@ import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.render.EventRender2D;
 
 @FeatureInfo(name = "Ambience", description = "Ambience", category = FeatureCategory.RENDER)
-public class FeatureAmbience extends AbstractFeature {
+public class FeatureAmbience extends Feature {
 
 	@Serialize(name = "Weather")
 	@SettingMode(modes = {"Clear", "Rain", "Thunder"})

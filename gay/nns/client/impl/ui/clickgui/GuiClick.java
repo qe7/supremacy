@@ -1,9 +1,9 @@
 package gay.nns.client.impl.ui.clickgui;
 
 import gay.nns.client.api.core.Core;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.setting.AbstractSetting;
+import gay.nns.client.api.setting.Setting;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingBoolean;
 import gay.nns.client.impl.setting.SettingColor;
@@ -112,7 +112,7 @@ public class GuiClick extends GuiScreen {
         robotoSmallBold.drawStringWithShadow("Settings", posX + 100 + 4, posY + 30 - 2, new Color(204, 204, 203, 255).getRGB());
 
         offset = 32;
-        for (AbstractFeature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
+        for (Feature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
 //            Gui.drawRect(posX + 12, posY + offset + 1, posX + 87, posY + 12 + offset,new Color(0, 0, 0, 255).getRGB());
             robotoSmall.drawStringWithShadow(m.getFeatureInfo().name().replace("_", " "),(int)posX + 14, (int)(posY + 5) + offset, m.isEnabled() ? new Color(162, 162, 161).getRGB() : new Color(79, 81, 82).getRGB());
             offset += 12;
@@ -166,7 +166,7 @@ public class GuiClick extends GuiScreen {
             offset += (float) (roboto.getStringWidth(category.getName()) + 6);
         }
         offset = 32;
-        for (AbstractFeature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
+        for (Feature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
             if (isInside(mouseX, mouseY, posX + 12, posY + offset + 1, posX + 87, posY + 12 + offset)) {
                 if (mouseButton == 0 && !m.getFeatureInfo().name().equalsIgnoreCase("ClickGUI")) {
                     m.toggle();
@@ -174,7 +174,7 @@ public class GuiClick extends GuiScreen {
                 if (mouseButton == 1) {
                     comps.clear();
                     scrollY = 0;
-                    for (AbstractSetting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
+                    for (Setting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
                         if (setting instanceof SettingMode settingMode) {
                             comps.add(new CompDropdown(this, m, settingMode));
                         }

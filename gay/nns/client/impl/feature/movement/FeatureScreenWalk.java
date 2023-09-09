@@ -4,7 +4,7 @@ import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.player.EventUpdate;
@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "InventoryMove", description = "Allows you to walk on the screen", category = FeatureCategory.MOVEMENT)
-public class FeatureScreenWalk extends AbstractFeature {
+public class FeatureScreenWalk extends Feature {
 
 	@Serialize(name = "ClickGUI_only")
 	@SettingBoolean

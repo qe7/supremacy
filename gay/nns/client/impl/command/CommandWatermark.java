@@ -1,11 +1,11 @@
 package gay.nns.client.impl.command;
 
-import gay.nns.client.api.command.AbstractCommand;
+import gay.nns.client.api.command.Command;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 import gay.nns.client.api.core.Core;
 
 @CommandInfo(name = "Watermark", description = "Watermark")
-public class CommandWatermark extends AbstractCommand {
+public class CommandWatermark extends Command {
 
 	public CommandWatermark() {
 		super();

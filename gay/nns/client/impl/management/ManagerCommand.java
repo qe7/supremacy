@@ -1,7 +1,7 @@
 package gay.nns.client.impl.management;
 
-import gay.nns.client.api.command.AbstractCommand;
-import gay.nns.client.api.command.interfaces.ICommandManagerApi;
+import gay.nns.client.api.command.Command;
+import gay.nns.client.api.command.interfaces.CommandManagerApi;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.impl.command.*;
 import gay.nns.client.impl.event.player.EventMessageSent;
@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagerCommand implements ICommandManagerApi {
+public class ManagerCommand implements CommandManagerApi {
 
-	private Map<String, AbstractCommand> Commands;
+	private Map<String, Command> Commands;
 
 	public ManagerCommand() {
 
@@ -31,8 +31,8 @@ public class ManagerCommand implements ICommandManagerApi {
 		System.out.printf("Commands (%d): %s%n", Commands.size(), Commands.keySet());
 	}
 
-	private HashMap<String, AbstractCommand> addCommands(final AbstractCommand... CommandArray) {
-		final HashMap<String, AbstractCommand> CommandAdder = new HashMap<>();
+	private HashMap<String, Command> addCommands(final Command... CommandArray) {
+		final HashMap<String, Command> CommandAdder = new HashMap<>();
 		Arrays.stream(CommandArray).forEach(abstractCommand -> {
 			CommandAdder.put(abstractCommand.getCommandInfo().name(), abstractCommand);
 		});
@@ -40,17 +40,17 @@ public class ManagerCommand implements ICommandManagerApi {
 	}
 
 	@Override
-	public Collection<AbstractCommand> getCommands() {
+	public Collection<Command> getCommands() {
 		return Commands.values();
 	}
 
 	@Override
-	public AbstractCommand getCommandByName(String name) {
+	public Command getCommandByName(String name) {
 		return Commands.get(name);
 	}
 
 	@Override
-	public AbstractCommand getCommandFromType(Class<? extends AbstractCommand> clazz) {
+	public Command getCommandFromType(Class<? extends Command> clazz) {
 		return Commands.values().stream().filter(command -> command.getClass().equals(clazz)).findFirst().orElse(null);
 	}
 

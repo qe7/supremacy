@@ -1,7 +1,7 @@
 package gay.nns.client.impl.ui.clickgui.comp;
 
 import gay.nns.client.api.core.Core;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingColor;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
@@ -23,7 +23,7 @@ public class CompColorPicker extends Comp<SettingColor> {
 
 	private float hue; // the hue of the color
 
-	public CompColorPicker(GuiClick clickGUI, AbstractFeature abstractFeature, SettingColor setting) {
+	public CompColorPicker(GuiClick clickGUI, Feature abstractFeature, SettingColor setting) {
 		super(clickGUI, abstractFeature, setting);
 	}
 

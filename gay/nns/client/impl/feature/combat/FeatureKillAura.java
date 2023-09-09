@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.combat;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
@@ -38,7 +38,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @FeatureInfo(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
-public class FeatureKillAura extends AbstractFeature {
+public class FeatureKillAura extends Feature {
 
     @Serialize(name = "Keep_Sprint")
     @SettingBoolean()

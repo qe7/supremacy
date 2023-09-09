@@ -1,10 +1,10 @@
 package gay.nns.client.impl.setting;
 
-import gay.nns.client.api.setting.AbstractSetting;
+import gay.nns.client.api.setting.Setting;
 
 import java.lang.reflect.Field;
 
-public class SettingBoolean extends AbstractSetting<gay.nns.client.api.setting.annotations.SettingBoolean, Boolean> {
+public class SettingBoolean extends Setting<gay.nns.client.api.setting.annotations.SettingBoolean, Boolean> {
 
 	public SettingBoolean(Field field, Object object) {
 		super(field, object);

@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.render;
 
 import com.mojang.authlib.GameProfile;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -9,7 +9,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import java.util.UUID;
 
 @FeatureInfo(name = "FakePlayer", description = "Spawns a fake player", category = FeatureCategory.RENDER)
-public class FeatureFakePlayer extends AbstractFeature {
+public class FeatureFakePlayer extends Feature {
 
 	public FeatureFakePlayer() {
 		super();

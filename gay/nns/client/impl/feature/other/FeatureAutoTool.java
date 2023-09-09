@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.block.Block;
@@ -9,7 +9,7 @@ import net.minecraft.item.*;
 import org.lwjgl.input.Mouse;
 
 @FeatureInfo(name = "AutoTool", description = "Automatically switches to the best tool for the block you're mining")
-public class FeatureAutoTool extends AbstractFeature {
+public class FeatureAutoTool extends Feature {
 
 	private boolean savedOldSlot = false;
 	private boolean hasSwapped = false;

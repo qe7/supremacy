@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.render;
 
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingColor;
@@ -11,7 +11,7 @@ import org.lwjgl.input.Keyboard;
 import java.awt.*;
 
 @FeatureInfo(name = "ClickGUI", category = FeatureCategory.RENDER)
-public class FeatureClickGUI extends AbstractFeature {
+public class FeatureClickGUI extends Feature {
 
 	@Serialize(name = "ClickGUI_Color")
 	@SettingColor

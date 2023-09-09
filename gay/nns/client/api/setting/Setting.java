@@ -4,18 +4,18 @@ import gay.nns.client.api.setting.annotations.Serialize;
 
 import java.lang.reflect.Field;
 
-public abstract class AbstractSetting<A, V> {
+public abstract class Setting<A, V> {
 
 	private final String name;
 	private final String description;
 	private final Field field;
 	private final A annotation;
 	private final Object object;
-	private AbstractSetting<?, ?> parent;
+	private Setting<?, ?> parent;
 	private String parentMode;
 	private String group;
 
-	public AbstractSetting(Field field, Object object) {
+	public Setting(Field field, Object object) {
 		this.field = field;
 		this.name = field.getAnnotation(Serialize.class).name();
 		this.description = field.getAnnotation(Serialize.class).desc();
@@ -56,11 +56,11 @@ public abstract class AbstractSetting<A, V> {
 		return object;
 	}
 
-	public AbstractSetting<?, ?> getParent() {
+	public Setting<?, ?> getParent() {
 		return parent;
 	}
 
-	public void setParent(AbstractSetting<?, ?> parent) {
+	public void setParent(Setting<?, ?> parent) {
 		this.parent = parent;
 	}
 

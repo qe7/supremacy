@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
@@ -22,7 +22,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 
 @FeatureInfo(name = "Manager", description = "Automatically sorts your inventory")
-public class FeatureInventoryManager extends AbstractFeature {
+public class FeatureInventoryManager extends Feature {
 
 	@Serialize(name = "Mode")
 	@SettingMode(modes = {"Normal", "Spoof", "Inventory"})

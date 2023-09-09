@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 @FeatureInfo(name = "Scaffold", description = "Automatically places blocks under you")
-public class FeatureScaffold extends AbstractFeature {
+public class FeatureScaffold extends Feature {
 
 	@Serialize(name = "Safe_Walk")
 	@SettingBoolean

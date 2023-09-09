@@ -1,10 +1,10 @@
 package gay.nns.client.impl.setting;
 
-import gay.nns.client.api.setting.AbstractSetting;
+import gay.nns.client.api.setting.Setting;
 
 import java.lang.reflect.Field;
 
-public class SettingSlider extends AbstractSetting<gay.nns.client.api.setting.annotations.SettingSlider, Double> {
+public class SettingSlider extends Setting<gay.nns.client.api.setting.annotations.SettingSlider, Double> {
 
 	public SettingSlider(Field field, Object object) {
 		super(field, object);

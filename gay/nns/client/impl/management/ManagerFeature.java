@@ -11,9 +11,9 @@ import gay.nns.client.impl.feature.movement.*;
 import gay.nns.client.impl.feature.other.*;
 import gay.nns.client.impl.feature.render.*;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.IFeatureManagerApi;
+import gay.nns.client.api.feature.interfaces.FeatureManagerApi;
 import gay.nns.client.impl.event.game.EventKeyInput;
 
 import gay.nns.client.impl.feature.combat.*;
@@ -23,9 +23,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagerFeature implements IFeatureManagerApi {
+public class ManagerFeature implements FeatureManagerApi {
 
-	private Map<String, AbstractFeature> Features;
+	private Map<String, Feature> Features;
 
 	public ManagerFeature() {
 
@@ -83,8 +83,8 @@ public class ManagerFeature implements IFeatureManagerApi {
 		System.out.printf("Features (%d): %s%n", Features.size(), Features.keySet());
 	}
 
-	private HashMap<String, AbstractFeature> addFeatures(final AbstractFeature... FeatureArray) {
-		final HashMap<String, AbstractFeature> FeatureAdder = new HashMap<>();
+	private HashMap<String, Feature> addFeatures(final Feature... FeatureArray) {
+		final HashMap<String, Feature> FeatureAdder = new HashMap<>();
 		Arrays.stream(FeatureArray).forEach(abstractFeature -> {
 			FeatureAdder.put(abstractFeature.getFeatureInfo().name(), abstractFeature);
 		});
@@ -92,27 +92,27 @@ public class ManagerFeature implements IFeatureManagerApi {
 	}
 
 	@Override
-	public Collection<AbstractFeature> getFeatures() {
+	public Collection<Feature> getFeatures() {
 		return Features.values();
 	}
 
 	@Override
-	public Collection<AbstractFeature> getEnabledFeatures() {
-		return Features.values().stream().filter(AbstractFeature::isEnabled).toList();
+	public Collection<Feature> getEnabledFeatures() {
+		return Features.values().stream().filter(Feature::isEnabled).toList();
 	}
 
 	@Override
-	public AbstractFeature getFeatureByName(String name) {
+	public Feature getFeatureByName(String name) {
 		return Features.values().stream().filter(Feature -> Feature.getFeatureInfo().name().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
 	@Override
-	public AbstractFeature getFeatureFromType(Class<? extends AbstractFeature> clazz) {
+	public Feature getFeatureFromType(Class<? extends Feature> clazz) {
 		return Features.values().stream().filter(feature -> feature.getClass().equals(clazz)).findFirst().orElse(null);
 	}
 
 	@Override
-	public Collection<AbstractFeature> getFeatureFromCategory(FeatureCategory category) {
+	public Collection<Feature> getFeatureFromCategory(FeatureCategory category) {
 		return Features.values().stream().filter(Feature -> Feature.getFeatureInfo().category().equals(category)).toList();
 	}
 

@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.render;
 
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.render.Event3DRender;
@@ -15,7 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
 @FeatureInfo(name = "ESP", category = FeatureCategory.RENDER, description = "Blah blah blah this isnt done")
-public class FeatureESP extends AbstractFeature {
+public class FeatureESP extends Feature {
 
     public FeatureESP() {
         super();

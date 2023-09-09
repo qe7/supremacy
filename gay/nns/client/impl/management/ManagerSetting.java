@@ -1,7 +1,7 @@
 package gay.nns.client.impl.management;
 
 import gay.nns.client.api.setting.annotations.*;
-import gay.nns.client.api.setting.AbstractSetting;
+import gay.nns.client.api.setting.Setting;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -14,8 +14,8 @@ import java.util.*;
  */
 public class ManagerSetting {
 
-	private final List<AbstractSetting<?, ?>> settings = new ArrayList<>();
-	private final Map<Class<? extends Annotation>, Class<? extends AbstractSetting<?, ?>>>
+	private final List<Setting<?, ?>> settings = new ArrayList<>();
+	private final Map<Class<? extends Annotation>, Class<? extends Setting<?, ?>>>
 			annotationToSetting =
 			new HashMap() {
 				{
@@ -31,7 +31,7 @@ public class ManagerSetting {
 		settings.forEach(
 				setting -> {
 					if (setting.getField().isAnnotationPresent(Parent.class)) {
-						AbstractSetting<?, ?> parent =
+						Setting<?, ?> parent =
 								getSetting(
 										setting.getObject().getClass(),
 										setting.getField().getAnnotation(Parent.class).parent());
@@ -47,10 +47,10 @@ public class ManagerSetting {
 		for (Field field : o.getClass().getFields()) {
 			if (field.isAnnotationPresent(Serialize.class)) {
 				Class<? extends Annotation> settingType = field.getAnnotations()[1].annotationType();
-				Class<? extends AbstractSetting<?, ?>> setting = annotationToSetting.get(settingType);
+				Class<? extends Setting<?, ?>> setting = annotationToSetting.get(settingType);
 
 				try {
-					AbstractSetting<?, ?> instance = setting.getConstructor(Field.class, Object.class).newInstance(field, o);
+					Setting<?, ?> instance = setting.getConstructor(Field.class, Object.class).newInstance(field, o);
 					settings.add(instance);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +59,7 @@ public class ManagerSetting {
 		}
 	}
 
-	public AbstractSetting<?, ?> getSetting(Class<?> clazz, String name) {
+	public Setting<?, ?> getSetting(Class<?> clazz, String name) {
 		return settings.stream()
 				.filter(
 						setting -> setting.getObject().getClass() == clazz && setting.getName().equalsIgnoreCase(name))
@@ -67,7 +67,7 @@ public class ManagerSetting {
 				.orElseThrow(NoSuchElementException::new);
 	}
 
-	public List<AbstractSetting<?, ?>> getSettingsFromType(Class<?> clazz) {
+	public List<Setting<?, ?>> getSettingsFromType(Class<?> clazz) {
 		return settings.stream().filter(setting -> setting.getObject().getClass() == clazz).toList();
 	}
 }

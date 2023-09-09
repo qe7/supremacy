@@ -1,7 +1,7 @@
 package gay.nns.client.impl.feature.ghost;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
@@ -14,7 +14,7 @@ import net.minecraft.item.*;
 import org.lwjgl.input.Mouse;
 
 @FeatureInfo(name = "AutoClicker", category = FeatureCategory.GHOST, description = "Automatically clicks")
-public class FeatureAutoClicker extends AbstractFeature {
+public class FeatureAutoClicker extends Feature {
 
 	@Serialize(name = "Left_Click")
 	@SettingBoolean

@@ -1,12 +1,12 @@
 package gay.nns.client.impl.command;
 
-import gay.nns.client.api.command.AbstractCommand;
+import gay.nns.client.api.command.Command;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 import gay.nns.client.api.core.Core;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 
 @CommandInfo(name = "Toggle", description = "Toggles a feature.", usage = "toggle <feature>", aliases = {"t"})
-public class CommandToggle extends AbstractCommand {
+public class CommandToggle extends Command {
 
 	public CommandToggle() {
 		super();
@@ -18,7 +18,7 @@ public class CommandToggle extends AbstractCommand {
 
 		if (args.length == 2) {
 			try {
-				for (AbstractFeature feature : Core.getSingleton().getFeatureManager().getFeatures()) {
+				for (Feature feature : Core.getSingleton().getFeatureManager().getFeatures()) {
 					if (feature.getFeatureInfo().name().equalsIgnoreCase(args[1])) {
 						feature.toggle();
 						chatUtil.chatCommand("Toggled " + feature.getFeatureInfo().name() + " to " + feature.isEnabled());

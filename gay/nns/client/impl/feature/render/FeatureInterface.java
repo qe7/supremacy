@@ -2,7 +2,7 @@ package gay.nns.client.impl.feature.render;
 
 import gay.nns.client.api.core.Core;
 import gay.nns.client.api.event.interfaces.Subscribe;
-import gay.nns.client.api.feature.AbstractFeature;
+import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.*;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.*;
 
 @FeatureInfo(name = "Interface", description = "HUD", category = FeatureCategory.RENDER)
-public class FeatureInterface extends AbstractFeature {
+public class FeatureInterface extends Feature {
 
     @Serialize(name = "Arraylist_Color")
     @SettingColor
@@ -81,7 +81,7 @@ public class FeatureInterface extends AbstractFeature {
 
         this.setSuffix("Default");
 
-        List<AbstractFeature> featureList = new ArrayList<>(Core.getSingleton().getFeatureManager().getEnabledFeatures());
+        List<Feature> featureList = new ArrayList<>(Core.getSingleton().getFeatureManager().getEnabledFeatures());
         ScaledResolution sr = render2DEvent.scaledResolution();
         FontRenderer fr = mc.fontRendererObj;
 
@@ -125,7 +125,7 @@ public class FeatureInterface extends AbstractFeature {
 
         double lastLength = 0;
         double y = offset;
-        for (AbstractFeature feature : featureList) {
+        for (Feature feature : featureList) {
             if (feature.isEnabled()) {
                 String arraylist = getString(feature);
 
@@ -169,7 +169,7 @@ public class FeatureInterface extends AbstractFeature {
         }
     }
 
-    private String getString(AbstractFeature feature) {
+    private String getString(Feature feature) {
         String arraylist = feature.getFeatureInfo().name();
 
         if (feature.getSuffix() != null) {
@@ -190,7 +190,7 @@ public class FeatureInterface extends AbstractFeature {
         // todo: handle TabUI key inputs
     }
 
-    private Color getColor(AbstractFeature feature, int index) {
+    private Color getColor(Feature feature, int index) {
         switch (colorMode) {
             case "Default" -> {
                 return color;
