@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FontUtil {
+public class UtilFont {
 	public volatile int completed;
 
-	public CustomFontRendererUtil menuWatermarkFont, clean, menuFont, menuFontBold;
+	public UtilCustomFontRenderer menuWatermarkFont, clean, menuFont, menuFontBold;
 	private Font menuWatermarkFont_, clean_, menuFont_, menuFontBold_;
 
 	private Font getFont(Map<String, Font> locationMap, String location, int size) {
@@ -68,14 +68,14 @@ public class FontUtil {
 		}
 
 		//Fan fonts
-		clean = new CustomFontRendererUtil(clean_, true, true);
-		menuWatermarkFont = new CustomFontRendererUtil(menuWatermarkFont_, true, true);
-		menuFont = new CustomFontRendererUtil(menuFont_, true, true);
-		menuFontBold = new CustomFontRendererUtil(menuFontBold_, true, true);
+		clean = new UtilCustomFontRenderer(clean_, true, true);
+		menuWatermarkFont = new UtilCustomFontRenderer(menuWatermarkFont_, true, true);
+		menuFont = new UtilCustomFontRenderer(menuFont_, true, true);
+		menuFontBold = new UtilCustomFontRenderer(menuFontBold_, true, true);
 
 	}
 
-	public CustomFontRendererUtil getFont(String font) {
+	public UtilCustomFontRenderer getFont(String font) {
 		return switch (font.toLowerCase()) {
 			case "clean" -> clean;
 			case "menuwatermark" -> menuWatermarkFont;

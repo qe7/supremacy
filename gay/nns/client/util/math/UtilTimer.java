@@ -1,6 +1,6 @@
 package gay.nns.client.util.math;
 
-public class TimerUtil {
+public class UtilTimer {
 
 	private long lastMS = 0L;
 

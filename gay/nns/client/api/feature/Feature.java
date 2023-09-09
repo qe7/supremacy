@@ -2,7 +2,7 @@ package gay.nns.client.api.feature;
 
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.feature.interfaces.Toggleable;
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import net.minecraft.client.Minecraft;
 
 public abstract class Feature implements gay.nns.client.api.feature.interfaces.Feature, Toggleable {
@@ -17,15 +17,15 @@ public abstract class Feature implements gay.nns.client.api.feature.interfaces.F
     protected Feature() {
         this.featureInfo = getClass().getAnnotation(FeatureInfo.class);
         this.key = getFeatureInfo().key();
-        Core.getSingleton().getSettingManager().addToSettingManager(this);
+        SupremacyCore.getSingleton().getSettingManager().addToSettingManager(this);
     }
 
     protected void onEnable() {
-        Core.getSingleton().getEventBus().register(this);
+        SupremacyCore.getSingleton().getEventBus().register(this);
     }
 
     protected void onDisable() {
-        Core.getSingleton().getEventBus().unregister(this);
+        SupremacyCore.getSingleton().getEventBus().unregister(this);
     }
 
     public void toggle() {

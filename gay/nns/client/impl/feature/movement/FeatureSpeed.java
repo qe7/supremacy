@@ -1,6 +1,6 @@
 package gay.nns.client.impl.feature.movement;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
@@ -11,8 +11,8 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
-import gay.nns.client.util.math.MathUtil;
-import gay.nns.client.util.player.MovementUtil;
+import gay.nns.client.util.math.UtilMath;
+import gay.nns.client.util.player.UtilMovement;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
@@ -73,19 +73,19 @@ public class FeatureSpeed extends Feature {
 			case "vanilla" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
 					speed = (float) this.speed;
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
+					if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
-					MovementUtil.setSpeed(speed);
+					UtilMovement.setSpeed(speed);
 				}
 			}
 			case "vanilla-hop" -> {
 				if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
 					speed = (float) this.speed;
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
+					if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
-					MovementUtil.setSpeed(speed);
+					UtilMovement.setSpeed(speed);
 					if (mc.thePlayer.onGround) mc.thePlayer.jump();
 				}
 			}
@@ -95,12 +95,12 @@ public class FeatureSpeed extends Feature {
 					mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
 
 					if (mc.thePlayer.onGround) {
-						speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.04f);
+						speed = (float) (UtilMovement.getBaseMoveSpeed() - 0.04f);
 
-						if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
+						if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 							speed *= 0.2F;
 						}
-						MovementUtil.setSpeed(speed);
+						UtilMovement.setSpeed(speed);
 					}
 				}
 			}
@@ -109,23 +109,23 @@ public class FeatureSpeed extends Feature {
 					if (mc.thePlayer.onGround) {
 						stage = 0;
 						mc.thePlayer.jump();
-						speed = (float) (MovementUtil.getBaseMoveSpeed() - 0.06f);
+						speed = (float) (UtilMovement.getBaseMoveSpeed() - 0.06f);
 					} else {
 						stage++;
 						switch (stage) {
-							case 1 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.02f, 0.02f));
-							case 2 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.06f, -0.02f));
-							case 3 -> speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.07f, -0.06f));
+							case 1 -> speed = (float) (UtilMovement.getBaseMoveSpeed() + UtilMath.getRandom(-0.02f, 0.02f));
+							case 2 -> speed = (float) (UtilMovement.getBaseMoveSpeed() + UtilMath.getRandom(-0.06f, -0.02f));
+							case 3 -> speed = (float) (UtilMovement.getBaseMoveSpeed() + UtilMath.getRandom(-0.07f, -0.06f));
 						}
 						if (stage > 3) {
-							speed = (float) (MovementUtil.getBaseMoveSpeed() + MathUtil.getRandom(-0.04f, -0.02f));
+							speed = (float) (UtilMovement.getBaseMoveSpeed() + UtilMath.getRandom(-0.04f, -0.02f));
 						}
 					}
 
-					if (!Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
+					if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
 						speed *= 0.2F;
 					}
-					MovementUtil.setSpeed(speed);
+					UtilMovement.setSpeed(speed);
 				}
 			}
 		}

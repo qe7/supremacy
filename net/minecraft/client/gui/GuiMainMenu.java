@@ -2,8 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import gay.nns.client.util.account.MicrosoftLoginUtil;
-import gay.nns.client.api.core.Core;
+import gay.nns.client.util.account.UtilMicrosoftLogin;
+import gay.nns.client.api.core.SupremacyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -225,10 +225,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
         if (button.id == 14 && this.realmsButton.visible)
         {
-            MicrosoftLoginUtil.getRefreshToken(refreshToken -> {
+            UtilMicrosoftLogin.getRefreshToken(refreshToken -> {
                 if (refreshToken != null) {
                     new Thread(() -> {
-                        MicrosoftLoginUtil.LoginData loginData = loginWithRefreshToken(refreshToken);
+                        UtilMicrosoftLogin.LoginData loginData = loginWithRefreshToken(refreshToken);
 
 
                     }).start();
@@ -258,8 +258,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             }
         }
     }
-    private MicrosoftLoginUtil.LoginData loginWithRefreshToken(String refreshToken) {
-        final MicrosoftLoginUtil.LoginData loginData = MicrosoftLoginUtil.login(refreshToken);
+    private UtilMicrosoftLogin.LoginData loginWithRefreshToken(String refreshToken) {
+        final UtilMicrosoftLogin.LoginData loginData = UtilMicrosoftLogin.login(refreshToken);
         mc.session = new Session(loginData.username, loginData.uuid, loginData.mcToken, "microsoft");
         return loginData;
     }
@@ -503,7 +503,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         GlStateManager.scale(f, f, f);
         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
         GlStateManager.popMatrix();
-        String s = Core.getSingleton().getName() + " " + Core.getSingleton().getVersion() + " (by " + Arrays.toString(Core.getSingleton().getAuthors()) + ")";
+        String s = SupremacyCore.getSingleton().getName() + " " + SupremacyCore.getSingleton().getVersion() + " (by " + Arrays.toString(SupremacyCore.getSingleton().getAuthors()) + ")";
 
         if (Reflector.FMLCommonHandler_getBrandings.exists()) {
             Object object = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);

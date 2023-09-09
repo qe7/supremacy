@@ -1,13 +1,13 @@
 package gay.nns.client.api.command;
 
-import gay.nns.client.util.chat.ChatUtil;
+import gay.nns.client.util.chat.UtilChat;
 import gay.nns.client.api.command.interfaces.CommandInfo;
 
 public abstract class Command implements gay.nns.client.api.command.interfaces.Command {
 
 	private CommandInfo commandInfo;
 
-	protected final ChatUtil chatUtil = new ChatUtil();
+	protected final UtilChat chatUtil = new UtilChat();
 
 	protected Command() {
 		this.commandInfo = getClass().getAnnotation(CommandInfo.class);

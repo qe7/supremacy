@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 
-public class ScissorUtil {
+public class UtilScissor {
 
 	public static void prepareScissorBox(double x, double y, double x2, double y2) {
 		ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());

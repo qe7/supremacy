@@ -1,6 +1,6 @@
 package net.minecraft.client.entity;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.player.*;
 import gay.nns.client.impl.feature.movement.FeatureSprint;
 import net.minecraft.client.Minecraft;
@@ -84,7 +84,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 			super.onUpdate();
 
 			EventUpdate updateEvent = new EventUpdate();
-			Core.getSingleton().getEventBus().post(updateEvent);
+			SupremacyCore.getSingleton().getEventBus().post(updateEvent);
 
 			if (this.isRiding()) {
 				this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
@@ -126,7 +126,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 			EventPreMotion event = new EventPreMotion(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
 			eventMotion = event;
-			Core.getSingleton().getEventBus().post(event);
+			SupremacyCore.getSingleton().getEventBus().post(event);
 
 			double d0 = event.getX() - this.lastReportedPosX;
 			double d1 = event.getY() - this.lastReportedPosY;
@@ -166,7 +166,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 			}
 
 			EventPostMotion eventMotionPost = new EventPostMotion();
-			Core.getSingleton().getEventBus().post(eventMotionPost);
+			SupremacyCore.getSingleton().getEventBus().post(eventMotionPost);
 		}
 	}
 
@@ -185,7 +185,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 	public void sendChatMessage(String message) {
 		EventMessageSent eventSentMessage = new EventMessageSent(message);
-		Core.getSingleton().getEventBus().post(eventSentMessage);
+		SupremacyCore.getSingleton().getEventBus().post(eventSentMessage);
 
 		if (eventSentMessage.isCancelled()) return;
 
@@ -526,7 +526,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		if (this.isUsingItem() && !this.isRiding()) {
 
 			EventSlowdown slowDownEvent = new EventSlowdown();
-			Core.getSingleton().getEventBus().post(slowDownEvent);
+			SupremacyCore.getSingleton().getEventBus().post(slowDownEvent);
 
 			if (!slowDownEvent.isCancelled()) {
 				this.movementInput.moveStrafe *= 0.2F;
@@ -541,7 +541,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		this.pushOutOfBlocks(this.posX + (double) this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double) this.width * 0.35D);
 		boolean flag3 = (float) this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-		if (this.onGround && !flag1 && (!flag2 && this.movementInput.moveForward >= f || (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureSprint.class).isEnabled() && FeatureSprint.mode.equalsIgnoreCase("rage"))) && !this.isSprinting() && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
+		if (this.onGround && !flag1 && (!flag2 && this.movementInput.moveForward >= f || (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureSprint.class).isEnabled() && FeatureSprint.mode.equalsIgnoreCase("rage"))) && !this.isSprinting() && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
 			if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown()) {
 				this.sprintToggleTimer = 7;
 			} else {
@@ -549,7 +549,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 			}
 		}
 
-		if (!this.isSprinting() && (this.movementInput.moveForward >= f || (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureSprint.class).isEnabled() && FeatureSprint.mode.equalsIgnoreCase("rage"))) && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
+		if (!this.isSprinting() && (this.movementInput.moveForward >= f || (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureSprint.class).isEnabled() && FeatureSprint.mode.equalsIgnoreCase("rage"))) && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
 			this.setSprinting(true);
 		}
 

@@ -18,7 +18,7 @@ import io.netty.handler.timeout.TimeoutException;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.packet.EventPacketReceive;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.ArrayUtils;
@@ -106,7 +106,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 		if (this.channel.isOpen()) {
 			try {
 				EventPacketReceive event = new EventPacketReceive(p_channelRead0_2_);
-				Core.getSingleton().getEventBus().post(event);
+				SupremacyCore.getSingleton().getEventBus().post(event);
 
 				if (!event.isCancelled()) event.getPacket().processPacket(this.packetListener);
 			} catch (ThreadQuickExitException var4) {

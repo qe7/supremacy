@@ -9,7 +9,7 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.game.EventKeyInput;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -387,7 +387,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
 
-		Core.getSingleton().initialize();
+		SupremacyCore.getSingleton().initialize();
 
 		if (this.serverName != null) {
 			this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
@@ -432,7 +432,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
 	private void createDisplay() throws LWJGLException {
 		Display.setResizable(true);
-		Display.setTitle(Core.getSingleton().getName() + " " + Core.getSingleton().getVersion());
+		Display.setTitle(SupremacyCore.getSingleton().getName() + " " + SupremacyCore.getSingleton().getVersion());
 
 		try {
 			Display.create((new PixelFormat()).withDepthBits(24));
@@ -1430,7 +1430,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 					} else {
 
 						EventKeyInput keyEvent = new EventKeyInput(k);
-						Core.getSingleton().getEventBus().post(keyEvent);
+						SupremacyCore.getSingleton().getEventBus().post(keyEvent);
 
 						if (k == 1) {
 							this.displayInGameMenu();

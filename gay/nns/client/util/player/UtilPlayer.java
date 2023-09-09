@@ -13,7 +13,7 @@ import net.minecraft.util.BlockPos;
 
 import java.util.ArrayList;
 
-public class PlayerUtil {
+public class UtilPlayer {
 
 	private static final ArrayList<ItemStack> trash = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class PlayerUtil {
 	 * This method is used to get the best items in a chest.
 	 * It's used in the chest stealer feature. It's a mess.
 	 * it uses the ItemUtil class (which is also a mess) to get the best items in a chest.
-	 * @see ItemUtil
+	 * @see UtilItem
 	 */
 	public static ArrayList<Integer> getBestItems(ContainerChest containerChest) {
 		ArrayList<Integer> useful = new ArrayList<>();
@@ -98,10 +98,10 @@ public class PlayerUtil {
 				if (!(itemStack.getItem() instanceof ItemSword) && !(itemStack.getItem() instanceof ItemTool) && !(itemStack.getItem() instanceof ItemArmor)) {
 					useful.add(i);
 				} else if (itemStack.getItem() instanceof ItemSword) {
-					if (ItemUtil.getBestWeaponInChestAsSlot(containerChest) != i) {
+					if (UtilItem.getBestWeaponInChestAsSlot(containerChest) != i) {
 						trash.add(itemStack);
-					} else if (ItemUtil.getBestWeaponInInventory() != null) {
-						if (ItemUtil.getWeaponValue(itemStack) > ItemUtil.getWeaponValue(ItemUtil.getBestWeaponInInventory())) {
+					} else if (UtilItem.getBestWeaponInInventory() != null) {
+						if (UtilItem.getWeaponValue(itemStack) > UtilItem.getWeaponValue(UtilItem.getBestWeaponInInventory())) {
 							useful.add(i);
 						} else {
 							trash.add(itemStack);
@@ -111,31 +111,31 @@ public class PlayerUtil {
 					}
 				} else if (itemStack.getItem() instanceof ItemTool) {
 					if (itemStack.getItem() instanceof ItemPickaxe) {
-						int bestPickaxeSlot = ItemUtil.getBestToolsInChestAsSlots(containerChest)[0];
-						ItemStack bestPickaxeInventory = ItemUtil.getBestToolsInInventory()[0];
+						int bestPickaxeSlot = UtilItem.getBestToolsInChestAsSlots(containerChest)[0];
+						ItemStack bestPickaxeInventory = UtilItem.getBestToolsInInventory()[0];
 
 						bestSlot(useful, i, itemStack, bestPickaxeSlot, bestPickaxeInventory);
 					} else if (itemStack.getItem() instanceof ItemAxe) {
-						int bestAxeSlot = ItemUtil.getBestToolsInChestAsSlots(containerChest)[1];
-						ItemStack bestAxeInventory = ItemUtil.getBestToolsInInventory()[1];
+						int bestAxeSlot = UtilItem.getBestToolsInChestAsSlots(containerChest)[1];
+						ItemStack bestAxeInventory = UtilItem.getBestToolsInInventory()[1];
 
 						bestSlot(useful, i, itemStack, bestAxeSlot, bestAxeInventory);
 					} else if (itemStack.getItem() instanceof ItemSpade) {
-						int bestSpadeSlot = ItemUtil.getBestToolsInChestAsSlots(containerChest)[2];
-						ItemStack bestSpadeInventory = ItemUtil.getBestToolsInInventory()[2];
+						int bestSpadeSlot = UtilItem.getBestToolsInChestAsSlots(containerChest)[2];
+						ItemStack bestSpadeInventory = UtilItem.getBestToolsInInventory()[2];
 
 						bestSlot(useful, i, itemStack, bestSpadeSlot, bestSpadeInventory);
 					}
 				} else {
 					int armorType = ((ItemArmor) itemStack.getItem()).armorType;
-					int[] bestArmorSlots = ItemUtil.getBestArmorInChestAsSlots(containerChest);
-					ItemStack[] bestArmorInventory = ItemUtil.getBestArmorInInventory();
+					int[] bestArmorSlots = UtilItem.getBestArmorInChestAsSlots(containerChest);
+					ItemStack[] bestArmorInventory = UtilItem.getBestArmorInInventory();
 
 					if (armorType >= 0 && armorType < 4) {
 						if (bestArmorSlots[armorType] != i) {
 							trash.add(itemStack);
 						} else if (bestArmorInventory[armorType] != null) {
-							if (ItemUtil.getArmorValue(itemStack) > ItemUtil.getArmorValue(bestArmorInventory[armorType])) {
+							if (UtilItem.getArmorValue(itemStack) > UtilItem.getArmorValue(bestArmorInventory[armorType])) {
 								useful.add(i);
 							} else {
 								trash.add(itemStack);
@@ -155,7 +155,7 @@ public class PlayerUtil {
 		if (bestSpadeSlot != i) {
 			trash.add(itemStack);
 		} else if (bestSpadeInventory != null) {
-			if (ItemUtil.getToolValue(itemStack) > ItemUtil.getToolValue(bestSpadeInventory)) {
+			if (UtilItem.getToolValue(itemStack) > UtilItem.getToolValue(bestSpadeInventory)) {
 				useful.add(i);
 			} else {
 				trash.add(itemStack);

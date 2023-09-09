@@ -10,10 +10,10 @@ import net.minecraft.item.*;
 import java.util.ArrayList;
 
 /* A lot of tomfoolery is about to be committed. */
-public class InventoryUtil {
+public class UtilInventory {
 
 	public static boolean isGood(ItemStack i) {
-		if (i.getItem() instanceof ItemPotion && !PlayerUtil.isBadPotion(i)) {
+		if (i.getItem() instanceof ItemPotion && !UtilPlayer.isBadPotion(i)) {
 			return true;
 		}
 
@@ -73,20 +73,20 @@ public class InventoryUtil {
 			}
 
 			if (itemStack.getItem() instanceof ItemSword) {
-				if (i != ItemUtil.getBestWeaponInInventoryAsSlot()) {
+				if (i != UtilItem.getBestWeaponInInventoryAsSlot()) {
 					trash.add(i);
 				}
 			}
 
 			if (itemStack.getItem() instanceof ItemTool) {
-				int[] bestToolSlots = ItemUtil.getBestToolsInInventoryAsSlots();
-				if (i != ItemUtil.getBestWeaponInInventoryAsSlot() && i != bestToolSlots[0] && i != bestToolSlots[1] && i != bestToolSlots[2]) {
+				int[] bestToolSlots = UtilItem.getBestToolsInInventoryAsSlots();
+				if (i != UtilItem.getBestWeaponInInventoryAsSlot() && i != bestToolSlots[0] && i != bestToolSlots[1] && i != bestToolSlots[2]) {
 					trash.add(i);
 				}
 			}
 
 			if (itemStack.getItem() instanceof ItemArmor) {
-				int[] bestArmorSlots = ItemUtil.getBestArmorInInventoryAsSlots();
+				int[] bestArmorSlots = UtilItem.getBestArmorInInventoryAsSlots();
 				if (i != bestArmorSlots[0] && i != bestArmorSlots[1] && i != bestArmorSlots[2] && i != bestArmorSlots[3]) {
 					trash.add(i);
 				}
@@ -137,10 +137,10 @@ public class InventoryUtil {
 	}
 
 	public static boolean hasSortNeed() {
-		int swordSlot = ItemUtil.getBestWeaponInInventoryAsSlot();
-		int[] toolSlots = ItemUtil.getBestToolsInInventoryAsSlots();
+		int swordSlot = UtilItem.getBestWeaponInInventoryAsSlot();
+		int[] toolSlots = UtilItem.getBestToolsInInventoryAsSlots();
 		int foodSlot = getFoodSlot();
-		int[] armorSlots = ItemUtil.getBestArmorInInventoryAsSlots();
+		int[] armorSlots = UtilItem.getBestArmorInInventoryAsSlots();
 		int blockSlot = getBlockSlot();
 
 		boolean swordNeedsSort = swordSlot != -1 && swordSlot - 36 != FeatureInventoryManager.swordSlot - 1;

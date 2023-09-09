@@ -4,13 +4,13 @@ import gay.nns.client.api.event.EventBus;
 import gay.nns.client.impl.management.ManagerFeature;
 import gay.nns.client.impl.management.ManagerRotation;
 import gay.nns.client.impl.management.ManagerSetting;
-import gay.nns.client.util.font.FontUtil;
+import gay.nns.client.util.font.UtilFont;
 import gay.nns.client.impl.management.ManagerCommand;
 import net.minecraft.client.Minecraft;
 
-public final class Core {
+public final class SupremacyCore {
 
-	private final static Core singleton = new Core();
+	private final static SupremacyCore singleton = new SupremacyCore();
 	private String name;
 	private final String version;
 	private final String[] authors;
@@ -19,9 +19,9 @@ public final class Core {
 	private final ManagerRotation rotationManager;
 	private final ManagerCommand commandManager;
 	private final ManagerSetting settingManager;
-	private final FontUtil fontUtil;
+	private final UtilFont fontUtil;
 
-	Core() {
+	SupremacyCore() {
 		this.eventBus = new EventBus();
 
 		this.featureManager = new ManagerFeature();
@@ -35,7 +35,7 @@ public final class Core {
 
 		this.settingManager = new ManagerSetting();
 
-		this.fontUtil = new FontUtil();
+		this.fontUtil = new UtilFont();
 	}
 
 	{
@@ -54,7 +54,7 @@ public final class Core {
 		Minecraft.getMinecraft().getSession().setUsername(getName());
 	}
 
-	public static Core getSingleton() {
+	public static SupremacyCore getSingleton() {
 		return singleton;
 	}
 
@@ -94,7 +94,7 @@ public final class Core {
 		return settingManager;
 	}
 
-	public FontUtil getFontUtil() {
+	public UtilFont getFontUtil() {
 		return fontUtil;
 	}
 }

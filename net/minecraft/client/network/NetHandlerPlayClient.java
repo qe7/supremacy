@@ -5,7 +5,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.packet.EventPacketSend;
 import net.minecraft.block.Block;
 import net.minecraft.client.ClientBrandRetriever;
@@ -467,7 +467,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
 	public void addToSendQueue(Packet p_147297_1_) {
 		EventPacketSend event = new EventPacketSend(p_147297_1_);
-		Core.getSingleton().getEventBus().post(event);
+		SupremacyCore.getSingleton().getEventBus().post(event);
 
 		if (!event.isCancelled()) this.netManager.sendPacket(event.getPacket());
 	}

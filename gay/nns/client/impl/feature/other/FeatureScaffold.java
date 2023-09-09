@@ -1,6 +1,6 @@
 package gay.nns.client.impl.feature.other;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
@@ -11,10 +11,10 @@ import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.impl.event.render.EventRender2D;
-import gay.nns.client.util.chat.ChatUtil;
-import gay.nns.client.util.math.MathUtil;
-import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.RotationUtil;
+import gay.nns.client.util.chat.UtilChat;
+import gay.nns.client.util.math.UtilMath;
+import gay.nns.client.util.math.UtilTimer;
+import gay.nns.client.util.player.UtilRotation;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
@@ -57,9 +57,9 @@ public class FeatureScaffold extends Feature {
 	@SettingSlider(min = 0, max = 20, increment = 1)
 	public double rotationSpeed = 17;
 
-	private final ChatUtil chatUtil = new ChatUtil();
-	private final TimerUtil timerUtil = new TimerUtil();
-	private final TimerUtil spinTimerUtil = new TimerUtil();
+	private final UtilChat chatUtil = new UtilChat();
+	private final UtilTimer timerUtil = new UtilTimer();
+	private final UtilTimer spinTimerUtil = new UtilTimer();
 
 	private final List<Block> badBlocks = List.of(
 			Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava,
@@ -127,7 +127,7 @@ public class FeatureScaffold extends Feature {
 		if (!Objects.equals(prevBlockData, blockData)) {
 			prevBlockData = blockData;
 		}
-		pitch = MathUtil.getRandom(80.0F, 82.0F);
+		pitch = UtilMath.getRandom(80.0F, 82.0F);
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
 				switch (blockData.getFacing()) {
@@ -142,7 +142,7 @@ public class FeatureScaffold extends Feature {
 				}
 			}
 			case "hypixel" -> {
-				yaw = mc.thePlayer.rotationYaw - MathUtil.getRandom(178.0F, 182.0F);
+				yaw = mc.thePlayer.rotationYaw - UtilMath.getRandom(178.0F, 182.0F);
 				if (Objects.requireNonNull(blockData.getFacing()) == EnumFacing.UP) {
 					yaw = mc.thePlayer.rotationYaw;
 					pitch = 90.0F;
@@ -155,17 +155,17 @@ public class FeatureScaffold extends Feature {
 					case SOUTH -> yaw = 0.0F;
 					case WEST -> yaw = 90.0F;
 					case UP -> {
-						yaw = MathUtil.getRandom(-180.0F, 180.0F);
+						yaw = UtilMath.getRandom(-180.0F, 180.0F);
 						pitch = 90.0f;
 					}
 				}
 			}
 		}
 		Vector2f rotations = new Vector2f(yaw, pitch);
-		Vector2f smoothRotations = RotationUtil.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
-		smoothRotations = RotationUtil.applySanity(smoothRotations);
-		smoothRotations = RotationUtil.applyGCD(smoothRotations);
-		Core.getSingleton().getRotationManager().setRotation(smoothRotations);
+		Vector2f smoothRotations = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
+		smoothRotations = UtilRotation.applySanity(smoothRotations);
+		smoothRotations = UtilRotation.applyGCD(smoothRotations);
+		SupremacyCore.getSingleton().getRotationManager().setRotation(smoothRotations);
 		if (limitSpeed && mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) &&
 				Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
@@ -180,7 +180,7 @@ public class FeatureScaffold extends Feature {
 			timerUtil.reset();
 			return;
 		}
-		if (timerUtil.hasTimeElapsed(MathUtil.getRandom((int) placeDelay, (int) placeDelay + 10))) {
+		if (timerUtil.hasTimeElapsed(UtilMath.getRandom((int) placeDelay, (int) placeDelay + 10))) {
 			if (getBlockSlot() != -1) {
 				if (mc.thePlayer.inventory.currentItem != getBlockSlot()) {
 					mc.thePlayer.inventory.currentItem = getBlockSlot();

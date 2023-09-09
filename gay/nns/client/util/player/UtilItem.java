@@ -6,7 +6,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.*;
 
-public class ItemUtil {
+public class UtilItem {
 
 	public static ItemStack[] getBestArmorInChest(ContainerChest chest) {
 		ItemStack[] itemStacks = new ItemStack[4];

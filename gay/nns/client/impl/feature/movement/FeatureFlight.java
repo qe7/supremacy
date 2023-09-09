@@ -9,7 +9,7 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.impl.event.render.EventRender2D;
-import gay.nns.client.util.player.MovementUtil;
+import gay.nns.client.util.player.UtilMovement;
 import org.lwjgl.input.Keyboard;
 
 @FeatureInfo(name = "Flight", description = "Allows you to fly.", category = FeatureCategory.MOVEMENT)
@@ -58,9 +58,9 @@ public class FeatureFlight extends Feature {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 					mc.thePlayer.motionY -= (speed / 2);
 				if (mc.thePlayer.moveForward != 0.F || mc.thePlayer.moveStrafing != 0.F)
-					MovementUtil.setSpeed(speed);
+					UtilMovement.setSpeed(speed);
 				else
-					MovementUtil.setSpeed(0.0D);
+					UtilMovement.setSpeed(0.0D);
 			}
 			case "creative" -> {
 				mc.thePlayer.capabilities.allowFlying = true;

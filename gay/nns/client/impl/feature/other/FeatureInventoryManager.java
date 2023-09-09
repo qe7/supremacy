@@ -8,10 +8,10 @@ import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
-import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.InventoryUtil;
-import gay.nns.client.util.player.ItemUtil;
-import gay.nns.client.util.player.WindowUtil;
+import gay.nns.client.util.math.UtilTimer;
+import gay.nns.client.util.player.UtilInventory;
+import gay.nns.client.util.player.UtilItem;
+import gay.nns.client.util.player.UtilWindow;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.*;
@@ -60,7 +60,7 @@ public class FeatureInventoryManager extends Feature {
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double foodSlot = 9;
 
-	private final TimerUtil timerUtil = new TimerUtil();
+	private final UtilTimer timerUtil = new UtilTimer();
 
 	private boolean invOpen = false;
 
@@ -83,7 +83,7 @@ public class FeatureInventoryManager extends Feature {
 
 		if (!(mc.currentScreen instanceof GuiChest) && mc.thePlayer != null && mc.theWorld != null) {
 			boolean canDo = false;
-			if (!InventoryUtil.getTrash().isEmpty() || InventoryUtil.hasSortNeed()) {
+			if (!UtilInventory.getTrash().isEmpty() || UtilInventory.hasSortNeed()) {
 				if (noMove && (Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode()) || Keyboard.isKeyDown(mc.gameSettings.keyBindBack.getKeyCode()) || Keyboard.isKeyDown(mc.gameSettings.keyBindLeft.getKeyCode()) || Keyboard.isKeyDown(mc.gameSettings.keyBindRight.getKeyCode()))) {
 					return;
 				}
@@ -98,11 +98,11 @@ public class FeatureInventoryManager extends Feature {
 			}
 
 			if (canDo) {
-				if (!InventoryUtil.getTrash().isEmpty()) {
+				if (!UtilInventory.getTrash().isEmpty()) {
 					open();
-					removeJunk(InventoryUtil.getTrash());
+					removeJunk(UtilInventory.getTrash());
 					close();
-				} else if (InventoryUtil.hasSortNeed()) {
+				} else if (UtilInventory.hasSortNeed()) {
 					open();
 					manage();
 					close();
@@ -117,7 +117,7 @@ public class FeatureInventoryManager extends Feature {
 	private void removeJunk(ArrayList<Integer> junk) {
 		for (int i : junk) {
 			if (mc.thePlayer.inventoryContainer.getSlot(i).getStack() != null && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.drop(i, mc.thePlayer.openContainer.windowId);
+				UtilWindow.drop(i, mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
 		}
@@ -125,13 +125,13 @@ public class FeatureInventoryManager extends Feature {
 
 	private void manageGaps() {
 		boolean doManage = true;
-		if (InventoryUtil.getFoodSlot() != -1 && InventoryUtil.getFoodSlot() - 36 != foodSlot - 1) {
+		if (UtilInventory.getFoodSlot() != -1 && UtilInventory.getFoodSlot() - 36 != foodSlot - 1) {
 			if (mc.thePlayer.inventoryContainer.getSlot((int) (foodSlot - 1 + 36)).getStack() != null && mc.thePlayer.inventoryContainer.getSlot((int) (foodSlot - 1 + 36)).getStack().getItem() instanceof ItemAppleGold) {
 				doManage = false;
 			}
 
 			if (doManage && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.swap(InventoryUtil.getFoodSlot(), (int) (foodSlot - 1), mc.thePlayer.openContainer.windowId);
+				UtilWindow.swap(UtilInventory.getFoodSlot(), (int) (foodSlot - 1), mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
 		}
@@ -140,13 +140,13 @@ public class FeatureInventoryManager extends Feature {
 
 	private void manageBlocks() {
 		boolean doManage = true;
-		if (InventoryUtil.getBlockSlot() != -1 && InventoryUtil.getBlockSlot() - 36 != blockSlot - 1) {
+		if (UtilInventory.getBlockSlot() != -1 && UtilInventory.getBlockSlot() - 36 != blockSlot - 1) {
 			if (mc.thePlayer.inventoryContainer.getSlot((int) (blockSlot - 1 + 36)).getStack() != null && mc.thePlayer.inventoryContainer.getSlot((int) (blockSlot - 1 + 36)).getStack().getItem() instanceof ItemBlock) {
 				doManage = false;
 			}
 
 			if (doManage && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.swap(InventoryUtil.getBlockSlot(), (int) (blockSlot - 1), mc.thePlayer.openContainer.windowId);
+				UtilWindow.swap(UtilInventory.getBlockSlot(), (int) (blockSlot - 1), mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
 		}
@@ -154,71 +154,71 @@ public class FeatureInventoryManager extends Feature {
 	}
 
 	private void manageWeapon() {
-		if (ItemUtil.getBestWeaponInInventoryAsSlot() != -1 && ItemUtil.getBestWeaponInInventoryAsSlot() - 36 != swordSlot - 1 && timerUtil.hasTimeElapsed((long) delay)) {
-			WindowUtil.swap(ItemUtil.getBestWeaponInInventoryAsSlot(), (int) (swordSlot - 1), mc.thePlayer.openContainer.windowId);
+		if (UtilItem.getBestWeaponInInventoryAsSlot() != -1 && UtilItem.getBestWeaponInInventoryAsSlot() - 36 != swordSlot - 1 && timerUtil.hasTimeElapsed((long) delay)) {
+			UtilWindow.swap(UtilItem.getBestWeaponInInventoryAsSlot(), (int) (swordSlot - 1), mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 	}
 
 	private void manageArmor() {
 		if (mc.thePlayer.inventoryContainer.getSlot(5).getStack() != null) {
-			if (5 != ItemUtil.getBestArmorInInventoryAsSlots()[0] && ItemUtil.getBestArmorInInventoryAsSlots()[0] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.drop(5, mc.thePlayer.openContainer.windowId);
-				WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[0], mc.thePlayer.openContainer.windowId);
+			if (5 != UtilItem.getBestArmorInInventoryAsSlots()[0] && UtilItem.getBestArmorInInventoryAsSlots()[0] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
+				UtilWindow.drop(5, mc.thePlayer.openContainer.windowId);
+				UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[0], mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
-		} else if (timerUtil.hasTimeElapsed((long) delay) && ItemUtil.getBestArmorInInventoryAsSlots()[0] != -1) {
-			WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[0], mc.thePlayer.openContainer.windowId);
+		} else if (timerUtil.hasTimeElapsed((long) delay) && UtilItem.getBestArmorInInventoryAsSlots()[0] != -1) {
+			UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[0], mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 
 		if (mc.thePlayer.inventoryContainer.getSlot(6).getStack() != null) {
-			if (6 != ItemUtil.getBestArmorInInventoryAsSlots()[1] && ItemUtil.getBestArmorInInventoryAsSlots()[1] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.drop(6, mc.thePlayer.openContainer.windowId);
-				WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[1], mc.thePlayer.openContainer.windowId);
+			if (6 != UtilItem.getBestArmorInInventoryAsSlots()[1] && UtilItem.getBestArmorInInventoryAsSlots()[1] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
+				UtilWindow.drop(6, mc.thePlayer.openContainer.windowId);
+				UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[1], mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
-		} else if (timerUtil.hasTimeElapsed((long) delay) && ItemUtil.getBestArmorInInventoryAsSlots()[1] != -1) {
-			WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[1], mc.thePlayer.openContainer.windowId);
+		} else if (timerUtil.hasTimeElapsed((long) delay) && UtilItem.getBestArmorInInventoryAsSlots()[1] != -1) {
+			UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[1], mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 
 		if (mc.thePlayer.inventoryContainer.getSlot(7).getStack() != null) {
-			if (7 != ItemUtil.getBestArmorInInventoryAsSlots()[2] && ItemUtil.getBestArmorInInventoryAsSlots()[2] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.drop(7, mc.thePlayer.openContainer.windowId);
-				WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[2], mc.thePlayer.openContainer.windowId);
+			if (7 != UtilItem.getBestArmorInInventoryAsSlots()[2] && UtilItem.getBestArmorInInventoryAsSlots()[2] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
+				UtilWindow.drop(7, mc.thePlayer.openContainer.windowId);
+				UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[2], mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
-		} else if (timerUtil.hasTimeElapsed((long) delay) && ItemUtil.getBestArmorInInventoryAsSlots()[2] != -1) {
-			WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[2], mc.thePlayer.openContainer.windowId);
+		} else if (timerUtil.hasTimeElapsed((long) delay) && UtilItem.getBestArmorInInventoryAsSlots()[2] != -1) {
+			UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[2], mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 
 		if (mc.thePlayer.inventoryContainer.getSlot(8).getStack() != null) {
-			if (8 != ItemUtil.getBestArmorInInventoryAsSlots()[3] && ItemUtil.getBestArmorInInventoryAsSlots()[3] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
-				WindowUtil.drop(8, mc.thePlayer.openContainer.windowId);
-				WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[3], mc.thePlayer.openContainer.windowId);
+			if (8 != UtilItem.getBestArmorInInventoryAsSlots()[3] && UtilItem.getBestArmorInInventoryAsSlots()[3] != -1 && timerUtil.hasTimeElapsed((long) delay)) {
+				UtilWindow.drop(8, mc.thePlayer.openContainer.windowId);
+				UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[3], mc.thePlayer.openContainer.windowId);
 				timerUtil.reset();
 			}
-		} else if (timerUtil.hasTimeElapsed((long) delay) && ItemUtil.getBestArmorInInventoryAsSlots()[3] != -1) {
-			WindowUtil.shiftClick(ItemUtil.getBestArmorInInventoryAsSlots()[3], mc.thePlayer.openContainer.windowId);
+		} else if (timerUtil.hasTimeElapsed((long) delay) && UtilItem.getBestArmorInInventoryAsSlots()[3] != -1) {
+			UtilWindow.shiftClick(UtilItem.getBestArmorInInventoryAsSlots()[3], mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 	}
 
 	private void manageTools() {
-		if (ItemUtil.getBestToolsInInventoryAsSlots()[0] != -1 && ItemUtil.getBestToolsInInventoryAsSlots()[0] - 36 != pickaxeSlot - 1 && ItemUtil.getBestToolsInInventoryAsSlots()[0] != ItemUtil.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
-			WindowUtil.swap(ItemUtil.getBestToolsInInventoryAsSlots()[0], (int) (pickaxeSlot - 1), mc.thePlayer.openContainer.windowId);
+		if (UtilItem.getBestToolsInInventoryAsSlots()[0] != -1 && UtilItem.getBestToolsInInventoryAsSlots()[0] - 36 != pickaxeSlot - 1 && UtilItem.getBestToolsInInventoryAsSlots()[0] != UtilItem.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
+			UtilWindow.swap(UtilItem.getBestToolsInInventoryAsSlots()[0], (int) (pickaxeSlot - 1), mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 
-		if (ItemUtil.getBestToolsInInventoryAsSlots()[1] != -1 && ItemUtil.getBestToolsInInventoryAsSlots()[1] - 36 != axeSlot - 1 && ItemUtil.getBestToolsInInventoryAsSlots()[1] != ItemUtil.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
-			WindowUtil.swap(ItemUtil.getBestToolsInInventoryAsSlots()[1], (int) (axeSlot - 1), mc.thePlayer.openContainer.windowId);
+		if (UtilItem.getBestToolsInInventoryAsSlots()[1] != -1 && UtilItem.getBestToolsInInventoryAsSlots()[1] - 36 != axeSlot - 1 && UtilItem.getBestToolsInInventoryAsSlots()[1] != UtilItem.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
+			UtilWindow.swap(UtilItem.getBestToolsInInventoryAsSlots()[1], (int) (axeSlot - 1), mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 
-		if (ItemUtil.getBestToolsInInventoryAsSlots()[2] != -1 && ItemUtil.getBestToolsInInventoryAsSlots()[2] - 36 != shovelSlot - 1 && ItemUtil.getBestToolsInInventoryAsSlots()[2] != ItemUtil.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
-			WindowUtil.swap(ItemUtil.getBestToolsInInventoryAsSlots()[2], (int) (shovelSlot - 1), mc.thePlayer.openContainer.windowId);
+		if (UtilItem.getBestToolsInInventoryAsSlots()[2] != -1 && UtilItem.getBestToolsInInventoryAsSlots()[2] - 36 != shovelSlot - 1 && UtilItem.getBestToolsInInventoryAsSlots()[2] != UtilItem.getBestWeaponInInventoryAsSlot() && timerUtil.hasTimeElapsed((long) delay)) {
+			UtilWindow.swap(UtilItem.getBestToolsInInventoryAsSlots()[2], (int) (shovelSlot - 1), mc.thePlayer.openContainer.windowId);
 			timerUtil.reset();
 		}
 

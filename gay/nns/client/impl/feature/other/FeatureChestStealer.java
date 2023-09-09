@@ -7,10 +7,10 @@ import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
-import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.ContainerUtil;
-import gay.nns.client.util.player.PlayerUtil;
-import gay.nns.client.util.player.WindowUtil;
+import gay.nns.client.util.math.UtilTimer;
+import gay.nns.client.util.player.UtilContainer;
+import gay.nns.client.util.player.UtilPlayer;
+import gay.nns.client.util.player.UtilWindow;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.ContainerChest;
 import org.lwjgl.input.Keyboard;
@@ -32,7 +32,7 @@ public class FeatureChestStealer extends Feature {
 	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double delay = 0;
 
-	private final TimerUtil timerUtil = new TimerUtil();
+	private final UtilTimer timerUtil = new UtilTimer();
 
 	public FeatureChestStealer() {
 		super();
@@ -59,17 +59,17 @@ public class FeatureChestStealer extends Feature {
 
 				ContainerChest chest = (ContainerChest)mc.thePlayer.openContainer;
 
-				ArrayList<Integer> bestItems = PlayerUtil.getBestItems(chest);
+				ArrayList<Integer> bestItems = UtilPlayer.getBestItems(chest);
 
 				if (!(chest.getLowerChestInventory().getName().contains("Chest") || chest.getLowerChestInventory().getName().contains("Container") || chest.getLowerChestInventory().getName().contains("Storage")) && titleCheck) {
 					return;
 				}
 
-				if (!PlayerUtil.isInventoryFull() && !ContainerUtil.isChestEmpty(chest)) {
+				if (!UtilPlayer.isInventoryFull() && !UtilContainer.isChestEmpty(chest)) {
 
 					for (Integer bestItem : bestItems) {
 						if (timerUtil.hasTimeElapsed((long) delay)) {
-							WindowUtil.shiftClickChest(bestItem, chest.windowId);
+							UtilWindow.shiftClickChest(bestItem, chest.windowId);
 							timerUtil.reset();
 						}
 					}

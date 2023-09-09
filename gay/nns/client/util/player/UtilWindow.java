@@ -1,9 +1,8 @@
 package gay.nns.client.util.player;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.ContainerChest;
 
-public class WindowUtil {
+public class UtilWindow {
 
 	public static void shiftClickChest(int slot, int windowId) {
 		Minecraft.getMinecraft().playerController.windowClick(windowId, slot, 0, 1, Minecraft.getMinecraft().thePlayer);

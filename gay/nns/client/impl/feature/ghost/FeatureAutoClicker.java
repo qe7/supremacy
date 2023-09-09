@@ -8,7 +8,7 @@ import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
-import gay.nns.client.util.math.TimerUtil;
+import gay.nns.client.util.math.UtilTimer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.*;
 import org.lwjgl.input.Mouse;
@@ -40,8 +40,8 @@ public class FeatureAutoClicker extends Feature {
 	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double rightMinCPS = 14;
 
-	private final TimerUtil leftTimerUtil = new TimerUtil();
-	private final TimerUtil rightTimerUtil = new TimerUtil();
+	private final UtilTimer leftTimerUtil = new UtilTimer();
+	private final UtilTimer rightTimerUtil = new UtilTimer();
 
 	public FeatureAutoClicker() {
 		super();

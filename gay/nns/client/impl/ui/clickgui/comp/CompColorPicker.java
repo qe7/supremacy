@@ -1,11 +1,11 @@
 package gay.nns.client.impl.ui.clickgui.comp;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.ui.clickgui.comp.Comp;
 import gay.nns.client.impl.setting.SettingColor;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
-import gay.nns.client.util.font.CustomFontRendererUtil;
+import gay.nns.client.util.font.UtilCustomFontRenderer;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -61,7 +61,7 @@ public class CompColorPicker extends Comp<SettingColor> {
 	public void drawScreen(int mouseX, int mouseY, float x, float y) {
 		super.drawScreen(mouseX, mouseY, x, y);
 
-		CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("menu");
+		UtilCustomFontRenderer roboto = SupremacyCore.getSingleton().getFontUtil().getFont("menu");
 
 		roboto.drawStringWithShadow(setting.getName().replace("_", " "), (int) (clickGUI.posX + x - 58), (int) (clickGUI.posY + y + 1), new Color(162, 162, 161).getRGB());
 

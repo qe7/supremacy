@@ -6,7 +6,7 @@ import net.minecraft.util.MathHelper;
 
 import javax.vecmath.Vector2f;
 
-public class RotationUtil {
+public class UtilRotation {
 
 	public static Vector2f applyGCD(Vector2f vec) {
 		final Vector2f previousRotation = Minecraft.getMinecraft().thePlayer.getPreviousRotation();

@@ -1,6 +1,6 @@
 package gay.nns.client.impl.feature.combat;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
@@ -13,9 +13,9 @@ import gay.nns.client.impl.event.packet.EventPacketSend;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.impl.event.render.EventRenderItem;
-import gay.nns.client.util.math.MathUtil;
-import gay.nns.client.util.math.TimerUtil;
-import gay.nns.client.util.player.RotationUtil;
+import gay.nns.client.util.math.UtilMath;
+import gay.nns.client.util.math.UtilTimer;
+import gay.nns.client.util.player.UtilRotation;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -64,7 +64,7 @@ public class FeatureKillAura extends Feature {
     @SettingSlider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
 
-    private final TimerUtil timer = new TimerUtil();
+    private final UtilTimer timer = new UtilTimer();
     private final ArrayList<Packet> packets = new ArrayList<>();
 
     public boolean afterAttack;
@@ -122,14 +122,14 @@ public class FeatureKillAura extends Feature {
 
         if (mcTarget != mc.thePlayer && mc.thePlayer.getDistanceToEntity(mcTarget) < attackRange && !mcTarget.isDead && !mcTarget.isInvisibleToPlayer(mc.thePlayer) && !mc.thePlayer.isInvisible()) {
 
-            Vector2f rotations = RotationUtil.getRotations(mcTarget);
-            Vector2f smoothRotations = RotationUtil.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
+            Vector2f rotations = UtilRotation.getRotations(mcTarget);
+            Vector2f smoothRotations = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
 
-            smoothRotations = RotationUtil.applySanity(smoothRotations);
+            smoothRotations = UtilRotation.applySanity(smoothRotations);
 
-            smoothRotations = RotationUtil.applyGCD(smoothRotations);
+            smoothRotations = UtilRotation.applyGCD(smoothRotations);
 
-            Core.getSingleton().getRotationManager().setRotation(smoothRotations);
+            SupremacyCore.getSingleton().getRotationManager().setRotation(smoothRotations);
 
             /*switch (autoBlock) {
                 case "Fake" -> {
@@ -138,7 +138,7 @@ public class FeatureKillAura extends Feature {
                 }
             }*/
 
-            if (timer.hasTimeElapsed(1000L / MathUtil.getRandom((int) minCPS, (int) maxCPS))) {
+            if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;

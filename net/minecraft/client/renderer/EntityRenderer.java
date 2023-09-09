@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.render.Event3DRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -1815,7 +1815,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
 
-        Core.getSingleton().getEventBus().post(new Event3DRender(partialTicks));
+        SupremacyCore.getSingleton().getEventBus().post(new Event3DRender(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 

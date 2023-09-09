@@ -8,13 +8,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomFontRendererUtil extends CustomFont {
-	CustomFont.CharData[] boldChars = new CustomFont.CharData[256], italicChars = new CustomFont.CharData[256], boldItalicChars = new CustomFont.CharData[256];
+public class UtilCustomFontRenderer extends UtilCustomFont {
+	UtilCustomFont.CharData[] boldChars = new UtilCustomFont.CharData[256], italicChars = new UtilCustomFont.CharData[256], boldItalicChars = new UtilCustomFont.CharData[256];
 	int[] colorCode = new int[32];
 	String colorcodeIdentifiers = "0123456789abcdefklmnor";
 	DynamicTexture texBold, texItalic, texItalicBold;
 
-	public CustomFontRendererUtil(Font font, boolean antiAlias, boolean fractionalMetrics) {
+	public UtilCustomFontRenderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
 		super(font, antiAlias, fractionalMetrics);
 		this.setupMinecraftColorcodes();
 		this.setupBoldItalicIDs();
@@ -81,7 +81,7 @@ public class CustomFontRendererUtil extends CustomFont {
 			color = (color & 0xFCFCFC) >> 2 | color & 0xFF000000;
 		}
 
-		CustomFont.CharData[] currentData = this.charData;
+		UtilCustomFont.CharData[] currentData = this.charData;
 		float alpha = (float) (color >> 24 & 255) / 255f;
 		boolean randomCase = false, bold = false, italic = false, strikethrough = false, underline = false, render = true;
 		x *= 2;
@@ -194,7 +194,7 @@ public class CustomFontRendererUtil extends CustomFont {
 			return 0;
 		}
 
-		CustomFont.CharData[] currentData = this.charData;
+		UtilCustomFont.CharData[] currentData = this.charData;
 		float alpha = (float) (color >> 24 & 255) / 255f;
 		boolean randomCase = false, bold = false, italic = false, strikethrough = false, underline = false, render = true;
 		x *= 2;
@@ -306,7 +306,7 @@ public class CustomFontRendererUtil extends CustomFont {
 			return 0;
 		}
 
-		CustomFont.CharData[] currentData = this.charData;
+		UtilCustomFont.CharData[] currentData = this.charData;
 		float alpha = (float) (color >> 24 & 0xFF) / 255f;
 		boolean randomCase = false, bold = false, italic = false, strikethrough = false, underline = false, render = true;
 		x *= 2;
@@ -417,7 +417,7 @@ public class CustomFontRendererUtil extends CustomFont {
 		}
 
 		float width = 0;
-		CustomFont.CharData[] currentData = charData;
+		UtilCustomFont.CharData[] currentData = charData;
 		boolean bold = false, italic = false;
 
 		for (int index = 0; index < text.length(); index++) {
@@ -441,7 +441,7 @@ public class CustomFontRendererUtil extends CustomFont {
 		}
 
 		float width = 0;
-		CustomFont.CharData[] currentData = charData;
+		UtilCustomFont.CharData[] currentData = charData;
 		boolean bold = false, italic = false;
 
 		for (int index = 0; index < text.length(); index++) {

@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.feature.render.FeatureAmbience;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -80,7 +80,7 @@ public class WorldClient extends World
 
         if (this.getGameRules().getBoolean("doDaylightCycle"))
         {
-            if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class) != null && Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class).isEnabled() && FeatureAmbience.timeToggle)
+            if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class) != null && SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class).isEnabled() && FeatureAmbience.timeToggle)
                 this.setWorldTime((long) FeatureAmbience.time);
             else
                 this.setWorldTime(this.getWorldTime() + 1L);
@@ -434,7 +434,7 @@ public class WorldClient extends World
             this.getGameRules().setOrCreateGameRule("doDaylightCycle", "true");
         }
 
-        if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class) != null && Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class).isEnabled() && FeatureAmbience.timeToggle)
+        if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class) != null && SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureAmbience.class).isEnabled() && FeatureAmbience.timeToggle)
             super.setWorldTime((long) FeatureAmbience.time);
         else
             super.setWorldTime(time);

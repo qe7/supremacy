@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.feature.movement.FeatureSafeWalk;
 import gay.nns.client.impl.feature.other.FeatureScaffold;
 import net.minecraft.block.Block;
@@ -456,7 +456,7 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = (this.onGround && (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureScaffold.class).isEnabled() || Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureSafeWalk.class).isEnabled()) && FeatureScaffold.safeWalk && this == Minecraft.getMinecraft().thePlayer) || (this.onGround && this.isSneaking() && this instanceof EntityPlayer);
+            boolean flag = (this.onGround && (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureScaffold.class).isEnabled() || SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureSafeWalk.class).isEnabled()) && FeatureScaffold.safeWalk && this == Minecraft.getMinecraft().thePlayer) || (this.onGround && this.isSneaking() && this instanceof EntityPlayer);
 
             if (flag)
             {

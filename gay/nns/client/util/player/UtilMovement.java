@@ -3,7 +3,7 @@ package gay.nns.client.util.player;
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 
-public class MovementUtil {
+public class UtilMovement {
 
 	public static double getBaseMoveSpeed() {
 		double baseSpeed = 0.2875D;

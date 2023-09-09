@@ -1,6 +1,6 @@
 package gay.nns.client.impl.ui.clickgui;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.setting.Setting;
@@ -10,9 +10,9 @@ import gay.nns.client.impl.setting.SettingColor;
 import gay.nns.client.impl.setting.SettingMode;
 import gay.nns.client.impl.setting.SettingSlider;
 import gay.nns.client.impl.ui.clickgui.comp.*;
-import gay.nns.client.util.font.CustomFontRendererUtil;
-import gay.nns.client.util.render.AnimateUtil;
-import gay.nns.client.util.render.ScissorUtil;
+import gay.nns.client.util.font.UtilCustomFontRenderer;
+import gay.nns.client.util.render.UtilAnimate;
+import gay.nns.client.util.render.UtilScissor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,7 +37,7 @@ public class GuiClick extends GuiScreen {
 
     // Scroll variables
     private float scrollY;
-    private final AnimateUtil scrollAnimate = new AnimateUtil(0, 1);
+    private final UtilAnimate scrollAnimate = new UtilAnimate(0, 1);
 
     // List of components (settings) to be displayed on the GUI
     public final List<Comp<?>> comps = new ArrayList<>();
@@ -60,9 +60,9 @@ public class GuiClick extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Font renderers
-        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("clean");
-        CustomFontRendererUtil robotoSmall = Core.getSingleton().getFontUtil().getFont("menu");
-        CustomFontRendererUtil robotoSmallBold = Core.getSingleton().getFontUtil().getFont("menubold");
+        UtilCustomFontRenderer roboto = SupremacyCore.getSingleton().getFontUtil().getFont("clean");
+        UtilCustomFontRenderer robotoSmall = SupremacyCore.getSingleton().getFontUtil().getFont("menu");
+        UtilCustomFontRenderer robotoSmallBold = SupremacyCore.getSingleton().getFontUtil().getFont("menubold");
 
         // Dragging behavior
         if (dragging) {
@@ -112,14 +112,14 @@ public class GuiClick extends GuiScreen {
         robotoSmallBold.drawStringWithShadow("Settings", posX + 100 + 4, posY + 30 - 2, new Color(204, 204, 203, 255).getRGB());
 
         offset = 32;
-        for (Feature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
+        for (Feature m : SupremacyCore.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
 //            Gui.drawRect(posX + 12, posY + offset + 1, posX + 87, posY + 12 + offset,new Color(0, 0, 0, 255).getRGB());
             robotoSmall.drawStringWithShadow(m.getFeatureInfo().name().replace("_", " "),(int)posX + 14, (int)(posY + 5) + offset, m.isEnabled() ? new Color(162, 162, 161).getRGB() : new Color(79, 81, 82).getRGB());
             offset += 12;
         }
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        ScissorUtil.prepareScissorBox(posX + 100, posY + 35, width - 10, height - 10);
+        UtilScissor.prepareScissorBox(posX + 100, posY + 35, width - 10, height - 10);
 
         float componentHeight = (float) comps.stream().mapToDouble(Comp::getHeight).sum();
         scrollY += ((float) Mouse.getDWheel() / 120) * 10;
@@ -149,7 +149,7 @@ public class GuiClick extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        CustomFontRendererUtil roboto = Core.getSingleton().getFontUtil().getFont("clean");
+        UtilCustomFontRenderer roboto = SupremacyCore.getSingleton().getFontUtil().getFont("clean");
 
         if (isInside(mouseX, mouseY, posX, posY + 20, width, height) && !isInside(mouseX, mouseY, posX + 10 - 1, posY + 30 - 1, posX + 90 + 1, height - 10 + 1) && !isInside(mouseX, mouseY, posX + 100 - 1, posY + 30 - 1, width - 10 + 1, height - 10 + 1) && mouseButton == 0) {
             dragging = true;
@@ -166,7 +166,7 @@ public class GuiClick extends GuiScreen {
             offset += (float) (roboto.getStringWidth(category.getName()) + 6);
         }
         offset = 32;
-        for (Feature m : Core.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
+        for (Feature m : SupremacyCore.getSingleton().getFeatureManager().getFeatureFromCategory(selectedCategory)) {
             if (isInside(mouseX, mouseY, posX + 12, posY + offset + 1, posX + 87, posY + 12 + offset)) {
                 if (mouseButton == 0 && !m.getFeatureInfo().name().equalsIgnoreCase("ClickGUI")) {
                     m.toggle();
@@ -174,7 +174,7 @@ public class GuiClick extends GuiScreen {
                 if (mouseButton == 1) {
                     comps.clear();
                     scrollY = 0;
-                    for (Setting<?, ?> setting : Core.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
+                    for (Setting<?, ?> setting : SupremacyCore.getSingleton().getSettingManager().getSettingsFromType(m.getClass())) {
                         if (setting instanceof SettingMode settingMode) {
                             comps.add(new CompDropdown(this, m, settingMode));
                         }

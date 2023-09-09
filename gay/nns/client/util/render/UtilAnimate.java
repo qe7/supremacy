@@ -1,12 +1,12 @@
 package gay.nns.client.util.render;
 
-public class AnimateUtil {
+public class UtilAnimate {
 
 	private double value;
 	private float speed;
 	private long lastRenderTime;
 
-	public AnimateUtil(double value, float speed) {
+	public UtilAnimate(double value, float speed) {
 		this.value = value;
 		this.speed = speed;
 	}

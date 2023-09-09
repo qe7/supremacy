@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public class CustomFont {
+public class UtilCustomFont {
 
 	float imgSize = 512;
 	CharData[] charData = new CharData[256];
@@ -16,7 +16,7 @@ public class CustomFont {
 	int fontHeight = -1, charOffset = 0;
 	DynamicTexture tex;
 
-	public CustomFont(Font font, boolean antiAlias, boolean fractionalMetrics) {
+	public UtilCustomFont(Font font, boolean antiAlias, boolean fractionalMetrics) {
 		this.font = font;
 		this.antiAlias = antiAlias;
 		this.fractionalMetrics = fractionalMetrics;

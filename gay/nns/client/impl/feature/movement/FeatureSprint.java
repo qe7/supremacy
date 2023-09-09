@@ -1,6 +1,6 @@
 package gay.nns.client.impl.feature.movement;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
@@ -37,7 +37,7 @@ public class FeatureSprint extends Feature {
 	public void onUpdate(final EventUpdate updateEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
-		if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureScaffold.class).isEnabled()) {
+		if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureScaffold.class).isEnabled()) {
 			if (mc.gameSettings.keyBindSprint.isKeyDown())
 				mc.gameSettings.keyBindSprint.setKeyPressed(false);
 			mc.thePlayer.setSprinting(false);

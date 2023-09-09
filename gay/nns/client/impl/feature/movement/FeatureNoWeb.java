@@ -7,7 +7,7 @@ import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
 import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.impl.event.player.EventUpdate;
-import gay.nns.client.util.player.MovementUtil;
+import gay.nns.client.util.player.UtilMovement;
 
 @FeatureInfo(name = "NoWeb", description = "Prevents you from getting slowed down by webs", category = FeatureCategory.MOVEMENT)
 public class FeatureNoWeb extends Feature {
@@ -35,7 +35,7 @@ public class FeatureNoWeb extends Feature {
 		if (mc.thePlayer.isInWeb) {
 			mc.thePlayer.motionY = 0.0D;
 			if (mc.thePlayer.moveForward != 0 || mc.thePlayer.moveStrafing != 0)
-				MovementUtil.setSpeed(speed);
+				UtilMovement.setSpeed(speed);
 		}
 	}
 

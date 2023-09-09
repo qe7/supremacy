@@ -1,6 +1,6 @@
 package gay.nns.client.impl.feature.render;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
@@ -8,7 +8,7 @@ import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.*;
 import gay.nns.client.impl.event.game.EventKeyInput;
 import gay.nns.client.impl.event.render.EventRender2D;
-import gay.nns.client.util.player.MovementUtil;
+import gay.nns.client.util.player.UtilMovement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -81,7 +81,7 @@ public class FeatureInterface extends Feature {
 
         this.setSuffix("Default");
 
-        List<Feature> featureList = new ArrayList<>(Core.getSingleton().getFeatureManager().getEnabledFeatures());
+        List<Feature> featureList = new ArrayList<>(SupremacyCore.getSingleton().getFeatureManager().getEnabledFeatures());
         ScaledResolution sr = render2DEvent.scaledResolution();
         FontRenderer fr = mc.fontRendererObj;
 
@@ -89,14 +89,14 @@ public class FeatureInterface extends Feature {
         if (time.startsWith("0")) {
             time = time.replaceFirst("0", "");
         }
-        String watermark = Core.getSingleton().getName() + " §r§w" + Core.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
+        String watermark = SupremacyCore.getSingleton().getName() + " §r§w" + SupremacyCore.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
         watermark = watermark.replace("&", "§");
 
         fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
 
         coordinates = (int) mc.thePlayer.posX + ", " + (int) mc.thePlayer.posY + ", " + (int) mc.thePlayer.posZ;
 
-        bps = String.valueOf(Math.round(MovementUtil.getBPS() * 100.0) / 100.0);
+        bps = String.valueOf(Math.round(UtilMovement.getBPS() * 100.0) / 100.0);
 
         int infoOffset = fr.FONT_HEIGHT - 1;
         if (info) {

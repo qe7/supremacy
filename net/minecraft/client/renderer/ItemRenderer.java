@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer;
 
-import gay.nns.client.api.core.Core;
+import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.event.render.EventRenderItem;
 import gay.nns.client.impl.feature.render.FeatureAnimation;
 import gay.nns.client.impl.feature.render.FeatureViewModel;
@@ -307,7 +307,7 @@ public class ItemRenderer {
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
 
-            if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureViewModel.class).isEnabled()) {
+            if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureViewModel.class).isEnabled()) {
                 GlStateManager.translate(FeatureViewModel.x, FeatureViewModel.y, FeatureViewModel.z);
             }
 
@@ -318,7 +318,7 @@ public class ItemRenderer {
                 boolean useItem = itemInUseCount > 0;
 
                 final EventRenderItem event = new EventRenderItem(enumaction, useItem, f, partialTicks, f1, itemToRender);
-                Core.getSingleton().getEventBus().post(event);
+                SupremacyCore.getSingleton().getEventBus().post(event);
                 enumaction = event.getEnumAction();
                 useItem = event.isUseItem();
                 f = event.getAnimationProgression();
@@ -339,7 +339,7 @@ public class ItemRenderer {
                             break;
 
                         case BLOCK:
-                            if (Core.getSingleton().getFeatureManager().getFeatureFromType(FeatureAnimation.class).isEnabled()) {
+                            if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureAnimation.class).isEnabled()) {
                                 switch (FeatureAnimation.blockingAnimation.toLowerCase()) {
                                     case "1.7" -> {
                                         this.transformFirstPersonItem(f, f1);
