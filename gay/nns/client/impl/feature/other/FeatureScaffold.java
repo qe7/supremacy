@@ -88,18 +88,6 @@ public class FeatureScaffold extends AbstractFeature {
 		String blocks = "blocks: " + getBlockCount() + " | " + getBlockSlot();
 
 		fr.drawStringWithShadow(blocks, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth(blocks) / 2), (float) mc.displayHeight / 4 + 10, -1);
-//
-//		fr.drawStringWithShadow("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + mc.thePlayer.rotationYaw + " pitch: " + mc.thePlayer.rotationPitch) / 2), (float) mc.displayHeight / 4 + 20, -1);
-//
-//		fr.drawStringWithShadow("yaw: " + yaw + " pitch: " + pitch, (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("yaw: " + yaw + " pitch: " + pitch) / 2), (float) mc.displayHeight / 4 + 30, -1);
-//
-//		if (blockData != null) {
-//			fr.drawStringWithShadow("facing: " + blockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("facing: " + blockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 40, -1);
-//		}
-//
-//		if (prevBlockData != null) {
-//			fr.drawStringWithShadow("prev facing: " + prevBlockData.getFacing().getName(), (float) mc.displayWidth / 4 - ((float) fr.getStringWidth("prev facing: " + prevBlockData.getFacing().getName()) / 2), (float) mc.displayHeight / 4 + 50, -1);
-//		}
 	}
 
 	@Subscribe

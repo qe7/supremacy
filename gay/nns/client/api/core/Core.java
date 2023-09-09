@@ -21,7 +21,7 @@ public final class Core {
 	private final SettingManager settingManager;
 	private final FontUtil fontUtil;
 
-	public Core() {
+	Core() {
 		this.eventBus = new EventBus();
 
 		this.featureManager = new FeatureManager();
@@ -44,12 +44,6 @@ public final class Core {
 		authors = new String[]{"Shae", "Ahru"};
 	}
 
-	public static Core getSingleton() {
-		if (singleton == null)
-			return new Core();
-		return singleton;
-	}
-
 	public void initialize() {
 		featureManager.initialize();
 
@@ -58,6 +52,10 @@ public final class Core {
 		fontUtil.initialize();
 
 		Minecraft.getMinecraft().getSession().setUsername(getName());
+	}
+
+	public static Core getSingleton() {
+		return singleton;
 	}
 
 	public String getName() {
@@ -99,5 +97,4 @@ public final class Core {
 	public FontUtil getFontUtil() {
 		return fontUtil;
 	}
-
 }
