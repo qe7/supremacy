@@ -29,9 +29,13 @@ public class ManagerRotation {
             event.setPitch(rotations.y);
 
             if (SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureRotate.class).isEnabled()) {
-                Minecraft.getMinecraft().thePlayer.rotationYawHead = rotations.x;
-                Minecraft.getMinecraft().thePlayer.renderYawOffset = rotations.x;
-                Minecraft.getMinecraft().thePlayer.rotationPitchHead = rotations.y;
+                if (FeatureRotate.rotateHead) {
+                    Minecraft.getMinecraft().thePlayer.rotationYawHead = rotations.x;
+                    Minecraft.getMinecraft().thePlayer.rotationPitchHead = rotations.y;
+                }
+
+                if (FeatureRotate.rotateBody)
+                    Minecraft.getMinecraft().thePlayer.renderYawOffset = rotations.x;
             }
 
             rotations = null;

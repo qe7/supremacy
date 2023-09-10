@@ -505,6 +505,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         GlStateManager.popMatrix();
         String s = SupremacyCore.getSingleton().getName() + " " + SupremacyCore.getSingleton().getVersion() + " (by " + Arrays.toString(SupremacyCore.getSingleton().getAuthors()) + ")";
 
+        s = s.replace("&", "\u00a7");
+
         if (Reflector.FMLCommonHandler_getBrandings.exists()) {
             Object object = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);
             List<String> list = Lists.<String>reverse((List) Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, new Object[]{Boolean.valueOf(true)}));

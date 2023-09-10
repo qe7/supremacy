@@ -57,12 +57,12 @@ public class FeatureSpeed extends Feature {
 	}
 
 	@Subscribe
-	public void onRender(final EventRender2D render2DEvent) {
+	public void onRender(final EventRender2D ignoredRender2DEvent) {
 		this.setSuffix(mode);
 	}
 
 	@Subscribe
-	public void onMotion(final EventPreMotion motionEvent) {
+	public void onMotion(final EventPreMotion ignoredMotionEvent) {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 		if (mc.thePlayer.isInWater() && waterCheck) return;

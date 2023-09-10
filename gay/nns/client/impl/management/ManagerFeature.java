@@ -3,6 +3,7 @@ package gay.nns.client.impl.management;
 import gay.nns.client.impl.feature.combat.FeatureKillAura;
 import gay.nns.client.impl.feature.combat.FeatureVelocity;
 import gay.nns.client.impl.feature.exploit.FeatureAntiVoid;
+import gay.nns.client.impl.feature.exploit.FeatureDisabler;
 import gay.nns.client.impl.feature.exploit.FeatureFastBow;
 import gay.nns.client.impl.feature.ghost.FeatureAimAssist;
 import gay.nns.client.impl.feature.ghost.FeatureAutoClicker;
@@ -77,6 +78,7 @@ public class ManagerFeature implements FeatureManagerApi {
 				/* Exploit */
 				new FeatureFastBow(),
 				new FeatureAntiVoid(),
+				new FeatureDisabler(),
 
 				new FeatureClickGUI()
 		);
