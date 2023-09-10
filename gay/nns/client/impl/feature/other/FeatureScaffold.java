@@ -36,31 +36,9 @@ public class FeatureScaffold extends Feature {
 	@Serialize(name = "Safe_Walk")
 	@SettingBoolean
 	public static boolean safeWalk = true;
-
-	@Serialize(name = "Ray_Trace")
-	@SettingBoolean
-	public boolean rayTrace = true;
-
-	@Serialize(name = "Limit_Speed")
-	@SettingBoolean
-	public boolean limitSpeed = true;
-
-	@Serialize(name = "Mode")
-	@SettingMode(modes = {"Vanilla", "Hypixel", "Cancer"})
-	public String mode = "Vanilla";
-
-	@Serialize(name = "Place_Delay")
-	@SettingSlider(min = 0, max = 1000, increment = 1)
-	public double placeDelay = 0;
-
-	@Serialize(name = "Rotation_Speed")
-	@SettingSlider(min = 0, max = 20, increment = 1)
-	public double rotationSpeed = 17;
-
 	private final UtilChat chatUtil = new UtilChat();
 	private final UtilTimer timerUtil = new UtilTimer();
 	private final UtilTimer spinTimerUtil = new UtilTimer();
-
 	private final List<Block> badBlocks = List.of(
 			Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava,
 			Blocks.enchanting_table, Blocks.carpet, Blocks.glass_pane, Blocks.stained_glass_pane,
@@ -75,10 +53,23 @@ public class FeatureScaffold extends Feature {
 			Blocks.yellow_flower, Blocks.ladder, Blocks.furnace, Blocks.sand, Blocks.cactus, Blocks.dispenser,
 			Blocks.noteblock, Blocks.dropper, Blocks.crafting_table, Blocks.web, Blocks.pumpkin, Blocks.sapling,
 			Blocks.cobblestone_wall, Blocks.oak_fence, Blocks.beacon);
-
 	private final List<Block> invalidBlocks = List.of(
 			Blocks.air, Blocks.water, Blocks.fire, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tallgrass);
-
+	@Serialize(name = "Ray_Trace")
+	@SettingBoolean
+	public boolean rayTrace = true;
+	@Serialize(name = "Limit_Speed")
+	@SettingBoolean
+	public boolean limitSpeed = true;
+	@Serialize(name = "Mode")
+	@SettingMode(modes = {"Vanilla", "Hypixel", "Cancer"})
+	public String mode = "Vanilla";
+	@Serialize(name = "Place_Delay")
+	@SettingSlider(min = 0, max = 1000, increment = 1)
+	public double placeDelay = 0;
+	@Serialize(name = "Rotation_Speed")
+	@SettingSlider(min = 0, max = 20, increment = 1)
+	public double rotationSpeed = 17;
 	private BlockData blockData, prevBlockData;
 	private float yaw, pitch;
 	private int oldSlot = -1;
@@ -180,7 +171,7 @@ public class FeatureScaffold extends Feature {
 			timerUtil.reset();
 			return;
 		}
-		if (timerUtil.hasTimeElapsed(UtilMath.getRandom((int) placeDelay, (int) placeDelay + 10))) {
+		if (blockData.getFacing().equals(EnumFacing.UP) || timerUtil.hasTimeElapsed(UtilMath.getRandom((int) placeDelay, (int) placeDelay + 10))) {
 			if (getBlockSlot() != -1) {
 				if (mc.thePlayer.inventory.currentItem != getBlockSlot()) {
 					mc.thePlayer.inventory.currentItem = getBlockSlot();
