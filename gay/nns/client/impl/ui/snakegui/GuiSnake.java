@@ -24,7 +24,6 @@ public class GuiSnake extends GuiScreen {
 	private int appleX = UtilMath.getRandom(0, WIDTH_AND_HEIGHT / 10);
 	private int appleY = UtilMath.getRandom(0, WIDTH_AND_HEIGHT / 10);
 
-	private int snakeSpeed = 8;
 	private int snakeLength = 3;
 	private int highScore = 0;
 
@@ -47,6 +46,18 @@ public class GuiSnake extends GuiScreen {
 		drawRect((float) width / 2 - 150, (float) height / 2 - 150, (float) width / 2 + 150, (float) height / 2 + 150, new Color(25, 25, 24, 255).getRGB());
 		drawRect((float) width / 2 - 150 + 0.5f, (float) height / 2 - 150 + 0.5f, (float) width / 2 + 150 - 0.5f, (float) height / 2 + 150 - 0.5f, new Color(19, 19, 18, 255).getRGB());
 
+		drawCenteredString(mc.fontRendererObj, "Score: " + snakeLength, (float) width / 2, 10, -1);
+
+		drawCenteredString(mc.fontRendererObj, "High score: " + highScore, (float) width / 2, 20, -1);
+
+		drawCenteredString(mc.fontRendererObj, "Press ESC to exit", (float) width / 2, 30, -1);
+
+		drawCenteredString(mc.fontRendererObj, "Press WASD or arrow keys to move", (float) width / 2, 40, -1);
+
+		drawCenteredString(mc.fontRendererObj, "Press R to restart", (float) width / 2, 50, -1);
+
+		drawCenteredString(mc.fontRendererObj, "Press P to pause", (float) width / 2, 60, -1);
+
 		if (ended) {
 			if (snakeLength >= highScore) {
 				drawCenteredString(mc.fontRendererObj, "You reached " + highScore + ", this is now your highest score!", (float) width / 2, (float) height / 2 - 60, -1);
@@ -63,6 +74,7 @@ public class GuiSnake extends GuiScreen {
 			return;
 		}
 
+		int snakeSpeed = 8;
 		if (utilTimer.hasTimeElapsed(1000 / snakeSpeed)) {
 			moveSnake(direction);
 			utilTimer.reset();
@@ -75,18 +87,6 @@ public class GuiSnake extends GuiScreen {
 		for (int i = 0; i < snakeLength; i++) {
 			drawRect((float) width / 2 - 150 + snakeXs[i] * 10, (float) height / 2 - 150 + snakeYs[i] * 10, (float) width / 2 - 150 + snakeXs[i] * 10 + 10, (float) height / 2 - 150 + snakeYs[i] * 10 + 10, new Color(0, 255, 0, 255).getRGB());
 		}
-
-		drawCenteredString(mc.fontRendererObj, "Score: " + snakeLength, (float) width / 2, 10, -1);
-
-		drawCenteredString(mc.fontRendererObj, "High score: " + highScore, (float) width / 2, 20, -1);
-
-		drawCenteredString(mc.fontRendererObj, "Press ESC to exit", (float) width / 2, 30, -1);
-
-		drawCenteredString(mc.fontRendererObj, "Press WASD or arrow keys to move", (float) width / 2, 40, -1);
-
-		drawCenteredString(mc.fontRendererObj, "Press R to restart", (float) width / 2, 50, -1);
-
-		drawCenteredString(mc.fontRendererObj, "Press P to pause", (float) width / 2, 60, -1);
 	}
 
 	@Override

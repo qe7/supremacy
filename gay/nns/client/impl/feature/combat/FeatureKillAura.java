@@ -68,7 +68,7 @@ public class FeatureKillAura extends Feature {
     private final ArrayList<Packet> packets = new ArrayList<>();
 
     public boolean afterAttack;
-    List<Entity> entities;
+    private List<Entity> entities;
     private Entity mcTarget;
     private boolean isBlocking = false;
     private int hitTicks;
@@ -114,7 +114,7 @@ public class FeatureKillAura extends Feature {
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
-        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityPlayer || e instanceof EntityLiving) || e.getDistanceToEntity(mc.thePlayer) > 6.0f || e.isDead);
+        entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityPlayer || e instanceof EntityLiving) || e.getDistanceToEntity(mc.thePlayer) > attackRange || e.isDead);
 
         if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < attackRange)
             mcTarget = entities.get(0);
