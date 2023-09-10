@@ -11,6 +11,7 @@ import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketSend;
 import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.player.EventSlowdown;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.impl.event.render.EventRenderItem;
 import gay.nns.client.util.math.UtilMath;
@@ -28,6 +29,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
@@ -92,7 +94,7 @@ public class FeatureKillAura extends Feature {
     protected void onDisable() {
         packets.clear();
         if (autoBlock.equalsIgnoreCase("hypixel") && this.isBlocking) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+            mc.gameSettings.keyBindUseItem.setKeyPressed(false);
             this.isBlocking = false;
         }
         super.onDisable();
@@ -147,7 +149,7 @@ public class FeatureKillAura extends Feature {
 
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                mc.gameSettings.keyBindUseItem.setKeyPressed(false);
                 isBlocking = false;
             }
             hitTicks = 0;
@@ -201,18 +203,24 @@ public class FeatureKillAura extends Feature {
                     event.setCancelled(true);
                 }
             } else if (!packets.isEmpty()) {
-                mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                this.isBlocking = false;
                 for (Packet<?> packet1 : packets) {
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
+                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange((int) (mc.thePlayer.inventory.currentItem % 8 + Math.floor(Math.random() * 7 + 1))));
+                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                 }
                 packets.clear();
-                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                mc.gameSettings.keyBindUseItem.setKeyPressed(true);
                 this.isBlocking = true;
             }
         }
     }
 
+    @Subscribe
+    public void slowDownEvent(EventSlowdown event) {
+        if(mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && this.isBlocking) {
+            event.setCancelled(true);
+        }
+    }
 }
 
 
