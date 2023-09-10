@@ -30,6 +30,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2f;
 import java.awt.*;
@@ -165,12 +166,14 @@ public class FeatureKillAura extends Feature {
         else mcTarget = mc.thePlayer;
 
         if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
+            GL11.glPushMatrix();
             String string = mcTarget.getName();
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), new Color(255, 255, 255, 150).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), Color.white.getRGB());
             string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), new Color(255, 255, 255, 150).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), Color.white.getRGB());
             string = "HT: " + hitTicks;
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), new Color(255, 255, 255, 150).getRGB());
+            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), Color.white.getRGB());
+            GL11.glPopMatrix();
         }
     }
 
