@@ -42,14 +42,18 @@ public class FeatureNoRotate extends Feature {
 		if (packetReceiveEvent.getPacket() instanceof S08PacketPlayerPosLook packet) {
 			switch (mode.toLowerCase()) {
 				case "packet" -> {
-					packetReceiveEvent.setCancelled(true);
-					mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(packet.getX(), packet.getY(), packet.getZ(), packet.getYaw(), packet.getPitch(), mc.thePlayer.onGround));
-					mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
+					if (packet.getYaw() != mc.thePlayer.rotationYaw || packet.getPitch() != mc.thePlayer.rotationPitch) {
+						packetReceiveEvent.setCancelled(true);
+						mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(packet.getX(), packet.getY(), packet.getZ(), packet.getYaw(), packet.getPitch(), mc.thePlayer.onGround));
+						mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
+					}
 				}
 				case "edit" -> {
-					packet.yaw = mc.thePlayer.rotationYaw;
-					packet.pitch = mc.thePlayer.rotationPitch;
-					mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
+					if (packet.getYaw() != mc.thePlayer.rotationYaw || packet.getPitch() != mc.thePlayer.rotationPitch) {
+						packet.yaw = mc.thePlayer.rotationYaw;
+						packet.pitch = mc.thePlayer.rotationPitch;
+						mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
+					}
 				}
 			}
 		}
