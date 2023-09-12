@@ -20,6 +20,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
@@ -161,6 +162,16 @@ public class FeatureScaffold extends Feature {
 				Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
 			double speed = currentSpeed * 0.95D;
+			float direction = mc.thePlayer.rotationYaw;
+			double motionX = -Math.sin(direction / 180.0F * Math.PI) * speed;
+			double motionZ = Math.cos(direction / 180.0F * Math.PI) * speed;
+			mc.thePlayer.motionX = motionX;
+			mc.thePlayer.motionZ = motionZ;
+		}
+		if (limitSpeed && mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) &&
+				Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode()) && mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+			double speed = currentSpeed * 0.85D;
 			float direction = mc.thePlayer.rotationYaw;
 			double motionX = -Math.sin(direction / 180.0F * Math.PI) * speed;
 			double motionZ = Math.cos(direction / 180.0F * Math.PI) * speed;
