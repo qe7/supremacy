@@ -44,8 +44,8 @@ public class GuiClick extends GuiScreen {
 
     public GuiClick() {
         dragging = false;
-        posX = getScaledRes().getScaledWidth() / 2f - 150;
-        posY = getScaledRes().getScaledHeight() / 2f - 100;
+        posX = getScaledRes().getScaledWidth() / 2f - 295;
+        posY = getScaledRes().getScaledHeight() / 2f - 300;
         selectedCategory = FeatureCategory.COMBAT;
     }
 

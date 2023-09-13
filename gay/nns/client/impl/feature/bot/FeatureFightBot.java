@@ -9,6 +9,7 @@ import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketReceive;
+import gay.nns.client.impl.event.player.EventMessageSent;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.impl.feature.render.FeatureInterface;
@@ -39,6 +40,10 @@ public class FeatureFightBot extends Feature {
 	@SettingBoolean()
 	public boolean debug = false;
 
+	@SerializeSetting(name = "AutoJoin")
+	@SettingBoolean()
+	public boolean autoJoin = true;
+
 	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"Classic"})
 	public String mode = "Classic";
@@ -50,6 +55,14 @@ public class FeatureFightBot extends Feature {
 	@SerializeSetting(name = "Break Length (Minutes)")
 	@SettingSlider(min = 0, max = 60, increment = 1)
 	public double breakTimeLength = 5;
+
+	@SerializeSetting(name = "TargetRange")
+	@SettingSlider(min = 1.0, max = 128.0, increment = 1.0)
+	public double targetRange = 32.0;
+
+	@SerializeSetting(name = "SwingInterval (ms)")
+	@SettingSlider(min = 1.0, max = 20.0, increment = 1.0)
+	public double swingInterval = 10.0;
 
 	private final FontRenderer fontRenderer = mc.fontRendererObj;
 	private final UtilChat chatUtil = new UtilChat();
@@ -150,9 +163,9 @@ public class FeatureFightBot extends Feature {
 
 		List<Entity> entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
 		entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
-		entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityPlayer) || e.getDistanceToEntity(mc.thePlayer) > 32.0f || e.isDead);
+		entities.removeIf(e -> e == mc.thePlayer || !(e instanceof EntityPlayer) || e.getDistanceToEntity(mc.thePlayer) > 128.0f || e.isDead);
 
-		if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < 128.0f)
+		if (!entities.isEmpty() && entities.get(0).getDistanceToEntity(mc.thePlayer) < targetRange)
 			mcTarget = entities.get(0);
 		else mcTarget = mc.thePlayer;
 
@@ -213,10 +226,10 @@ public class FeatureFightBot extends Feature {
 					mc.gameSettings.keyBindJump.setKeyPressed(mc.thePlayer.isCollidedHorizontally);
 
 					if (mcTarget.getDistanceToEntity(mc.thePlayer) < 6.0f) {
-						if (swingTimer.hasTimeElapsed((1000 / 12))) {
+						if (swingTimer.hasTimeElapsed((long) (1000 / swingInterval))) {
 							UtilPlayer.sendClick(0, true);
 						}
-						if (swingTimer.hasTimeElapsed((1000 / 12) + 30)) {
+						if (swingTimer.hasTimeElapsed((long) ((1000 / swingInterval) + 30))) {
 							UtilPlayer.sendClick(0, false);
 							swingTimer.reset();
 						}
@@ -237,7 +250,7 @@ public class FeatureFightBot extends Feature {
 				mc.gameSettings.keyBindRight.setKeyPressed(false);
 
 				if (!hasJoined && joinTimer.hasTimeElapsed(500)) {
-					mc.thePlayer.sendChatMessage("Good game!");
+					mc.thePlayer.sendChatMessage("GG");
 					sendToNewGame();
 					hasJoined = true;
 					joinTimer.reset();
@@ -283,7 +296,18 @@ public class FeatureFightBot extends Feature {
 
 	}
 
+	@Subscribe
+	public void onMessageSent(final EventMessageSent eventMessageSent) {
+		if (eventMessageSent.getMessage().contains("/leave") || eventMessageSent.getMessage().contains("/lobby")) {
+			currentGameState = gameState.LOBBY;
+		}
+	}
+
 	private void sendToNewGame() {
+		if (!autoJoin) {
+			chatUtil.chatCommand("AutoJoin is disabled.");
+			return;
+		}
 		chatUtil.chatCommand("Sending command to join game.");
 		mc.thePlayer.sendChatMessage("/play duels_classic_duel");
 	}
