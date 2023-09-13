@@ -26,11 +26,9 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
+import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
@@ -48,7 +46,7 @@ public class FeatureKillAura extends Feature {
     public static boolean keepSprint = false;
 
     @Serialize(name = "Auto_Block")
-    @SettingMode(modes = {"None", "Fake", "Hypixel"})
+    @SettingMode(modes = {"None", "Fake", "Hypixel", "Minemen"})
     public String autoBlock = "None";
 
     @Serialize(name = "Attack_Range")
@@ -95,7 +93,7 @@ public class FeatureKillAura extends Feature {
     protected void onDisable() {
         packets.clear();
         if (autoBlock.equalsIgnoreCase("hypixel") && this.isBlocking) {
-            mc.gameSettings.keyBindUseItem.setKeyPressed(false);
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             this.isBlocking = false;
         }
         super.onDisable();
@@ -134,12 +132,15 @@ public class FeatureKillAura extends Feature {
 
             SupremacyCore.getSingleton().getRotationManager().setRotation(smoothRotations);
 
-            /*switch (autoBlock) {
+            switch (autoBlock) {
                 case "Fake" -> {
                 }
                 case "Hypixel" -> {
+
+
                 }
-            }*/
+            }
+
 
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
@@ -150,7 +151,7 @@ public class FeatureKillAura extends Feature {
 
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
-                mc.gameSettings.keyBindUseItem.setKeyPressed(false);
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                 isBlocking = false;
             }
             hitTicks = 0;
@@ -199,29 +200,38 @@ public class FeatureKillAura extends Feature {
 
         if (mcTarget == null || mc.thePlayer == null || mcTarget == mc.thePlayer) return;
 
-        if (autoBlock.equals("Hypixel")) {
-            if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                if (packet instanceof C03PacketPlayer) {
-                    packets.add(packet);
-                    event.setCancelled(true);
-                }
-            } else if (!packets.isEmpty()) {
-                for (Packet<?> packet1 : packets) {
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange((int) (mc.thePlayer.inventory.currentItem % 8 + Math.floor(Math.random() * 7 + 1))));
+        switch (autoBlock) {
+            case "Hypixel" -> {
+                if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                    if (packet instanceof C03PacketPlayer) {
+                        packets.add(packet);
+                        event.setCancelled(true);
+                    }
+                } else if (!packets.isEmpty()) {
+                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
                     mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    for (Packet<?> packet1 : packets) {
+                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
+                    }
+                    packets.clear();
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                    this.isBlocking = true;
                 }
-                packets.clear();
-                mc.gameSettings.keyBindUseItem.setKeyPressed(true);
-                this.isBlocking = true;
+            }
+
+
+            case "Minemen" -> {
+
             }
         }
+
     }
+
 
     @Subscribe
     public void slowDownEvent(EventSlowdown event) {
-        if(mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && this.isBlocking) {
-            event.setCancelled(true);
+        if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && this.isBlocking) {
+            //event.setCancelled(true);
         }
     }
 }
