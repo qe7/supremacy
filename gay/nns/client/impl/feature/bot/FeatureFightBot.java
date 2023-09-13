@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@SerializeFeature(name = "BotAutoPlay", description = "Plays the game for you.", category = FeatureCategory.BOT)
-public class FeatureBotAutoPlay extends Feature {
+@SerializeFeature(name = "FightBot", description = "Plays the game for you.", category = FeatureCategory.BOT)
+public class FeatureFightBot extends Feature {
 
 	@SerializeSetting(name = "Debug")
 	@SettingBoolean()
@@ -68,7 +68,7 @@ public class FeatureBotAutoPlay extends Feature {
 	public gameState currentGameState = gameState.LOBBY;
 	public gameState previousGameState = null;
 
-	public FeatureBotAutoPlay() {
+	public FeatureFightBot() {
 		super();
 	}
 
@@ -92,46 +92,48 @@ public class FeatureBotAutoPlay extends Feature {
 		if (mc.theWorld == null) return;
 		if (mc.thePlayer == null) return;
 
+		this.setSuffix(mode);
+
 		if (currentGameState == gameState.BREAK) {
-			fontRenderer.drawStringWithShadow("§8(§r≧◡≦§8) §w" + this.getFeatureInfo().name() + " is on break for " + (int) (breakTimeLength * 60) + " seconds.", (float) eventRender2D.scaledResolution().getScaledWidth() / 2 - ((float) fontRenderer.getStringWidth("§8(§r≧◡≦§8) §w" + this.getFeatureInfo().name() + " is on break for " + (int) (breakTimeLength * 60) + " seconds.") / 2), (float) eventRender2D.scaledResolution().getScaledHeight() / 2 + 60, UtilColor.getColor(FeatureInterface.colorMode, eventRender2D.scaledResolution().getScaledHeight() / 2 + 60 * 10, Color.CYAN, (float) FeatureInterface.saturation, (float) FeatureInterface.brightness).getRGB());
-			fontRenderer.drawStringWithShadow("§8(§r≧◡≦§8) §w" + "Remaining seconds: " + (int) ((breakTimeLength * 60) - Math.round(((float) breakTimer.getTime() / 1000))), (float) eventRender2D.scaledResolution().getScaledWidth() / 2 - ((float) fontRenderer.getStringWidth("§8(§r≧◡≦§8) §w" + "Remaining seconds: ") / 2), (float) eventRender2D.scaledResolution().getScaledHeight() / 2 + 70, UtilColor.getColor(FeatureInterface.colorMode, eventRender2D.scaledResolution().getScaledHeight() / 2 + 70 * 20, Color.CYAN, (float) FeatureInterface.saturation, (float) FeatureInterface.brightness).getRGB());
+			renderDebugLine(this.getFeatureInfo().name() + " is on break for " + (int) (breakTimeLength * 60) + " seconds.", (int) eventRender2D.scaledResolution().getScaledWidth() / 2 - ((int) fontRenderer.getStringWidth("§8(§r≧◡≦§8) §w" + this.getFeatureInfo().name() + " is on break for " + (int) (breakTimeLength * 60) + " seconds.") / 2), (int) eventRender2D.scaledResolution().getScaledHeight() / 2 + 60, 0);
+			renderDebugLine("Remaining seconds: " + (int) ((breakTimeLength * 60) - Math.round(((float) breakTimer.getTime() / 1000))), (int) eventRender2D.scaledResolution().getScaledWidth() / 2 - ((int) fontRenderer.getStringWidth("§8(§r≧◡≦§8) §w" + "Remaining seconds: ") / 2), (int) eventRender2D.scaledResolution().getScaledHeight() / 2 + 70, 0);
 		}
 
 		if (!debug) return;
 
 		count = 11;
-		renderDebugLine("Current Game State: §7" + currentGameState, count, 0);
-			renderDebugLine("Has Joined: §7" + hasJoined, count, 1);
-			renderDebugLine("Join Timer: §7" + joinTimer.getTime(), count, 1);
-			renderDebugLine("Break Timer: §7" + breakTimer.getTime(), count, 1);
-			renderDebugLine("Swing Timer: §7" + swingTimer.getTime(), count, 1);
-			renderDebugLine("Previous Game State: §7" + previousGameState, count, 1);
-			renderDebugLine("Stats: §7", count, 1);
-				renderDebugLine("Wins: §7" + win, count, 2);
-				renderDebugLine("Losses: §7" + loss, count, 2);
-				renderDebugLine("W/L: §7" + ((float) win / (float) loss), count, 2);
-			renderDebugLine("Local Game Info: §7", count, 1);
-				renderDebugLine("Frames/s: §7" + Minecraft.getDebugFPS(), count, 2);
-				renderDebugLine("Ping: §7" + mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()).getResponseTime(), count, 2);
-			renderDebugLine("Local Player Info: §7", count, 1);
-				renderDebugLine("Name: §7" + mc.thePlayer.getName(), count, 2);
-				renderDebugLine("Health: §7" + mc.thePlayer.getHealth(), count, 2);
-				renderDebugLine("Armor: §7" + mc.thePlayer.getTotalArmorValue(), count, 2);
-				renderDebugLine("Rotation: §7" + MathHelper.wrapAngleTo180_float(mc.thePlayer.getRotationYawHead()) + ", " + mc.thePlayer.rotationPitch, count, 2);
-				renderDebugLine("On Ground: §7" + mc.thePlayer.onGround, count, 2);
-				renderDebugLine("Sprinting: §7" + mc.thePlayer.isSprinting(), count, 2);
-				renderDebugLine("Sneaking: §7" + mc.thePlayer.isSneaking(), count, 2);
+		renderDebugLine("Current Game State: §7" + currentGameState, 2, count, 0);
+			renderDebugLine("Has Joined: §7" + hasJoined, 2, count, 1);
+			renderDebugLine("Join Timer: §7" + joinTimer.getTime(), 2, count, 1);
+			renderDebugLine("Break Timer: §7" + breakTimer.getTime(), 2, count, 1);
+			renderDebugLine("Swing Timer: §7" + swingTimer.getTime(), 2, count, 1);
+			renderDebugLine("Previous Game State: §7" + previousGameState, 2, count, 1);
+			renderDebugLine("Stats: §7",  2, count, 1);
+				renderDebugLine("Wins: §7" + win, 2, count, 2);
+				renderDebugLine("Losses: §7" + loss, 2, count, 2);
+				renderDebugLine("W/L: §7" + ((float) win / (float) loss), 2, count, 2);
+			renderDebugLine("Local Game Info: §7", 2, count, 1);
+				renderDebugLine("Frames/s: §7" + Minecraft.getDebugFPS(), 2, count, 2);
+				renderDebugLine("Ping: §7" + mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()).getResponseTime(), 2, count, 2);
+			renderDebugLine("Local Player Info: §7", 2, count, 1);
+				renderDebugLine("Name: §7" + mc.thePlayer.getName(), 2, count, 2);
+				renderDebugLine("Health: §7" + mc.thePlayer.getHealth(), 2, count, 2);
+				renderDebugLine("Armor: §7" + mc.thePlayer.getTotalArmorValue(), 2, count, 2);
+				renderDebugLine("Rotation: §7" + MathHelper.wrapAngleTo180_float(mc.thePlayer.getRotationYawHead()) + ", " + mc.thePlayer.rotationPitch, 2, count, 2);
+				renderDebugLine("On Ground: §7" + mc.thePlayer.onGround, 2, count, 2);
+				renderDebugLine("Sprinting: §7" + mc.thePlayer.isSprinting(), 2, count, 2);
+				renderDebugLine("Sneaking: §7" + mc.thePlayer.isSneaking(), 2, count, 2);
 			if (mc.thePlayer.getHeldItem() != null)
-				renderDebugLine("Held Item: §7" + mc.thePlayer.inventory.getCurrentItem().getDisplayName(), count, 2);
+				renderDebugLine("Held Item: §7" + mc.thePlayer.inventory.getCurrentItem().getDisplayName(), 2, count, 2);
 		if (mcTarget != null && mcTarget != mc.thePlayer) {
-			renderDebugLine("Target Player Info: §7", count, 1);
-				renderDebugLine("Name: §7" + mcTarget.getName(), count, 2);
-				renderDebugLine("Health: §7" + ((EntityPlayer) mcTarget).getHealth(), count, 2);
-				renderDebugLine("Armor: §7" + ((EntityPlayer) mcTarget).getTotalArmorValue(), count, 2);
-				renderDebugLine("Rotation: §7" + MathHelper.wrapAngleTo180_float(mcTarget.getRotationYawHead()) + ", " + mcTarget.rotationPitch, count, 2);
-				renderDebugLine("On Ground: §7" + mcTarget.onGround, count, 2);
-				renderDebugLine("Sprinting: §7" + mcTarget.isSprinting(), count, 2);
-				renderDebugLine("Sneaking: §7" + mcTarget.isSneaking(), count, 2);
+			renderDebugLine("Target Player Info: §7", 2, count, 1);
+				renderDebugLine("Name: §7" + mcTarget.getName(), 2, count, 2);
+				renderDebugLine("Health: §7" + ((EntityPlayer) mcTarget).getHealth(), 2, count, 2);
+				renderDebugLine("Armor: §7" + ((EntityPlayer) mcTarget).getTotalArmorValue(), 2, count, 2);
+				renderDebugLine("Rotation: §7" + MathHelper.wrapAngleTo180_float(mcTarget.getRotationYawHead()) + ", " + mcTarget.rotationPitch, 2, count, 2);
+				renderDebugLine("On Ground: §7" + mcTarget.onGround, 2, count, 2);
+				renderDebugLine("Sprinting: §7" + mcTarget.isSprinting(), 2, count, 2);
+				renderDebugLine("Sneaking: §7" + mcTarget.isSneaking(), 2, count, 2);
 		}
 	}
 
@@ -286,11 +288,11 @@ public class FeatureBotAutoPlay extends Feature {
 		mc.thePlayer.sendChatMessage("/play duels_classic_duel");
 	}
 
-	private void renderDebugLine(String text, int y, int indented) {
+	private void renderDebugLine(String text, int x, int y, int indented) {
 		String indent = "    ";
 		String sillyText = "≧◡≦";
 		String prefix = "§8(§r" + sillyText + "§8) §w";
-		fontRenderer.drawStringWithShadow(indent.repeat(indented) + prefix + text, 2, y, UtilColor.getColor(FeatureInterface.colorMode, count * 20, Color.CYAN, (float) FeatureInterface.saturation, (float) FeatureInterface.brightness).getRGB());
+		fontRenderer.drawStringWithShadow(indent.repeat(indented) + prefix + text, x, y, UtilColor.getColor(FeatureInterface.colorMode, count * 20, Color.CYAN, (float) FeatureInterface.saturation, (float) FeatureInterface.brightness).getRGB());
 		count += 10;
 	}
 

@@ -1,6 +1,6 @@
 package gay.nns.client.impl.management;
 
-import gay.nns.client.impl.feature.bot.FeatureBotAutoPlay;
+import gay.nns.client.impl.feature.bot.FeatureFightBot;
 import gay.nns.client.impl.feature.combat.FeatureKillAura;
 import gay.nns.client.impl.feature.combat.FeatureVelocity;
 import gay.nns.client.impl.feature.exploit.FeatureAntiVoid;
@@ -77,7 +77,7 @@ public class ManagerFeature {
 				new FeatureAutoPlay(),
 
 				/* Bot */
-				new FeatureBotAutoPlay(),
+				new FeatureFightBot(),
 
 				/* Exploit */
 				new FeatureFastBow(),
