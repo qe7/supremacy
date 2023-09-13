@@ -31,10 +31,11 @@ public class AutoPlay extends Feature {
 
 	@Subscribe
 	public void onPacketReceived(final EventPacketReceive eventPacketReceive) {
-		if (eventPacketReceive.getPacket() instanceof S02PacketChat s02) {
-			if (s02.getChatComponent().getUnformattedText().contains("play again?")) {
-				mc.thePlayer.sendChatMessage("/play " + mode);
-			}
+		if (mc.theWorld == null || mc.thePlayer == null) return;
+		if (!(eventPacketReceive.getPacket() instanceof S02PacketChat s02)) return;
+
+		if (s02.getChatComponent().getUnformattedText().contains("play again?")) {
+			mc.thePlayer.sendChatMessage("/play " + mode);
 		}
 	}
 
