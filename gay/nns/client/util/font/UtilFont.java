@@ -7,6 +7,8 @@ import java.awt.*;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class UtilFont {
 	public volatile int completed;
@@ -36,11 +38,14 @@ public class UtilFont {
 	}
 
 	public boolean hasLoaded() {
-		return completed >= 3;
+		return completed >= 1;
 	}
 
 	public void initialize() {
-		new Thread(() -> {
+
+		Executor executor = Executors.newSingleThreadExecutor();
+
+		executor.execute(() -> {
 			Map<String, Font> locationMap = new HashMap<>();
 
 			//Fan Fonts
@@ -50,13 +55,7 @@ public class UtilFont {
 			menuFontBold_ = getFont(locationMap, "Roboto-Bold.ttf", 13);
 
 			completed++;
-		}).start();
-		new Thread(() -> {
-			completed++;
-		}).start();
-		new Thread(() -> {
-			completed++;
-		}).start();
+		});
 
 		while (!hasLoaded()) {
 			try {
