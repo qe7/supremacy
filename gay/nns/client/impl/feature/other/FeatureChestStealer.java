@@ -2,9 +2,9 @@ package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.UtilTimer;
@@ -17,18 +17,18 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-@FeatureInfo(name = "Stealer", description = "Automatically steals items from chests")
+@SerializeFeature(name = "Stealer", description = "Automatically steals items from chests")
 public class FeatureChestStealer extends Feature {
 
-	@Serialize(name = "Title_Check")
+	@SerializeSetting(name = "Title_Check")
 	@SettingBoolean
 	public boolean titleCheck = true;
 
-	@Serialize(name = "No_Move")
+	@SerializeSetting(name = "No_Move")
 	@SettingBoolean
 	public boolean noMove = true;
 
-	@Serialize(name = "Delay")
+	@SerializeSetting(name = "Delay")
 	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double delay = 0;
 

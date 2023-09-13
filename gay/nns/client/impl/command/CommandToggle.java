@@ -1,11 +1,11 @@
 package gay.nns.client.impl.command;
 
 import gay.nns.client.api.command.Command;
-import gay.nns.client.api.command.interfaces.CommandInfo;
+import gay.nns.client.api.command.interfaces.SerializeCommand;
 import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.feature.Feature;
 
-@CommandInfo(name = "Toggle", description = "Toggles a feature.", usage = "toggle <feature>", aliases = {"t"})
+@SerializeCommand(name = "Toggle", description = "Toggles a feature.", usage = "toggle <feature>", aliases = {"t"})
 public class CommandToggle extends Command {
 
 	public CommandToggle() {

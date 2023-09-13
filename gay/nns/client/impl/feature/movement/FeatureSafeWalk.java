@@ -2,9 +2,9 @@ package gay.nns.client.impl.feature.movement;
 
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 
-@FeatureInfo(name = "SafeWalk", description = "Prevents you from falling off blocks", category = FeatureCategory.MOVEMENT)
+@SerializeFeature(name = "SafeWalk", description = "Prevents you from falling off blocks", category = FeatureCategory.MOVEMENT)
 public class FeatureSafeWalk extends Feature {
 
 	public FeatureSafeWalk() {

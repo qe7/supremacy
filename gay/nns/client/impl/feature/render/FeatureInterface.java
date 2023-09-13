@@ -4,11 +4,12 @@ import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.*;
 import gay.nns.client.impl.event.game.EventKeyInput;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.player.UtilMovement;
+import gay.nns.client.util.render.UtilColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -20,50 +21,50 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
-@FeatureInfo(name = "Interface", description = "HUD", category = FeatureCategory.RENDER)
+@SerializeFeature(name = "Interface", description = "HUD", category = FeatureCategory.RENDER)
 public class FeatureInterface extends Feature {
 
-    @Serialize(name = "Arraylist_Color")
+    @SerializeSetting(name = "Arraylist_Color")
     @SettingColor
-    public Color color = new Color(255, 255, 255);
+    public static Color color = new Color(255, 255, 255);
 
-    @Serialize(name = "Background_Color")
+    @SerializeSetting(name = "Background_Color")
     @SettingColor
     public Color backgroundColor = new Color(0, 0, 0, 100);
 
-    @Serialize(name = "Color_Mode")
+    @SerializeSetting(name = "Color_Mode")
     @SettingMode(modes = {"Default", "Category", "Rainbow", "Astolfo"})
-    public String colorMode = "Default";
+    public static String colorMode = "Default";
 
-    @Serialize(name = "Outline_Mode")
+    @SerializeSetting(name = "Outline_Mode")
     @SettingMode(modes = {"Left", "Right", "Top", "Bottom", "All", "None"})
     public String arraylistMode = "All";
 
-    @Serialize(name = "Suffix_Mode")
+    @SerializeSetting(name = "Suffix_Mode")
     @SettingMode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Space", "None"})
     public String suffixMode = "Parenthesis";
 
-    @Serialize(name = "Info")
+    @SerializeSetting(name = "Info")
     @SettingBoolean
     public boolean info = false;
 
-    @Serialize(name = "Arraylist_Brightness")
+    @SerializeSetting(name = "Arraylist_Brightness")
     @SettingSlider(min = 0, max = 1, increment = 0.05)
-    public double brightness = 0.7;
+    public static double brightness = 0.7;
 
-    @Serialize(name = "Arraylist_Saturation")
+    @SerializeSetting(name = "Arraylist_Saturation")
     @SettingSlider(min = 0, max = 1, increment = 0.05)
-    public double saturation = 0.5;
+    public static double saturation = 0.5;
 
-    @Serialize(name = "Offset")
+    @SerializeSetting(name = "Offset")
     @SettingSlider(min = 0, max = 10, increment = 1)
     public double offset = 1;
 
-    @Serialize(name = "Spacing")
+    @SerializeSetting(name = "Spacing")
     @SettingSlider(min = 0, max = 10, increment = 1)
     public double spacing = 2;
 
-    @Serialize(name = "Background")
+    @SerializeSetting(name = "Background")
     @SettingBoolean
     public boolean background = true;
 
@@ -92,7 +93,7 @@ public class FeatureInterface extends Feature {
         String watermark = SupremacyCore.getSingleton().getName() + " §r§w" + SupremacyCore.getSingleton().getVersion() + " §7(" + time.toUpperCase() + ")";
         watermark = watermark.replace("&", "§");
 
-        fr.drawStringWithShadow(watermark, 2.f, 2.f, getColor().getRGB());
+        fr.drawStringWithShadow(watermark, 2.f, 2.f, UtilColor.getColor(colorMode, 1, color, (float) saturation, (float) brightness).getRGB());
 
         coordinates = (int) mc.thePlayer.posX + ", " + (int) mc.thePlayer.posY + ", " + (int) mc.thePlayer.posZ;
 
@@ -100,18 +101,9 @@ public class FeatureInterface extends Feature {
 
         int infoOffset = fr.FONT_HEIGHT - 1;
         if (info) {
-            fr.drawStringWithShadow("XYZ: §7" + coordinates , 2, sr.getScaledHeight() - infoOffset, getColor().getRGB());
-            fr.drawStringWithShadow("FPS: §7" + Minecraft.getDebugFPS(), 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT, getColor().getRGB());
-            fr.drawStringWithShadow("BPS: §7" + bps, 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT * 2, getColor().getRGB());
-
-            List<PotionEffect> potions = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
-            potions.sort(Comparator.comparingInt(m -> fr.getStringWidth("§7" + m.getEffectName() + " " + m.getAmplifier() + " : " + m.getDuration())));
-
-            int timeOffset = 1;
-            for (PotionEffect potion : potions) {
-//                fr.drawStringWithShadow(potion.getEffectName(), sr.getScaledWidth() - fr.getStringWidth(potion.getEffectName()) - infoOffset, sr.getScaledHeight() - infoOffset - timeOffset, getColor().getRGB());
-                timeOffset += fr.FONT_HEIGHT;
-            }
+            fr.drawStringWithShadow("XYZ: §7" + coordinates , 2, sr.getScaledHeight() - infoOffset, UtilColor.getColor(colorMode, 1, color, (float) saturation, (float) brightness).getRGB());
+            fr.drawStringWithShadow("FPS: §7" + Minecraft.getDebugFPS(), 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT, UtilColor.getColor(colorMode, 1, color, (float) saturation, (float) brightness).getRGB());
+            fr.drawStringWithShadow("BPS: §7" + bps, 2, sr.getScaledHeight() - infoOffset - fr.FONT_HEIGHT * 2, UtilColor.getColor(colorMode, 1, color, (float) saturation, (float) brightness).getRGB());
         }
 
         switch (suffixMode) {
@@ -134,35 +126,35 @@ public class FeatureInterface extends Feature {
 
                 switch (arraylistMode.toLowerCase()) {
                     case "left" ->
-                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                     case "right" ->
-                            Gui.drawRect((float) (sr.getScaledWidth() - offset + 1), (float) (y - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - offset + 1), (float) (y - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                     case "top" -> {
                         if (featureList.indexOf(feature) == 0)
-                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y - 2), (float) ((float) sr.getScaledWidth() - offset + 1), (float) (y - 1), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y - 2), (float) ((float) sr.getScaledWidth() - offset + 1), (float) (y - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                     }
                     case "bottom" -> {
                         if (featureList.indexOf(feature) == featureList.size() - 1)
-                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), (float) ((float) sr.getScaledWidth() - offset + 1), (float) (y + fr.FONT_HEIGHT + spacing), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), (float) ((float) sr.getScaledWidth() - offset + 1), (float) (y + fr.FONT_HEIGHT + spacing), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                     }
                     case "all" -> {
                         // top
                         if (featureList.indexOf(feature) == 0)
-                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 2), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y - 1), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 2), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                         // bottom
                         if (featureList.indexOf(feature) == featureList.size() - 1)
-                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                         // left
-                        Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), getColor(feature, (int) y * 10).getRGB());
+                        Gui.drawRect((float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y + fr.FONT_HEIGHT + spacing - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                         // right
-                        Gui.drawRect((float) (sr.getScaledWidth() - offset + 1), (float) (y - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), getColor(feature, (int) y * 10).getRGB());
+                        Gui.drawRect((float) (sr.getScaledWidth() - offset + 1), (float) (y - 1), (float) ((float) sr.getScaledWidth() - offset + 2), (float) (y + fr.FONT_HEIGHT + spacing - 1), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                         // middle? ig lol idfk
                         if (featureList.indexOf(feature) != 0)
-                            Gui.drawRect((float) (sr.getScaledWidth() - lastLength - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y), getColor(feature, (int) y * 10).getRGB());
+                            Gui.drawRect((float) (sr.getScaledWidth() - lastLength - offset - 2), (float) (y - 1), (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset - 1), (float) (y), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                     }
                 }
 
-                fr.drawStringWithShadow(arraylist, (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset), (float) ((float) y + (spacing / 2)), getColor(feature, (int) y * 10).getRGB());
+                fr.drawStringWithShadow(arraylist, (float) (sr.getScaledWidth() - fr.getStringWidth(arraylist) - offset), (float) ((float) y + (spacing / 2)), UtilColor.getColor(feature, (int) y * 20, colorMode, color, (float) saturation, (float) brightness).getRGB());
                 lastLength = fr.getStringWidth(arraylist);
                 y += fr.FONT_HEIGHT + spacing;
             }
@@ -188,62 +180,6 @@ public class FeatureInterface extends Feature {
     @Subscribe
     public void onKey(final EventKeyInput keyEvent) {
         // todo: handle TabUI key inputs
-    }
-
-    private Color getColor(Feature feature, int index) {
-        switch (colorMode) {
-            case "Default" -> {
-                return color;
-            }
-            case "Category" -> {
-                return feature.getFeatureInfo().category().getColor();
-            }
-            case "Rainbow" -> {
-                return generateRainbowColor(index);
-            }
-            case "Astolfo" -> {
-                return generateAstolfoColor(index);
-            }
-        }
-        return Color.white;
-    }
-
-    private Color getColor() {
-        switch (colorMode) {
-            case "Default" -> {
-                return color;
-            }
-            case "Category" -> {
-                return Color.white;
-            }
-            case "Rainbow" -> {
-                return generateRainbowColor(1);
-            }
-            case "Astolfo" -> {
-                return generateAstolfoColor(1);
-            }
-        }
-        return Color.white;
-    }
-
-    private Color generateRainbowColor(int i) {
-        float hue = (System.currentTimeMillis() + i) % 4000;
-        hue /= 4000f;
-        return Color.getHSBColor(hue, (float) (saturation), (float) (brightness));
-    }
-
-    private Color generateAstolfoColor(int i) {
-        float speed = 4000f;
-        float hue = (float) (System.currentTimeMillis() % 4000) + (i);
-        while (hue > speed) {
-            hue -= speed;
-        }
-        hue /= speed;
-        if (hue > 0.5) {
-            hue = 0.5f - (hue - 0.5f);
-        }
-        hue += 0.5f;
-        return Color.getHSBColor(hue, (float) (saturation), (float) (brightness));
     }
 
 }

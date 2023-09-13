@@ -9,6 +9,7 @@ public enum FeatureCategory {
     RENDER("Render", new Color(213, 161, 143)),
     OTHER("Other", new Color(222, 174, 174)),
     GHOST("Ghost", new Color(224, 217, 206)),
+    BOT("Bot", new Color(156, 173, 222)),
     EXPLOIT("Exploit", new Color(156, 173, 222));
 
     final String name;

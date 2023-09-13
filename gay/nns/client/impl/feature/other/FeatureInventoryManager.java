@@ -2,10 +2,10 @@ package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.UtilTimer;
@@ -21,42 +21,42 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-@FeatureInfo(name = "Manager", description = "Automatically sorts your inventory")
+@SerializeFeature(name = "Manager", description = "Automatically sorts your inventory")
 public class FeatureInventoryManager extends Feature {
 
-	@Serialize(name = "Mode")
+	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"Normal", "Spoof", "Inventory"})
 	public String mode = "Inventory";
 
-	@Serialize(name = "No_Move")
+	@SerializeSetting(name = "No_Move")
 	@SettingBoolean
 	public boolean noMove = true;
 
-	@Serialize(name = "Delay")
+	@SerializeSetting(name = "Delay")
 	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double delay = 0;
 
-	@Serialize(name = "Sword_Slot")
+	@SerializeSetting(name = "Sword_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double swordSlot = 1;
 
-	@Serialize(name = "Pickaxe_Slot")
+	@SerializeSetting(name = "Pickaxe_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double pickaxeSlot = 2;
 
-	@Serialize(name = "Axe_Slot")
+	@SerializeSetting(name = "Axe_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double axeSlot = 3;
 
-	@Serialize(name = "Shovel_Slot")
+	@SerializeSetting(name = "Shovel_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double shovelSlot = 4;
 
-	@Serialize(name = "Block_Slot")
+	@SerializeSetting(name = "Block_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double blockSlot = 5;
 
-	@Serialize(name = "Food_Slot")
+	@SerializeSetting(name = "Food_Slot")
 	@SettingSlider(min = 1, max = 9, increment = 1)
 	public static double foodSlot = 9;
 

@@ -1,10 +1,10 @@
 package gay.nns.client.impl.command;
 
 import gay.nns.client.api.command.Command;
-import gay.nns.client.api.command.interfaces.CommandInfo;
+import gay.nns.client.api.command.interfaces.SerializeCommand;
 import gay.nns.client.api.core.SupremacyCore;
 
-@CommandInfo(name = "Help", description = "Displays a list of commands.", usage = ".help", aliases = {"?"})
+@SerializeCommand(name = "Help", description = "Displays a list of commands.", usage = ".help", aliases = {"?"})
 public class CommandHelp extends Command {
 
 	public CommandHelp() {

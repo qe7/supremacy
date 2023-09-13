@@ -3,10 +3,10 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.impl.event.player.EventUpdate;
 
-@FeatureInfo(name = "Yaw", description = "Sets the Yaw of the local player.", category = FeatureCategory.OTHER)
+@SerializeFeature(name = "Yaw", description = "Sets the Yaw of the local player.", category = FeatureCategory.OTHER)
 public class FeatureYaw extends Feature {
 
 	public FeatureYaw() {

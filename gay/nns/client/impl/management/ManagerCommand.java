@@ -1,7 +1,6 @@
 package gay.nns.client.impl.management;
 
 import gay.nns.client.api.command.Command;
-import gay.nns.client.api.command.interfaces.CommandManagerApi;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.impl.command.*;
 import gay.nns.client.impl.event.player.EventMessageSent;
@@ -11,7 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagerCommand implements CommandManagerApi {
+public class ManagerCommand {
 
 	private Map<String, Command> Commands;
 
@@ -39,17 +38,14 @@ public class ManagerCommand implements CommandManagerApi {
 		return CommandAdder;
 	}
 
-	@Override
 	public Collection<Command> getCommands() {
 		return Commands.values();
 	}
 
-	@Override
 	public Command getCommandByName(String name) {
 		return Commands.get(name);
 	}
 
-	@Override
 	public Command getCommandFromType(Class<? extends Command> clazz) {
 		return Commands.values().stream().filter(command -> command.getClass().equals(clazz)).findFirst().orElse(null);
 	}

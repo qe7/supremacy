@@ -3,18 +3,18 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.impl.event.packet.EventPacketReceive;
 import gay.nns.client.impl.event.render.EventRender2D;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
-@FeatureInfo(name = "NoRotate", description = "Prevents you from rotating your player", category = FeatureCategory.OTHER)
+@SerializeFeature(name = "NoRotate", description = "Prevents you from rotating your player", category = FeatureCategory.OTHER)
 public class FeatureNoRotate extends Feature {
 
-	@Serialize(name = "Mode")
+	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"Packet", "Edit"})
 	public String mode = "Edit";
 

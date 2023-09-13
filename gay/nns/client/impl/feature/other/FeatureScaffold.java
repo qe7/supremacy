@@ -3,8 +3,8 @@ package gay.nns.client.impl.feature.other;
 import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.SettingSlider;
@@ -31,10 +31,10 @@ import javax.vecmath.Vector2f;
 import java.util.List;
 import java.util.Objects;
 
-@FeatureInfo(name = "Scaffold", description = "Automatically places blocks under you")
+@SerializeFeature(name = "Scaffold", description = "Automatically places blocks under you")
 public class FeatureScaffold extends Feature {
 
-	@Serialize(name = "Safe_Walk")
+	@SerializeSetting(name = "Safe_Walk")
 	@SettingBoolean
 	public static boolean safeWalk = true;
 	private final UtilChat chatUtil = new UtilChat();
@@ -56,19 +56,19 @@ public class FeatureScaffold extends Feature {
 			Blocks.cobblestone_wall, Blocks.oak_fence, Blocks.beacon);
 	private final List<Block> invalidBlocks = List.of(
 			Blocks.air, Blocks.water, Blocks.fire, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tallgrass);
-	@Serialize(name = "Ray_Trace")
+	@SerializeSetting(name = "Ray_Trace")
 	@SettingBoolean
 	public boolean rayTrace = true;
-	@Serialize(name = "Limit_Speed")
+	@SerializeSetting(name = "Limit_Speed")
 	@SettingBoolean
 	public boolean limitSpeed = true;
-	@Serialize(name = "Mode")
+	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"Vanilla", "Hypixel", "Cancer"})
 	public String mode = "Vanilla";
-	@Serialize(name = "Place_Delay")
+	@SerializeSetting(name = "Place_Delay")
 	@SettingSlider(min = 0, max = 1000, increment = 1)
 	public double placeDelay = 0;
-	@Serialize(name = "Rotation_Speed")
+	@SerializeSetting(name = "Rotation_Speed")
 	@SettingSlider(min = 0, max = 20, increment = 1)
 	public double rotationSpeed = 17;
 	private BlockData blockData, prevBlockData;

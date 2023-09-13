@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface FeatureInfo {
+public @interface SerializeFeature {
 
     String name() default "ERROR: No name provided";
     String description() default "ERROR: No description provided";

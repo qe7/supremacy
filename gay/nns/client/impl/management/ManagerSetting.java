@@ -45,7 +45,7 @@ public class ManagerSetting {
 
 	public void addToSettingManager(Object o) {
 		for (Field field : o.getClass().getFields()) {
-			if (field.isAnnotationPresent(Serialize.class)) {
+			if (field.isAnnotationPresent(SerializeSetting.class)) {
 				Class<? extends Annotation> settingType = field.getAnnotations()[1].annotationType();
 				Class<? extends Setting<?, ?>> setting = annotationToSetting.get(settingType);
 

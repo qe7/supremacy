@@ -4,7 +4,7 @@ package gay.nns.client.impl.feature.render;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.impl.event.render.Event3DRender;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
-@FeatureInfo(name = "ESP", category = FeatureCategory.RENDER, description = "Blah blah blah this isnt done")
+@SerializeFeature(name = "ESP", category = FeatureCategory.RENDER, description = "Blah blah blah this isnt done")
 public class FeatureESP extends Feature {
 
     public FeatureESP() {

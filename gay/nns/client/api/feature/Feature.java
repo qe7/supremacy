@@ -1,21 +1,21 @@
 package gay.nns.client.api.feature;
 
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.feature.interfaces.Toggleable;
 import gay.nns.client.api.core.SupremacyCore;
 import net.minecraft.client.Minecraft;
 
-public abstract class Feature implements gay.nns.client.api.feature.interfaces.Feature, Toggleable {
+public abstract class Feature implements Toggleable {
 
     protected final Minecraft mc = Minecraft.getMinecraft();
 
-    private final FeatureInfo featureInfo;
+    private final SerializeFeature serializeFeature;
     private boolean toggledState;
     private String suffix;
     private int key;
 
     protected Feature() {
-        this.featureInfo = getClass().getAnnotation(FeatureInfo.class);
+        this.serializeFeature = getClass().getAnnotation(SerializeFeature.class);
         this.key = getFeatureInfo().key();
         SupremacyCore.getSingleton().getSettingManager().addToSettingManager(this);
     }
@@ -37,12 +37,10 @@ public abstract class Feature implements gay.nns.client.api.feature.interfaces.F
             onDisable();
     }
 
-    @Override
     public boolean isEnabled() {
         return toggledState;
     }
 
-    @Override
     public void setEnabled(boolean enabled) {
         if(enabled)
             onEnable();
@@ -50,34 +48,28 @@ public abstract class Feature implements gay.nns.client.api.feature.interfaces.F
             onDisable();
     }
 
-    @Override
-    public FeatureInfo getFeatureInfo() {
-        if (featureInfo == null)
-            return getClass().getAnnotation(FeatureInfo.class);
-        return featureInfo;
+    public SerializeFeature getFeatureInfo() {
+        if (serializeFeature == null)
+            return getClass().getAnnotation(SerializeFeature.class);
+        return serializeFeature;
     }
 
-    @Override
     public boolean getToggleable() {
         return getFeatureInfo().toggleable();
     }
 
-    @Override
     public String getSuffix() {
         return suffix;
     }
 
-    @Override
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
 
-    @Override
     public int getKey() {
         return key;
     }
 
-    @Override
     public void setKey(int key) {
         this.key = key;
     }

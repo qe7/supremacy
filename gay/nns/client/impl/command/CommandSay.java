@@ -1,11 +1,11 @@
 package gay.nns.client.impl.command;
 
 import gay.nns.client.api.command.Command;
-import gay.nns.client.api.command.interfaces.CommandInfo;
+import gay.nns.client.api.command.interfaces.SerializeCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 
-@CommandInfo(name = "Say", description = "Sends a message to the chat.", usage = "say <message>")
+@SerializeCommand(name = "Say", description = "Sends a message to the chat.", usage = "say <message>")
 public class CommandSay extends Command {
 
 	public CommandSay() {

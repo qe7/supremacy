@@ -4,10 +4,10 @@ import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
@@ -15,18 +15,18 @@ import gay.nns.client.util.math.UtilMath;
 import gay.nns.client.util.player.UtilMovement;
 import org.lwjgl.input.Keyboard;
 
-@FeatureInfo(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
+@SerializeFeature(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
 public class FeatureSpeed extends Feature {
 
-	@Serialize(name = "Mode")
+	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop"})
 	public String mode = "Vanilla";
 
-	@Serialize(name = "Speed")
+	@SerializeSetting(name = "Speed")
 	@SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
 	public double speed = 0.3D;
 
-	@Serialize(name = "Water_Check")
+	@SerializeSetting(name = "Water_Check")
 	@SettingBoolean
 	public boolean waterCheck = true;
 

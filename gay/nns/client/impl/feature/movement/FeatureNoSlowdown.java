@@ -3,9 +3,9 @@ package gay.nns.client.impl.feature.movement;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.impl.event.packet.EventPacketSend;
 import gay.nns.client.impl.event.player.EventPostMotion;
 import gay.nns.client.impl.event.player.EventPreMotion;
@@ -21,10 +21,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import org.apache.commons.lang3.RandomUtils;
 
-@FeatureInfo(name = "NoSlowdown", description = "Prevents you from slowing down when you're blocking.", category = FeatureCategory.MOVEMENT)
+@SerializeFeature(name = "NoSlowdown", description = "Prevents you from slowing down when you're blocking.", category = FeatureCategory.MOVEMENT)
 public class FeatureNoSlowdown extends Feature {
 
-    @Serialize(name = "Mode")
+    @SerializeSetting(name = "Mode")
     @SettingMode(modes = {"Vanilla", "NCP", "Hypixel"})
     public String mode = "Vanilla";
 

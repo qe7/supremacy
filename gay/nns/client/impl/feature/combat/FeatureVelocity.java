@@ -3,10 +3,10 @@ package gay.nns.client.impl.feature.combat;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketReceive;
 import gay.nns.client.impl.event.player.EventUpdate;
@@ -18,22 +18,22 @@ import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-@FeatureInfo(name = "Velocity", category = FeatureCategory.COMBAT, description = "Manipulates velocity")
+@SerializeFeature(name = "Velocity", category = FeatureCategory.COMBAT, description = "Manipulates velocity")
 public class FeatureVelocity extends Feature {
 
-    @Serialize(name = "Mode")
+    @SerializeSetting(name = "Mode")
     @SettingMode(modes = {"Standard", "Grim"})
     public String mode = "Standard";
 
-    @Serialize(name = "Horizontal")
+    @SerializeSetting(name = "Horizontal")
     @SettingSlider(min = -100, max = 100, increment = 1)
     public double horizontal = 0;
 
-    @Serialize(name = "Vertical")
+    @SerializeSetting(name = "Vertical")
     @SettingSlider(min = -100, max = 100, increment = 1)
     public double vertical = 0;
 
-    @Serialize(name = "Water_Check")
+    @SerializeSetting(name = "Water_Check")
     @SettingBoolean
     public boolean waterCheck = true;
     private boolean realVelocity, tookVelocity;

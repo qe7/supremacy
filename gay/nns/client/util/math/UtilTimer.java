@@ -4,9 +4,9 @@ public class UtilTimer {
 
 	private long lastMS = 0L;
 
-	public boolean hasTimeElapsed(long time, boolean reset) {
+	public boolean hasTimeElapsed(long milliSeconds, boolean reset) {
 		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastMS > time) {
+		if (currentTime - lastMS > milliSeconds) {
 			if (reset) {
 				reset();
 			}
@@ -15,11 +15,16 @@ public class UtilTimer {
 		return false;
 	}
 
-	public boolean hasTimeElapsed(long time) {
-		return System.currentTimeMillis() - lastMS > time;
+	public boolean hasTimeElapsed(long milliSeconds) {
+		return System.currentTimeMillis() - lastMS > milliSeconds;
 	}
 
 	public void reset() {
 		lastMS = System.currentTimeMillis();
 	}
+
+	public long getTime() {
+		return System.currentTimeMillis() - lastMS;
+	}
+
 }

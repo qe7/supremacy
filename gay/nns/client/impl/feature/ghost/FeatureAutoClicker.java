@@ -3,9 +3,9 @@ package gay.nns.client.impl.feature.ghost;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.util.math.UtilTimer;
@@ -13,30 +13,30 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.*;
 import org.lwjgl.input.Mouse;
 
-@FeatureInfo(name = "AutoClicker", category = FeatureCategory.GHOST, description = "Automatically clicks")
+@SerializeFeature(name = "AutoClicker", category = FeatureCategory.GHOST, description = "Automatically clicks")
 public class FeatureAutoClicker extends Feature {
 
-	@Serialize(name = "Left_Click")
+	@SerializeSetting(name = "Left_Click")
 	@SettingBoolean
 	public boolean leftClick = false;
 
-	@Serialize(name = "Right_Click")
+	@SerializeSetting(name = "Right_Click")
 	@SettingBoolean
 	public boolean rightClick = false;
 
-	@Serialize(name = "Left_Max_CPS")
+	@SerializeSetting(name = "Left_Max_CPS")
 	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double maxCPS = 18;
 
-	@Serialize(name = "Left_Min_CPS")
+	@SerializeSetting(name = "Left_Min_CPS")
 	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double minCPS = 14;
 
-	@Serialize(name = "Right_Max_CPS")
+	@SerializeSetting(name = "Right_Max_CPS")
 	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double rightMaxCPS = 18;
 
-	@Serialize(name = "Right_Min_CPS")
+	@SerializeSetting(name = "Right_Min_CPS")
 	@SettingSlider(min = 1, max = 20, increment = 1)
 	public double rightMinCPS = 14;
 

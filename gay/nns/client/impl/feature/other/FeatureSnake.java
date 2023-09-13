@@ -1,10 +1,10 @@
 package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.feature.Feature;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.impl.ui.snakegui.GuiSnake;
 
-@FeatureInfo(name = "Snake", description = "Snake!")
+@SerializeFeature(name = "Snake", description = "Snake!")
 public class FeatureSnake extends Feature {
 
 	private GuiSnake guiSnake;

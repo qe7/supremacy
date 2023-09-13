@@ -1,28 +1,28 @@
 package gay.nns.client.impl.feature.movement;
 
 import gay.nns.client.api.setting.annotations.SettingBoolean;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.impl.ui.clickgui.GuiClick;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.impl.event.player.EventUpdate;
 import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
-@FeatureInfo(name = "InventoryMove", description = "Allows you to walk on the screen", category = FeatureCategory.MOVEMENT)
+@SerializeFeature(name = "InventoryMove", description = "Allows you to walk on the screen", category = FeatureCategory.MOVEMENT)
 public class FeatureScreenWalk extends Feature {
 
-	@Serialize(name = "ClickGUI_only")
+	@SerializeSetting(name = "ClickGUI_only")
 	@SettingBoolean
 	public boolean clickGUIOnly = true;
 
-	@Serialize(name = "Rotate")
+	@SerializeSetting(name = "Rotate")
 	@SettingBoolean
 	public boolean rotate = true;
 
-	@Serialize(name = "Allow_Sprinting")
+	@SerializeSetting(name = "Allow_Sprinting")
 	@SettingBoolean
 	public boolean allowSprinting = true;
 

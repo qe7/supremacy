@@ -1,28 +1,26 @@
 package gay.nns.client.api.command;
 
 import gay.nns.client.util.chat.UtilChat;
-import gay.nns.client.api.command.interfaces.CommandInfo;
+import gay.nns.client.api.command.interfaces.SerializeCommand;
 
-public abstract class Command implements gay.nns.client.api.command.interfaces.Command {
+public abstract class Command {
 
-	private CommandInfo commandInfo;
+	private SerializeCommand serializeCommand;
 
 	protected final UtilChat chatUtil = new UtilChat();
 
 	protected Command() {
-		this.commandInfo = getClass().getAnnotation(CommandInfo.class);
+		this.serializeCommand = getClass().getAnnotation(SerializeCommand.class);
 	}
 
-	@Override
 	public void onCommand(String[] args) {
 		chatUtil.chatCommand("Command called: " + getCommandInfo().name());
 	}
 
-	@Override
-	public CommandInfo getCommandInfo() {
-		if (commandInfo == null)
-			commandInfo = getClass().getAnnotation(CommandInfo.class);
-		return commandInfo;
+	public SerializeCommand getCommandInfo() {
+		if (serializeCommand == null)
+			serializeCommand = getClass().getAnnotation(SerializeCommand.class);
+		return serializeCommand;
 	}
 
 }

@@ -3,10 +3,10 @@ package gay.nns.client.impl.feature.ghost;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.impl.event.player.EventUpdate;
 
-@FeatureInfo(name = "NoClickDelay", category = FeatureCategory.GHOST, description = "Removes the click delay")
+@SerializeFeature(name = "NoClickDelay", category = FeatureCategory.GHOST, description = "Removes the click delay")
 public class FeatureNoClickDelay extends Feature {
 
 	public FeatureNoClickDelay() {

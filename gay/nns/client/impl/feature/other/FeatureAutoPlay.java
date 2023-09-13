@@ -2,20 +2,20 @@ package gay.nns.client.impl.feature.other;
 
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.impl.event.packet.EventPacketReceive;
 import net.minecraft.network.play.server.S02PacketChat;
 
-@FeatureInfo(name = "AutoPlay", description = "Automatically joins a new game for you.")
-public class AutoPlay extends Feature {
+@SerializeFeature(name = "AutoPlay", description = "Automatically joins a new game for you.")
+public class FeatureAutoPlay extends Feature {
 
-	@Serialize(name = "Mode")
+	@SerializeSetting(name = "Mode")
 	@SettingMode(modes = {"solo_insane", "solo_normal", "teams_normal", "teams_insane"})
 	public String mode = "solo_insane";
 
-	public AutoPlay() {
+	public FeatureAutoPlay() {
 		super();
 	}
 

@@ -1,6 +1,6 @@
 package gay.nns.client.api.setting;
 
-import gay.nns.client.api.setting.annotations.Serialize;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 
 import java.lang.reflect.Field;
 
@@ -17,8 +17,8 @@ public abstract class Setting<A, V> {
 
 	public Setting(Field field, Object object) {
 		this.field = field;
-		this.name = field.getAnnotation(Serialize.class).name();
-		this.description = field.getAnnotation(Serialize.class).desc();
+		this.name = field.getAnnotation(SerializeSetting.class).name();
+		this.description = field.getAnnotation(SerializeSetting.class).desc();
 		this.annotation = (A) field.getAnnotations()[1];
 		this.object = object;
 	}

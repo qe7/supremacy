@@ -1,5 +1,6 @@
 package gay.nns.client.impl.management;
 
+import gay.nns.client.impl.feature.bot.FeatureBotAutoPlay;
 import gay.nns.client.impl.feature.combat.FeatureKillAura;
 import gay.nns.client.impl.feature.combat.FeatureVelocity;
 import gay.nns.client.impl.feature.exploit.FeatureAntiVoid;
@@ -14,7 +15,6 @@ import gay.nns.client.impl.feature.render.*;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureManagerApi;
 import gay.nns.client.impl.event.game.EventKeyInput;
 
 import gay.nns.client.impl.feature.combat.*;
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagerFeature implements FeatureManagerApi {
+public class ManagerFeature {
 
 	private Map<String, Feature> Features;
 
@@ -74,6 +74,10 @@ public class ManagerFeature implements FeatureManagerApi {
 				new FeatureInventoryManager(),
 				new FeatureScaffold(),
 				new FeatureSnake(),
+				new FeatureAutoPlay(),
+
+				/* Bot */
+				new FeatureBotAutoPlay(),
 
 				/* Exploit */
 				new FeatureFastBow(),
@@ -94,27 +98,18 @@ public class ManagerFeature implements FeatureManagerApi {
 		return FeatureAdder;
 	}
 
-	@Override
 	public Collection<Feature> getFeatures() {
 		return Features.values();
 	}
 
-	@Override
 	public Collection<Feature> getEnabledFeatures() {
 		return Features.values().stream().filter(Feature::isEnabled).toList();
 	}
 
-	@Override
-	public Feature getFeatureByName(String name) {
-		return Features.values().stream().filter(Feature -> Feature.getFeatureInfo().name().equalsIgnoreCase(name)).findFirst().orElse(null);
-	}
-
-	@Override
 	public Feature getFeatureFromType(Class<? extends Feature> clazz) {
 		return Features.values().stream().filter(feature -> feature.getClass().equals(clazz)).findFirst().orElse(null);
 	}
-
-	@Override
+	
 	public Collection<Feature> getFeatureFromCategory(FeatureCategory category) {
 		return Features.values().stream().filter(Feature -> Feature.getFeatureInfo().category().equals(category)).toList();
 	}
