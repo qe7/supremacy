@@ -14,6 +14,7 @@ import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.impl.feature.render.FeatureInterface;
 import gay.nns.client.util.chat.UtilChat;
 import gay.nns.client.util.math.UtilTimer;
+import gay.nns.client.util.player.UtilPlayer;
 import gay.nns.client.util.player.UtilRotation;
 import gay.nns.client.util.render.UtilColor;
 import net.minecraft.client.Minecraft;
@@ -210,24 +211,14 @@ public class FeatureBotAutoPlay extends Feature {
 					mc.gameSettings.keyBindJump.setKeyPressed(mc.thePlayer.isCollidedHorizontally);
 
 					if (mcTarget.getDistanceToEntity(mc.thePlayer) < 6.0f) {
-						/*if (swingTimer.hasTimeElapsed((1000 / 12))) {
+						if (swingTimer.hasTimeElapsed((1000 / 12))) {
 							UtilPlayer.sendClick(0, true);
 						}
 						if (swingTimer.hasTimeElapsed((1000 / 12) + 30)) {
 							UtilPlayer.sendClick(0, false);
 							swingTimer.reset();
-						}*/
-						if (mcTarget.getDistanceToEntity(mc.thePlayer) <= 4.2f) {
-							// check if hovering over a player
-							if (swingTimer.hasTimeElapsed((1000 / 12))) {
-								mc.playerController.attackEntity(mc.thePlayer, mcTarget);
-								mc.thePlayer.swingItem();
-							}
-						} else {
-							if (swingTimer.hasTimeElapsed((1000 / 12))) {
-								mc.thePlayer.swingItem();
-							}
 						}
+
 					} else {
 						swingTimer.reset();
 					}
