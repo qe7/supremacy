@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.impl.feature.combat.FeatureKillAura;
+import gay.nns.client.impl.feature.other.FeatureKeepSprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -1186,7 +1187,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                     {
                         if (i > 0) {
                             targetEntity.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F));
-                            if ((!FeatureKillAura.keepSprint && !SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureKillAura.class).isEnabled())) {
+                            if (!(SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureKeepSprint.class).isEnabled()) || (!FeatureKillAura.keepSprint && !SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureKillAura.class).isEnabled())) {
                                 this.motionX *= 0.6D;
                                 this.motionZ *= 0.6D;
                                 this.setSprinting(false);

@@ -75,6 +75,7 @@ public class ManagerFeature {
 				new FeatureScaffold(),
 				new FeatureSnake(),
 				new FeatureAutoPlay(),
+				new FeatureKeepSprint(),
 
 				/* Bot */
 				new FeatureFightBot(),
