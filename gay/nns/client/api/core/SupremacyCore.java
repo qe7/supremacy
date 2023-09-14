@@ -50,8 +50,6 @@ public final class SupremacyCore {
 		commandManager.initialize();
 
 		fontUtil.initialize();
-
-		Minecraft.getMinecraft().getSession().setUsername(getName());
 	}
 
 	public static SupremacyCore getSingleton() {

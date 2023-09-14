@@ -1077,7 +1077,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 			if (!this.inGameHasFocus) {
 				this.inGameHasFocus = true;
 				this.mouseHelper.grabMouseCursor();
-				this.displayGuiScreen((GuiScreen) null);
+				this.displayGuiScreen(null);
 				this.leftClickCounter = 10000;
 			}
 		}

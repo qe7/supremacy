@@ -14,6 +14,7 @@ import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.impl.feature.render.FeatureInterface;
 import gay.nns.client.util.chat.UtilChat;
+import gay.nns.client.util.math.UtilMath;
 import gay.nns.client.util.math.UtilTimer;
 import gay.nns.client.util.player.UtilPlayer;
 import gay.nns.client.util.player.UtilRotation;
@@ -210,7 +211,8 @@ public class FeatureFightBot extends Feature {
 				if (mcTarget != null && mcTarget != mc.thePlayer) {
 
 					Vector2f rotation = UtilRotation.getRotations(mcTarget);
-					rotation = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotation, 20f);
+					float rotationSpeed = 10f + (rotation.x / 10f);
+					rotation = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotation, rotationSpeed);
 					rotation = UtilRotation.applySanity(rotation);
 					rotation = UtilRotation.applyGCD(rotation);
 
@@ -225,11 +227,12 @@ public class FeatureFightBot extends Feature {
 
 					mc.gameSettings.keyBindJump.setKeyPressed(mc.thePlayer.isCollidedHorizontally);
 
-					if (mcTarget.getDistanceToEntity(mc.thePlayer) < 6.0f) {
-						if (swingTimer.hasTimeElapsed((long) (1000 / swingInterval))) {
+					if (mcTarget.getDistanceToEntity(mc.thePlayer) < 4.2f) {
+						long delay = (long) UtilMath.getRandom(swingInterval, swingInterval + 1);
+						if (swingTimer.hasTimeElapsed(1000 / delay)) {
 							UtilPlayer.sendClick(0, true);
 						}
-						if (swingTimer.hasTimeElapsed((long) ((1000 / swingInterval) + 30))) {
+						if (swingTimer.hasTimeElapsed((1000 / delay) + UtilMath.getRandom(30, 50))) {
 							UtilPlayer.sendClick(0, false);
 							swingTimer.reset();
 						}

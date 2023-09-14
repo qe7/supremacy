@@ -106,7 +106,7 @@ public class GameSettings
     public boolean reducedDebugInfo = false;
     public boolean hideServerAddress;
     public boolean advancedItemTooltips;
-    public boolean pauseOnLostFocus = true;
+    public boolean pauseOnLostFocus = false;
     private final Set<EnumPlayerModelParts> setModelParts = Sets.newHashSet(EnumPlayerModelParts.values());
     public boolean touchscreen;
     public int overrideWidth;

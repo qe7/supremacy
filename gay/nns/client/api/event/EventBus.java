@@ -69,8 +69,7 @@ public class EventBus {
 
 	private void methodSetup(Method method) {
 		eventMethods.add(method);
-		methodObjectMap.put(method,
-				eventObjects.stream().filter(o -> method.getDeclaringClass().equals(o.getClass())).findFirst().orElseThrow(RuntimeException::new));
+		methodObjectMap.put(method, eventObjects.stream().filter(o -> method.getDeclaringClass().equals(o.getClass())).findFirst().orElseThrow(RuntimeException::new));
 	}
 
 }

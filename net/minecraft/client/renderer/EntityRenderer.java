@@ -1182,7 +1182,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             if (Minecraft.getSystemTime() - this.prevFrameTime > 500L)
             {
-                this.mc.displayInGameMenu();
+//                this.mc.displayInGameMenu();
             }
         }
         else
