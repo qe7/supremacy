@@ -137,15 +137,12 @@ public class FeatureKillAura extends Feature {
                 case "Fake" -> {
                 }
                 case "Hypixel" -> {
-                    if(mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer)
-                    if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 10 && !this.isBlocking) {
-                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
-                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                        this.isBlocking = true;
-                    } else if (mc.thePlayer.hurtTime >= 10 + (Math.random() * 4) && this.isBlocking) {
-                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                        this.isBlocking = false;
-
+                    if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer) {
+                        if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 20 && !this.isBlocking) {
+                            mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
+                            mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                            this.isBlocking = true;
+                        }
                     }
                 }
             }
@@ -223,8 +220,9 @@ public class FeatureKillAura extends Feature {
 
     @Subscribe
     public void slowDownEvent(EventSlowdown event) {
-        if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && this.isBlocking) {
-            event.setCancelled(true);
+        if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && isBlocking) {
+            //event.setCancelled(true);
+            //mc.thePlayer.addChatMessage(new ChatComponentText("called"));
         }
     }
 }
