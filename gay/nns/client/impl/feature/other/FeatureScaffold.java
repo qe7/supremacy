@@ -120,10 +120,10 @@ public class FeatureScaffold extends Feature {
 		switch (mode.toLowerCase()) {
 			case "vanilla" -> {
 				switch (blockData.getFacing()) {
-					case NORTH -> yaw = 0.0F;
-					case EAST -> yaw = 90.0F;
-					case SOUTH -> yaw = 180.0F;
-					case WEST -> yaw = 270.0F;
+					case NORTH -> yaw = UtilMath.getRandom(-1.0F, 1.0F);
+					case EAST -> yaw = UtilMath.getRandom(89.0F, 91.0F);
+					case SOUTH -> yaw = UtilMath.getRandom(179.0F, 181.0F);
+					case WEST -> yaw = UtilMath.getRandom(-89.0F, -91.0F);
 					case UP -> {
 						yaw = mc.thePlayer.rotationYaw;
 						pitch = 90.0F;

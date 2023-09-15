@@ -211,7 +211,7 @@ public class FeatureFightBot extends Feature {
 				if (mcTarget != null && mcTarget != mc.thePlayer) {
 
 					Vector2f rotation = UtilRotation.getRotations(mcTarget);
-					float rotationSpeed = 10f + (rotation.x / 10f);
+					float rotationSpeed = 40f;
 					rotation = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotation, rotationSpeed);
 					rotation = UtilRotation.applySanity(rotation);
 					rotation = UtilRotation.applyGCD(rotation);

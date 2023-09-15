@@ -4,10 +4,10 @@ import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.FeatureInfo;
+import gay.nns.client.api.feature.interfaces.SerializeFeature;
+import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketSend;
 import gay.nns.client.impl.event.player.EventPreMotion;
@@ -39,30 +39,30 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@FeatureInfo(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
+@SerializeFeature(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
 public class FeatureKillAura extends Feature {
 
-    @Serialize(name = "Keep_Sprint")
+    @SerializeSetting(name = "Keep_Sprint")
     @SettingBoolean()
     public static boolean keepSprint = false;
 
-    @Serialize(name = "Auto_Block")
+    @SerializeSetting(name = "Auto_Block")
     @SettingMode(modes = {"None", "Fake", "Hypixel", "Minemen"})
     public String autoBlock = "None";
 
-    @Serialize(name = "Attack_Range")
+    @SerializeSetting(name = "Attack_Range")
     @SettingSlider(min = 1, max = 6, increment = 0.1f)
     public double attackRange = 3.f;
 
-    @Serialize(name = "Max_CPS")
+    @SerializeSetting(name = "Max_CPS")
     @SettingSlider(min = 1, max = 20, increment = 1)
     public double maxCPS = 12;
 
-    @Serialize(name = "Min_CPS")
+    @SerializeSetting(name = "Min_CPS")
     @SettingSlider(min = 1, max = 20, increment = 1)
     public double minCPS = 8;
 
-    @Serialize(name = "Rotation_Speed")
+    @SerializeSetting(name = "Rotation_Speed")
     @SettingSlider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
 
