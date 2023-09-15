@@ -22,7 +22,7 @@ import net.minecraft.util.EnumFacing;
 public class FeatureVelocity extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Standard", "Grim"})
+    @SettingMode(modes = {"Standard", /*"Hypixel",*/ "Grim"})
     public String mode = "Standard";
 
     @SerializeSetting(name = "Horizontal")
@@ -85,9 +85,9 @@ public class FeatureVelocity extends Feature {
                     if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
                         if (horizontal == 0 && vertical == 0) {
                             event.setCancelled(true);
-                            s12.motionX = 0;
-                            s12.motionY = 0;
-                            s12.motionZ = 0;
+                            mc.thePlayer.motionX = 0;
+                            mc.thePlayer.motionY = 0;
+                            mc.thePlayer.motionZ = 0;
                         } else {
                             s12.motionX = (int) (s12.getMotionX() * (horizontal / 100));
                             s12.motionY = (int) (s12.getMotionY() * (vertical / 100));
