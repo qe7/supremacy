@@ -4,10 +4,10 @@ import gay.nns.client.api.core.SupremacyCore;
 import gay.nns.client.api.event.interfaces.Subscribe;
 import gay.nns.client.api.feature.Feature;
 import gay.nns.client.api.feature.enums.FeatureCategory;
-import gay.nns.client.api.feature.interfaces.SerializeFeature;
+import gay.nns.client.api.feature.interfaces.FeatureInfo;
 import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
-import gay.nns.client.api.setting.annotations.SerializeSetting;
+import gay.nns.client.api.setting.annotations.Serialize;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketSend;
 import gay.nns.client.impl.event.player.EventPreMotion;
@@ -27,7 +27,9 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
@@ -37,30 +39,30 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@SerializeFeature(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
+@FeatureInfo(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
 public class FeatureKillAura extends Feature {
 
-    @SerializeSetting(name = "Keep_Sprint")
+    @Serialize(name = "Keep_Sprint")
     @SettingBoolean()
     public static boolean keepSprint = false;
 
-    @SerializeSetting(name = "Auto_Block")
+    @Serialize(name = "Auto_Block")
     @SettingMode(modes = {"None", "Fake", "Hypixel", "Minemen"})
     public String autoBlock = "None";
 
-    @SerializeSetting(name = "Attack_Range")
+    @Serialize(name = "Attack_Range")
     @SettingSlider(min = 1, max = 6, increment = 0.1f)
     public double attackRange = 3.f;
 
-    @SerializeSetting(name = "Max_CPS")
+    @Serialize(name = "Max_CPS")
     @SettingSlider(min = 1, max = 20, increment = 1)
     public double maxCPS = 12;
 
-    @SerializeSetting(name = "Min_CPS")
+    @Serialize(name = "Min_CPS")
     @SettingSlider(min = 1, max = 20, increment = 1)
     public double minCPS = 8;
 
-    @SerializeSetting(name = "Rotation_Speed")
+    @Serialize(name = "Rotation_Speed")
     @SettingSlider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
 
@@ -123,18 +125,31 @@ public class FeatureKillAura extends Feature {
         if (mcTarget != mc.thePlayer && mc.thePlayer.getDistanceToEntity(mcTarget) < attackRange && !mcTarget.isDead && !mcTarget.isInvisibleToPlayer(mc.thePlayer) && !mc.thePlayer.isInvisible()) {
 
             Vector2f rotations = UtilRotation.getRotations(mcTarget);
-            rotations = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
-            rotations = UtilRotation.applySanity(rotations);
-            rotations = UtilRotation.applyGCD(rotations);
+            Vector2f smoothRotations = UtilRotation.getSmoothRotations(mc.thePlayer.getPreviousRotation(), rotations, rotationSpeed);
 
-            SupremacyCore.getSingleton().getRotationManager().setRotation(rotations);
+            smoothRotations = UtilRotation.applySanity(smoothRotations);
+
+            smoothRotations = UtilRotation.applyGCD(smoothRotations);
+
+            SupremacyCore.getSingleton().getRotationManager().setRotation(smoothRotations);
 
             switch (autoBlock) {
                 case "Fake" -> {
                 }
                 case "Hypixel" -> {
+                    if(mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer)
+                    if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 10 && !this.isBlocking) {
+                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
+                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        this.isBlocking = true;
+                    } else if (mc.thePlayer.hurtTime >= 10 + (Math.random() * 4) && this.isBlocking) {
+                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        this.isBlocking = false;
+
+                    }
                 }
             }
+
 
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
@@ -196,21 +211,6 @@ public class FeatureKillAura extends Feature {
 
         switch (autoBlock) {
             case "Hypixel" -> {
-                if (this.hitTicks == 1 && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                    if (packet instanceof C03PacketPlayer) {
-                        packets.add(packet);
-                        event.setCancelled(true);
-                    }
-                } else if (!packets.isEmpty()) {
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 3));
-                    mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                    for (Packet<?> packet1 : packets) {
-                        mc.thePlayer.sendQueue.addToSendQueueNoEvent(packet1);
-                    }
-                    packets.clear();
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                    this.isBlocking = true;
-                }
             }
 
 
@@ -218,14 +218,13 @@ public class FeatureKillAura extends Feature {
 
             }
         }
-
     }
 
 
     @Subscribe
     public void slowDownEvent(EventSlowdown event) {
         if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && this.isBlocking) {
-            //event.setCancelled(true);
+            event.setCancelled(true);
         }
     }
 }
