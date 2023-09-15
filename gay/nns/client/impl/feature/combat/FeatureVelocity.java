@@ -57,57 +57,71 @@ public class FeatureVelocity extends Feature {
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isInWater() && waterCheck) return;
 
-        switch (mode) {
-            case "Standard": {
+		switch (mode) {
+			case "Standard" -> {
+				if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
+					if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
+						if (horizontal == 0 && vertical == 0) {
+							event.setCancelled(true);
+						} else {
+							s12.motionX = (int) (s12.getMotionX() * (horizontal / 100));
+							s12.motionY = (int) (s12.getMotionY() * (vertical / 100));
+							s12.motionZ = (int) (s12.getMotionZ() * (horizontal / 100));
+						}
+					}
+				}
+				if (event.getPacket() instanceof S27PacketExplosion s27) {
+					if (horizontal == 0 && vertical == 0)
+						event.setCancelled(true);
+					else {
+						s27.posX = (int) (s27.posX * (horizontal / 100));
+						s27.posY = (int) (s27.posY * (vertical / 100));
+						s27.posZ = (int) (s27.posZ * (horizontal / 100));
+					}
+				}
+			}
+            case "Hypixel" -> {
                 if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
                     if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
-                        if (horizontal == 0 && vertical == 0)
+                        if (horizontal == 0 && vertical == 0) {
                             event.setCancelled(true);
-                        else {
+                            s12.motionX = 0;
+                            s12.motionY = 0;
+                            s12.motionZ = 0;
+                        } else {
                             s12.motionX = (int) (s12.getMotionX() * (horizontal / 100));
                             s12.motionY = (int) (s12.getMotionY() * (vertical / 100));
                             s12.motionZ = (int) (s12.getMotionZ() * (horizontal / 100));
                         }
                     }
                 }
-                if (event.getPacket() instanceof S27PacketExplosion s27) {
-                    if (horizontal == 0 && vertical == 0)
-                        event.setCancelled(true);
-                    else {
-                        s27.posX = (int) (s27.posX * (horizontal / 100));
-                        s27.posY = (int) (s27.posY * (vertical / 100));
-                        s27.posZ = (int) (s27.posZ * (horizontal / 100));
-                    }
-                }
-                break;
             }
+			case "Grim" -> {
+				if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 50 || mc.thePlayer.isInLava()) {
+					return;
+				}
 
-            case "Grim": {
-                if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 50 || mc.thePlayer.isInLava()) {
-                    return;
-                }
+				if (event.getPacket() instanceof S19PacketEntityStatus s19) {
 
-                if (event.getPacket() instanceof S19PacketEntityStatus s19) {
+					if (s19.getEntity(mc.theWorld) != mc.thePlayer || s19.getOpCode() != 2) {
+						return;
+					}
 
-                    if (s19.getEntity(mc.theWorld) != mc.thePlayer || s19.getOpCode() != 2) {
-                        return;
-                    }
+					this.realVelocity = true;
+				}
 
-                    this.realVelocity = true;
-                }
+				if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
+					if (s12.getEntityID() != mc.thePlayer.getEntityId() || !this.realVelocity) {
+						return;
+					}
 
-                if (event.getPacket() instanceof S12PacketEntityVelocity s12) {
-                    if (s12.getEntityID() != mc.thePlayer.getEntityId() || !this.realVelocity) {
-                        return;
-                    }
+					event.setCancelled(true);
+					this.tookVelocity = true;
+					this.realVelocity = false;
 
-                    event.setCancelled(true);
-                    this.tookVelocity = true;
-                    this.realVelocity = false;
-
-                }
-            }
-        }
+				}
+			}
+		}
     }
 
     @Subscribe

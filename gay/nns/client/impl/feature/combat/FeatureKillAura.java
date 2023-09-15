@@ -175,14 +175,14 @@ public class FeatureKillAura extends Feature {
         else mcTarget = mc.thePlayer;
 
         if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
-            GL11.glPushMatrix();
-            String string = mcTarget.getName();
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), Color.white.getRGB());
-            string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), Color.white.getRGB());
-            string = "HT: " + hitTicks;
-            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), Color.white.getRGB());
-            GL11.glPopMatrix();
+//            GL11.glPushMatrix();
+//            String string = mcTarget.getName();
+//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), Color.white.getRGB());
+//            string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
+//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), Color.white.getRGB());
+//            string = "HT: " + hitTicks;
+//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), Color.white.getRGB());
+//            GL11.glPopMatrix();
         }
     }
 

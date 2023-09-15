@@ -34,6 +34,27 @@ public class FeatureScaffold extends Feature {
 	@SerializeSetting(name = "Safe_Walk")
 	@SettingBoolean
 	public static boolean safeWalk = true;
+
+	@SerializeSetting(name = "Ray_Trace")
+	@SettingBoolean
+	public boolean rayTrace = true;
+
+	@SerializeSetting(name = "Limit_Speed")
+	@SettingBoolean
+	public boolean limitSpeed = true;
+
+	@SerializeSetting(name = "Mode")
+	@SettingMode(modes = {"Vanilla", "Hypixel", "Cancer"})
+	public String mode = "Vanilla";
+
+	@SerializeSetting(name = "Place_Delay")
+	@SettingSlider(min = 0, max = 1000, increment = 1)
+	public double placeDelay = 0;
+
+	@SerializeSetting(name = "Rotation_Speed")
+	@SettingSlider(min = 0, max = 20, increment = 1)
+	public double rotationSpeed = 17;
+
 	private final UtilChat chatUtil = new UtilChat();
 	private final UtilTimer timerUtil = new UtilTimer();
 	private final UtilTimer spinTimerUtil = new UtilTimer();
@@ -53,21 +74,7 @@ public class FeatureScaffold extends Feature {
 			Blocks.cobblestone_wall, Blocks.oak_fence, Blocks.beacon);
 	private final List<Block> invalidBlocks = List.of(
 			Blocks.air, Blocks.water, Blocks.fire, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tallgrass);
-	@SerializeSetting(name = "Ray_Trace")
-	@SettingBoolean
-	public boolean rayTrace = true;
-	@SerializeSetting(name = "Limit_Speed")
-	@SettingBoolean
-	public boolean limitSpeed = true;
-	@SerializeSetting(name = "Mode")
-	@SettingMode(modes = {"Vanilla", "Hypixel", "Cancer"})
-	public String mode = "Vanilla";
-	@SerializeSetting(name = "Place_Delay")
-	@SettingSlider(min = 0, max = 1000, increment = 1)
-	public double placeDelay = 0;
-	@SerializeSetting(name = "Rotation_Speed")
-	@SettingSlider(min = 0, max = 20, increment = 1)
-	public double rotationSpeed = 17;
+
 	private BlockData blockData, prevBlockData;
 	private float yaw, pitch;
 	private int oldSlot = -1;
@@ -91,7 +98,7 @@ public class FeatureScaffold extends Feature {
 	@Subscribe
 	public void onRender2D(final EventRender2D render2DEvent) {
 		FontRenderer fr = mc.fontRendererObj;
-		String blocks = "blocks: " + getBlockCount() + " | " + getBlockSlot();
+		String blocks = "blocks: " + getBlockCount();
 		fr.drawStringWithShadow(blocks, (float) mc.displayWidth / 4 - (fr.getStringWidth(blocks) / 2f), (float) mc.displayHeight / 4 + 10, -1);
 	}
 
@@ -126,7 +133,7 @@ public class FeatureScaffold extends Feature {
 					case WEST -> yaw = UtilMath.getRandom(-89.0F, -91.0F);
 					case UP -> {
 						yaw = mc.thePlayer.rotationYaw;
-						pitch = 90.0F;
+						pitch = UtilMath.getRandom(88.0F, 90.0F);
 					}
 				}
 			}
@@ -134,7 +141,7 @@ public class FeatureScaffold extends Feature {
 				yaw = mc.thePlayer.rotationYaw - UtilMath.getRandom(178.0F, 182.0F);
 				if (Objects.requireNonNull(blockData.getFacing()) == EnumFacing.UP) {
 					yaw = mc.thePlayer.rotationYaw;
-					pitch = 90.0F;
+					pitch = UtilMath.getRandom(88.0F, 90.0F);
 				}
 			}
 			case "cancer" -> {
@@ -158,7 +165,7 @@ public class FeatureScaffold extends Feature {
 		if (limitSpeed && mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) &&
 				Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
-			double speed = currentSpeed * 0.75D;
+			double speed = mc.thePlayer.isPotionActive(Potion.moveSpeed) ? currentSpeed * 0.8D : currentSpeed * 0.825D;
 			float direction = mc.thePlayer.rotationYaw;
 			double motionX = -Math.sin(direction / 180.0F * Math.PI) * speed;
 			double motionZ = Math.cos(direction / 180.0F * Math.PI) * speed;
@@ -169,22 +176,30 @@ public class FeatureScaffold extends Feature {
 			timerUtil.reset();
 			return;
 		}
-		if ((blockData.getFacing().equals(EnumFacing.UP) && blockUnder.getY() + 1 == mc.thePlayer.posY) || timerUtil.hasTimeElapsed(UtilMath.getRandom((int) placeDelay, (int) placeDelay + 10))) {
-			if (getBlockSlot() != -1) {
-				if (mc.thePlayer.inventory.currentItem != getBlockSlot()) {
-					mc.thePlayer.inventory.currentItem = getBlockSlot();
-				}
-				if (mc.playerController.onPlayerRightClick(
-						mc.thePlayer,
-						mc.theWorld,
-						mc.thePlayer.getHeldItem(),
-						blockData.getPosition(),
-						blockData.enumFacing,
-						getHitVec()
-				)) {
-					mc.thePlayer.swingItem();
-					timerUtil.reset();
-				}
+		if (blockData.getFacing().equals(EnumFacing.UP)) {
+			if (timerUtil.hasTimeElapsed(UtilMath.getRandom(100, 100 + 10))) {
+				place();
+			}
+		} else if (timerUtil.hasTimeElapsed(UtilMath.getRandom((int) placeDelay, (int) placeDelay + 10))) {
+			place();
+		}
+	}
+
+	private void place() {
+		if (getBlockSlot() != -1) {
+			if (mc.thePlayer.inventory.currentItem != getBlockSlot()) {
+				mc.thePlayer.inventory.currentItem = getBlockSlot();
+			}
+			if (mc.playerController.onPlayerRightClick(
+					mc.thePlayer,
+					mc.theWorld,
+					mc.thePlayer.getHeldItem(),
+					blockData.getPosition(),
+					blockData.enumFacing,
+					getHitVec()
+			)) {
+				mc.thePlayer.swingItem();
+				timerUtil.reset();
 			}
 		}
 	}
