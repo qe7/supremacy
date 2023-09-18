@@ -7,6 +7,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
 {
+    public double setY;
     protected double x;
     protected double y;
     protected double z;
@@ -186,6 +187,45 @@ public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
             buf.writeFloat(this.yaw);
             buf.writeFloat(this.pitch);
             super.writePacketData(buf);
+        }
+        public double getX() {
+            return x;
+        }
+
+        public void setX(final double x) {
+            this.x = x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setY(final double y) {
+            this.y = y;
+        }
+
+        public double getZ() {
+            return z;
+        }
+
+        public void setZ(final double z) {
+            this.z = z;
+        }
+
+        public void setYaw(final float yaw) {
+            this.yaw = yaw;
+        }
+
+        public void setPitch(final float pitch) {
+            this.pitch = pitch;
+        }
+
+        public void setOnGround(final boolean onGround) {
+            this.onGround = onGround;
+        }
+
+        public boolean isRotating() {
+            return rotating;
         }
     }
 }
