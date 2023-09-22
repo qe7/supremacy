@@ -90,6 +90,7 @@ public class FeatureSpeed extends Feature {
                 }
             }
 
+            //paki
             case "blocksmc" -> {
                 if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
                     speed = (float) 0.25;
