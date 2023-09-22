@@ -171,7 +171,6 @@ public class FeatureKillAura extends Feature {
         }
     }
 
-    //im a retard but somehow this code works :sunglasses:
 
     @Subscribe
     public void onRenderItem(EventRenderItem event) {
@@ -192,6 +191,8 @@ public class FeatureKillAura extends Feature {
             this.post();
     }
 
+
+    //changed how autoblock modes are done
     public void pre() {
         switch (autoBlock) {
 
