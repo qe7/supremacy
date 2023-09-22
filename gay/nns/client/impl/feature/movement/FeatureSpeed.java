@@ -88,11 +88,6 @@ public class FeatureSpeed extends Feature {
                     UtilMovement.setSpeed(speed);
                     if (mc.thePlayer.onGround) mc.thePlayer.jump();
                 }
-
-                if (mc.thePlayer.hurtTime > 1) {
-                    speed = (float) this.speed + 0.1F;
-                    UtilMovement.setSpeed(speed);
-                }
             }
 
             case "blocksmc" -> {
