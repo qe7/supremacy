@@ -10,6 +10,7 @@ import gay.nns.client.api.setting.annotations.SettingBoolean;
 import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.packet.EventPacketSend;
+import gay.nns.client.impl.event.player.EventPostMotion;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.player.EventSlowdown;
 import gay.nns.client.impl.event.render.EventRender2D;
@@ -38,6 +39,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @SerializeFeature(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
 public class FeatureKillAura extends Feature {
@@ -47,7 +49,7 @@ public class FeatureKillAura extends Feature {
     public static boolean keepSprint = false;
 
     @SerializeSetting(name = "Auto_Block")
-    @SettingMode(modes = {"None", "Fake", "Hypixel", "Minemen"})
+    @SettingMode(modes = {"None", "Fake", "Vanilla", "Hypixel", "BlocksMC", "NCP"})
     public String autoBlock = "None";
 
     @SerializeSetting(name = "Attack_Range")
@@ -71,10 +73,10 @@ public class FeatureKillAura extends Feature {
 
     public boolean afterAttack;
     private List<Entity> entities;
-    private Entity mcTarget;
+    public static Entity mcTarget;
     private boolean isBlocking = false;
     private int hitTicks;
-    private boolean attacked;
+    private int ticks = 0;
 
     public FeatureKillAura() {
         super();
@@ -113,6 +115,7 @@ public class FeatureKillAura extends Feature {
         }
 
         this.hitTicks++;
+        this.afterAttack = false;
 
         entities = new ArrayList<>(mc.theWorld.getLoadedEntityList());
         entities.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
@@ -132,24 +135,13 @@ public class FeatureKillAura extends Feature {
             smoothRotations = UtilRotation.applyGCD(smoothRotations);
 
             SupremacyCore.getSingleton().getRotationManager().setRotation(smoothRotations);
-
-            switch (autoBlock) {
-                case "Fake" -> {
-                }
-                case "Hypixel" -> {
-                    if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer) {
-                        if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 20 && !this.isBlocking) {
-                            mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
-                            mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                            this.isBlocking = true;
-                        }
-                    }
-                }
-            }
-
+            if (this.canBlock())
+                this.pre();
 
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
+                if (this.canBlock())
+                    this.postAttack();
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;
                 timer.reset();
@@ -162,6 +154,7 @@ public class FeatureKillAura extends Feature {
             }
             hitTicks = 0;
         }
+
     }
 
     @Subscribe
@@ -175,56 +168,73 @@ public class FeatureKillAura extends Feature {
         else mcTarget = mc.thePlayer;
 
         if ((mcTarget != null) && mcTarget instanceof EntityPlayer) {
-//            GL11.glPushMatrix();
-//            String string = mcTarget.getName();
-//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 20), Color.white.getRGB());
-//            string = "HP: " + Math.round(((EntityPlayer) mcTarget).getHealth());
-//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 30), Color.white.getRGB());
-//            string = "HT: " + hitTicks;
-//            fr.drawStringWithShadow(string, (float) (mc.displayWidth / 4 - fr.getStringWidth(string) / 2), (float) (mc.displayHeight / 4 + 40), Color.white.getRGB());
-//            GL11.glPopMatrix();
         }
     }
 
+    //im a retard but somehow this code works :sunglasses:
+
     @Subscribe
     public void onRenderItem(EventRenderItem event) {
-        switch (autoBlock) {
-            case "Fake", "Hypixel" -> {
-                if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
-                    if (mc.thePlayer.isSwingInProgress) {
-                        event.setUseItem(true);
-                        event.setEnumAction(EnumAction.BLOCK);
-                    }
+        if (!autoBlock.equals("none")) {
+            if (mc.thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                if (mc.thePlayer.isSwingInProgress) {
+                    event.setUseItem(true);
+                    event.setEnumAction(EnumAction.BLOCK);
                 }
             }
         }
     }
 
+
     @Subscribe
-    public void onPacketSend(EventPacketSend event) {
-        final Packet<?> packet = event.getPacket();
+    public void onPostMotionEvent(EventPostMotion event) {
+        if (mc.thePlayer != null && this.canBlock())
+            this.post();
+    }
 
-        if (mcTarget == null || mc.thePlayer == null || mcTarget == mc.thePlayer) return;
-
+    public void pre() {
         switch (autoBlock) {
+
+            case "NCP" -> mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+
             case "Hypixel" -> {
+
             }
 
-
-            case "Minemen" -> {
-
+            case "Vanilla" -> {
+                if (this.hitTicks != 0) {
+                    mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                }
             }
         }
     }
 
 
-    @Subscribe
-    public void slowDownEvent(EventSlowdown event) {
-        if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && isBlocking) {
-            //event.setCancelled(true);
-            //mc.thePlayer.addChatMessage(new ChatComponentText("called"));
+    public void postAttack() {
+        switch (autoBlock) {
+
+            case "BlocksMC" -> {
+                if (!this.isBlocking && mc.thePlayer.isSwingInProgress && Math.random() > 0.1 || this.hitTicks == 1 && mc.thePlayer.isSwingInProgress && Math.random() > 0.1) {
+                    mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                    this.isBlocking = true;
+                }
+            }
         }
+    }
+
+    public void post() {
+        switch (autoBlock) {
+            case "NCP" -> mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+
+        }
+    }
+
+    private boolean canBlock() {
+        return mc.thePlayer.inventory.getCurrentItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer;
     }
 }
+
 
 

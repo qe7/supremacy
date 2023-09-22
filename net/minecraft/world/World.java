@@ -1464,6 +1464,9 @@ public abstract class World implements IBlockAccess
 
             try
             {
+                ++entity.ticksSinceVelocity;
+                ++entity.ticksSincePlayerVelocity;
+                ++entity.ticksSinceTeleport;
                 ++entity.ticksExisted;
                 entity.onUpdate();
             }

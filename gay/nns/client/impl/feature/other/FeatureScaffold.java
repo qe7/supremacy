@@ -165,7 +165,7 @@ public class FeatureScaffold extends Feature {
 		if (limitSpeed && mc.thePlayer.onGround && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode()) &&
 				Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
 			double currentSpeed = Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
-			double speed = mc.thePlayer.isPotionActive(Potion.moveSpeed) ? currentSpeed * 0.8D : currentSpeed * 0.825D;
+			double speed = mc.thePlayer.isPotionActive(Potion.moveSpeed) ? currentSpeed * 0.9D : currentSpeed * 0.825D;
 			float direction = mc.thePlayer.rotationYaw;
 			double motionX = -Math.sin(direction / 180.0F * Math.PI) * speed;
 			double motionZ = Math.cos(direction / 180.0F * Math.PI) * speed;

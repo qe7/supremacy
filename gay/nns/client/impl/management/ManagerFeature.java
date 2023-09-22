@@ -62,6 +62,7 @@ public class ManagerFeature {
 				new FeatureBrightness(),
 				new FeatureESP(),
 				new FeatureRotate(),
+				new FeatureTargetHud(),
 
 				/* Other */
 				new FeatureNoFall(),
