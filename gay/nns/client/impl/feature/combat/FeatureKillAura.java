@@ -202,6 +202,7 @@ public class FeatureKillAura extends Feature {
 
             }
 
+            //why did we not have this
             case "Vanilla" -> {
                 if (this.hitTicks != 0) {
                     mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
