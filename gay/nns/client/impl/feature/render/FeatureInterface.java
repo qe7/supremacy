@@ -24,10 +24,9 @@ import java.util.*;
 @SerializeFeature(name = "Interface", description = "HUD", category = FeatureCategory.RENDER)
 public class FeatureInterface extends Feature {
 
-    @SerializeSetting(name = "Arraylist_Color")
+    @SerializeSetting(name = "Interface_Color")
     @SettingColor
     public static Color color = new Color(255, 255, 255);
-
     @SerializeSetting(name = "Background_Color")
     @SettingColor
     public Color backgroundColor = new Color(0, 0, 0, 100);
@@ -41,12 +40,8 @@ public class FeatureInterface extends Feature {
     public String arraylistMode = "All";
 
     @SerializeSetting(name = "Suffix_Mode")
-    @SettingMode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Space", "None"})
+    @SettingMode(modes = {"Parenthesis", "Squared_Brackets", "Hyphen", "Standard", "None"})
     public String suffixMode = "Parenthesis";
-
-    @SerializeSetting(name = "Info")
-    @SettingBoolean
-    public boolean info = false;
 
     @SerializeSetting(name = "Arraylist_Brightness")
     @SettingSlider(min = 0, max = 1, increment = 0.05)
@@ -67,6 +62,10 @@ public class FeatureInterface extends Feature {
     @SerializeSetting(name = "Background")
     @SettingBoolean
     public boolean background = true;
+
+    @SerializeSetting(name = "Info")
+    @SettingBoolean
+    public boolean info = false;
 
     public String coordinates;
     public String bps;
@@ -110,7 +109,7 @@ public class FeatureInterface extends Feature {
             case "Parenthesis" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7(" + m.getSuffix() + ")" : m.getFeatureInfo().name())));
             case "Squared_Brackets" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7[" + m.getSuffix() + "]" : m.getFeatureInfo().name())));
             case "Hyphen" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7- " + m.getSuffix() : m.getFeatureInfo().name())));
-            case "Space" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix() : m.getFeatureInfo().name())));
+            case "Standard" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getSuffix() != null ? m.getFeatureInfo().name() + " §7" + m.getSuffix() : m.getFeatureInfo().name())));
             case "None" -> featureList.sort(Comparator.comparingInt(m -> fr.getStringWidth(m.getFeatureInfo().name())));
         }
         Collections.reverse(featureList);

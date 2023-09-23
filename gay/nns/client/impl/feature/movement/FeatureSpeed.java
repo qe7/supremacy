@@ -25,7 +25,12 @@ public class FeatureSpeed extends Feature {
     @SerializeSetting(name = "Speed")
     @SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
     public double speed = 0.3D;
-
+    @SerializeSetting(name = "Damage_Boost")
+    @SettingBoolean
+    public boolean hurtBoost = false;
+    @SerializeSetting(name = "Damage_Boost_Speed")
+    @SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
+    public double boostSpeed = 0.3D;
     @SerializeSetting(name = "Water_Check")
     @SettingBoolean
     public boolean waterCheck = true;
@@ -69,6 +74,7 @@ public class FeatureSpeed extends Feature {
 
         float speed = 0f;
 
+
         switch (mode.toLowerCase()) {
             case "vanilla" -> {
                 if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
@@ -76,6 +82,10 @@ public class FeatureSpeed extends Feature {
                     if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
                         speed *= 0.2F;
                     }
+                    UtilMovement.setSpeed(speed);
+                }
+                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                    speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
             }
@@ -87,6 +97,10 @@ public class FeatureSpeed extends Feature {
                     }
                     UtilMovement.setSpeed(speed);
                     if (mc.thePlayer.onGround) mc.thePlayer.jump();
+                }
+                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                    speed = (float) (speed + boostSpeed);
+                    UtilMovement.setSpeed(speed);
                 }
             }
 
@@ -100,11 +114,13 @@ public class FeatureSpeed extends Feature {
                     UtilMovement.setSpeed(speed);
                     if (mc.thePlayer.onGround) mc.thePlayer.jump();
                 }
-                if (mc.thePlayer.hurtTime > 1) {
-                    speed = speed + 0.07F;
+
+                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                    speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
             }
+
 
             case "hypixel-hop" -> {
                 if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
@@ -117,6 +133,10 @@ public class FeatureSpeed extends Feature {
                         if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
                             speed *= 0.2F;
                         }
+                        UtilMovement.setSpeed(speed);
+                    }
+                    if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                        speed = (float) (speed + boostSpeed);
                         UtilMovement.setSpeed(speed);
                     }
                 }
@@ -145,6 +165,10 @@ public class FeatureSpeed extends Feature {
                     if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
                         speed *= 0.2F;
                     }
+                    UtilMovement.setSpeed(speed);
+                }
+                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                    speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
             }

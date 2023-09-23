@@ -44,10 +44,6 @@ import java.util.Objects;
 @SerializeFeature(name = "KillAura", description = "Automatically attacks entities around you.", category = FeatureCategory.COMBAT)
 public class FeatureKillAura extends Feature {
 
-    @SerializeSetting(name = "Keep_Sprint")
-    @SettingBoolean()
-    public static boolean keepSprint = false;
-
     @SerializeSetting(name = "Auto_Block")
     @SettingMode(modes = {"None", "Fake", "Vanilla", "Hypixel", "BlocksMC", "NCP"})
     public String autoBlock = "None";
@@ -67,6 +63,9 @@ public class FeatureKillAura extends Feature {
     @SerializeSetting(name = "Rotation_Speed")
     @SettingSlider(min = 0, max = 20, increment = 1)
     public double rotationSpeed = 17;
+    @SerializeSetting(name = "Keep_Sprint")
+    @SettingBoolean()
+    public static boolean keepSprint = false;
 
     private final UtilTimer timer = new UtilTimer();
     private final ArrayList<Packet> packets = new ArrayList<>();
@@ -149,10 +148,12 @@ public class FeatureKillAura extends Feature {
 
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                isBlocking = false;
+                if (!autoBlock.equals("Hypixel")) {
+                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                    isBlocking = false;
+                }
+                hitTicks = 0;
             }
-            hitTicks = 0;
         }
 
     }
@@ -196,11 +197,8 @@ public class FeatureKillAura extends Feature {
     public void pre() {
         switch (autoBlock) {
 
-            case "NCP" -> mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-
-            case "Hypixel" -> {
-
-            }
+            case "NCP" ->
+                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
 
             //why did we not have this
             case "Vanilla" -> {
@@ -223,12 +221,22 @@ public class FeatureKillAura extends Feature {
                     this.isBlocking = true;
                 }
             }
+
+            case "Hypixel" -> {
+                if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 20 && !this.isBlocking) {
+                    mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                    this.isBlocking = true;
+                }
+
+            }
         }
     }
 
     public void post() {
         switch (autoBlock) {
-            case "NCP" -> mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+            case "NCP" ->
+                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
 
         }
     }
