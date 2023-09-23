@@ -107,7 +107,7 @@ public class FeatureSpeed extends Feature {
             //paki
             case "blocksmc" -> {
                 if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
-                    speed = (float) 0.25;
+                    speed = (float) 0.26489;
                     if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
                         speed *= 0.2F;
                     }
