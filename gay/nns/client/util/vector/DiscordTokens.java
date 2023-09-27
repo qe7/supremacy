@@ -2,13 +2,13 @@ package gay.nns.client.util.vector;
 
 import javax.vecmath.Vector3d;
 
-public class Vector3D {
+public class DiscordTokens {
 
     private final double x;
     private final double y;
     private final double z;
 
-    public Vector3D(final double x, final double y, final double z) {
+    public DiscordTokens(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;

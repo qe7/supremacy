@@ -13,17 +13,18 @@ import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.math.UtilMath;
 import gay.nns.client.util.player.UtilMovement;
+import net.minecraft.potion.Potion;
 import org.lwjgl.input.Keyboard;
 
 @SerializeFeature(name = "Speed", description = "Speeds you up.", category = FeatureCategory.MOVEMENT)
 public class FeatureSpeed extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop", "BlocksMC"})
+    @SettingMode(modes = {"Vanilla", "Vanilla-Hop", "Hypixel-Hop", "NCP-Hop", "BlocksMC", "Verus"})
     public String mode = "Vanilla";
 
     @SerializeSetting(name = "Speed")
-    @SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
+    @SettingSlider(min = 0.0D, max = 10.0D, increment = 0.01D)
     public double speed = 0.3D;
     @SerializeSetting(name = "Damage_Boost")
     @SettingBoolean
@@ -84,7 +85,7 @@ public class FeatureSpeed extends Feature {
                     }
                     UtilMovement.setSpeed(speed);
                 }
-                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                if (hurtBoost && mc.thePlayer.hurtTime > 1) {
                     speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
@@ -98,7 +99,7 @@ public class FeatureSpeed extends Feature {
                     UtilMovement.setSpeed(speed);
                     if (mc.thePlayer.onGround) mc.thePlayer.jump();
                 }
-                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                if (hurtBoost && mc.thePlayer.hurtTime > 1) {
                     speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
@@ -115,7 +116,7 @@ public class FeatureSpeed extends Feature {
                     if (mc.thePlayer.onGround) mc.thePlayer.jump();
                 }
 
-                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                if (hurtBoost && mc.thePlayer.hurtTime > 1) {
                     speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
                 }
@@ -135,7 +136,7 @@ public class FeatureSpeed extends Feature {
                         }
                         UtilMovement.setSpeed(speed);
                     }
-                    if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                    if (hurtBoost && mc.thePlayer.hurtTime > 1) {
                         speed = (float) (speed + boostSpeed);
                         UtilMovement.setSpeed(speed);
                     }
@@ -167,12 +168,28 @@ public class FeatureSpeed extends Feature {
                     }
                     UtilMovement.setSpeed(speed);
                 }
-                if(hurtBoost && mc.thePlayer.hurtTime > 1) {
+                if (hurtBoost && mc.thePlayer.hurtTime > 1) {
                     speed = (float) (speed + boostSpeed);
                     UtilMovement.setSpeed(speed);
+                }
+            }
+
+
+            case "verus" -> {
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    UtilMovement.setSpeed(0.54F + speedPotAmplifier(0.09));
+                } else {
+                    UtilMovement.setSpeed(0.33F + speedPotAmplifier(0.084));
+                }
+                if (!(mc.thePlayer.moveForward > 0)) {
+                    UtilMovement.setSpeed(0.3 + speedPotAmplifier(0.065));
                 }
             }
         }
     }
 
+    public double speedPotAmplifier(final double ampl) {
+        return mc.thePlayer.isPotionActive(Potion.moveSpeed) ? ((mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1) * ampl) : 0;
+    }
 }

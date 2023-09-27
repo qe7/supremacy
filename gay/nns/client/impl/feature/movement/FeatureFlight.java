@@ -12,6 +12,7 @@ import gay.nns.client.impl.event.player.EventUpdate;
 import gay.nns.client.impl.event.render.EventRender2D;
 import gay.nns.client.util.player.UtilMovement;
 import gay.nns.client.util.player.UtilPlayer;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import org.lwjgl.input.Keyboard;
 
 @SerializeFeature(name = "Flight", description = "Allows you to fly.", category = FeatureCategory.MOVEMENT)
@@ -46,8 +47,6 @@ public class FeatureFlight extends Feature {
         y = mc.thePlayer.posY;
         z = mc.thePlayer.posZ;
         super.onEnable();
-        mc.timer.timerSpeed = 1;
-
         savedFlyingCapabilityState = mc.thePlayer.capabilities.allowFlying;
     }
 
@@ -99,21 +98,21 @@ public class FeatureFlight extends Feature {
                 }
 
                 if (stage <= 4) {
-                    event.setGround(false);
                     mc.thePlayer.motionZ = 0;
                     mc.thePlayer.motionX = 0;
-                }
+                    event.setGround(false);
 
-                if(mc.thePlayer.hurtTime > 0) {
+                }
+                if (mc.thePlayer.hurtTime > 0) {
                     damaged = true;
                     ticks++;
-                    if(ticks < 2)
-                        mc.thePlayer.motionY = 0.41999998688698;
-                    UtilMovement.setSpeed(0.43 + Math.random() / 100F);
+                    if (ticks < 2)
+                        mc.thePlayer.motionY = 0.42;
+                    mc.thePlayer.moveFlying(0, (float) (0.5 + Math.random() / 100F), 3);
+
                     speed -= 0.01;
                 }
-
-                if(damaged) {
+                if(mc.thePlayer.offGroundTicks > 2 && mc.thePlayer.offGroundTicks < 6 && damaged) {
                     mc.thePlayer.motionY = 0.42;
                 }
             }

@@ -61,7 +61,7 @@ public class FeatureKillAura extends Feature {
     public double minCPS = 8;
 
     @SerializeSetting(name = "Rotation_Speed")
-    @SettingSlider(min = 0, max = 20, increment = 1)
+    @SettingSlider(min = 0, max = 100, increment = 1)
     public double rotationSpeed = 17;
     @SerializeSetting(name = "Keep_Sprint")
     @SettingBoolean()
@@ -139,24 +139,22 @@ public class FeatureKillAura extends Feature {
 
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
+                mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 if (this.canBlock())
                     this.postAttack();
-                mc.playerController.attackEntity(mc.thePlayer, mcTarget);
                 this.hitTicks = 0;
                 timer.reset();
             }
 
         } else {
             if (mcTarget == mc.thePlayer && isBlocking) {
-                if (!autoBlock.equals("Hypixel")) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    isBlocking = false;
-                }
-                hitTicks = 0;
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                isBlocking = false;
             }
+            hitTicks = 0;
         }
-
     }
+
 
     @Subscribe
     public void onRender2D(final EventRender2D render2DEvent) {
@@ -196,6 +194,12 @@ public class FeatureKillAura extends Feature {
     //changed how autoblock modes are done
     public void pre() {
         switch (autoBlock) {
+            case "Hypixel" -> {
+                if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
+                    mc.gameSettings.keyBindUseItem.setKeyPressed(false);
+                }
+            }
+
 
             case "NCP" ->
                     mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
@@ -221,17 +225,11 @@ public class FeatureKillAura extends Feature {
                     this.isBlocking = true;
                 }
             }
-
-            case "Hypixel" -> {
-                if (mc.thePlayer.hurtTime >= 5 + (Math.random() * 4) && mc.thePlayer.hurtTime <= 20 && !this.isBlocking) {
-                    mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                    this.isBlocking = true;
-                }
-
-            }
         }
     }
+
+
+
 
     public void post() {
         switch (autoBlock) {
