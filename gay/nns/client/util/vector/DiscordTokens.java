@@ -12,6 +12,7 @@ public class DiscordTokens {
         this.x = x;
         this.y = y;
         this.z = z;
+        //damn
     }
 
     public Vector3d add(final double x, final double y, final double z) {
