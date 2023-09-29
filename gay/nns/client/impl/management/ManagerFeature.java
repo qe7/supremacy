@@ -52,6 +52,7 @@ public class ManagerFeature {
 				new FeatureNoWeb(),
 				new FeatureScreenWalk(),
 				new FeatureSafeWalk(),
+				new FeatureSpider(),
 
 				/* Render */
 				new FeatureAnimation(),

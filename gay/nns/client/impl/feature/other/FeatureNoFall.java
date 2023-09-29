@@ -8,13 +8,16 @@ import gay.nns.client.api.setting.annotations.SettingMode;
 import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.impl.event.player.EventPreMotion;
 import gay.nns.client.impl.event.render.EventRender2D;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 
 @SerializeFeature(name = "NoFall", description = "Prevents fall damage.", category = FeatureCategory.OTHER)
 public class FeatureNoFall extends Feature {
 
 	@SerializeSetting(name = "Mode")
-	@SettingMode(modes = {"Packet", "Damage"})
+	@SettingMode(modes = {"Packet", "Damage", "Verus"})
 	public String mode = "Packet";
+
 
 	public FeatureNoFall() {
 		super();
@@ -48,6 +51,13 @@ public class FeatureNoFall extends Feature {
 				if (mc.thePlayer.fallDistance > 3.2F) {
 					motionEvent.setGround(true);
 					mc.thePlayer.fallDistance = 0.0F;
+				}
+			}
+			case "verus" -> {
+				if(mc.thePlayer.fallDistance > 3) {
+					motionEvent.setGround(true);
+					mc.thePlayer.sendQueue.addToSendQueueNoEvent(new C08PacketPlayerBlockPlacement(null));
+					mc.thePlayer.fallDistance = 0;
 				}
 			}
 		}
