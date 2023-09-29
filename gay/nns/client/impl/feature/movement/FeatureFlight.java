@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 public class FeatureFlight extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Vanilla", "Creative", "LJ"})
+    @SettingMode(modes = {"Vanilla", "Creative", "Verus Damage"})
     public String mode = "Vanilla";
 
     @SerializeSetting(name = "Speed")
@@ -86,7 +86,7 @@ public class FeatureFlight extends Feature {
     @Subscribe
     public void eventPreMotion(EventPreMotion event) {
         switch (mode.toLowerCase()) {
-            case "lj" -> {
+            case "verus damage" -> {
 
                 if (mc.thePlayer.onGround && !UtilPlayer.isOverVoid()) {
                     stage++;
