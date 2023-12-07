@@ -17,3 +17,4 @@ workspace/
 MavenMCP.iml
 .idea/
 *.log
+/workspace/
