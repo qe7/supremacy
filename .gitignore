@@ -22,3 +22,9 @@ MavenMCP.iml
 *.dat_old
 *.mca
 *.lock
+workspace/usercache.json
+*.lock
+*.mca
+*.dat_old
+*.dat
+workspace/options.txt

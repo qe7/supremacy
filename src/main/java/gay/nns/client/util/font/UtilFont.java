@@ -49,7 +49,7 @@ public class UtilFont {
 			Map<String, Font> locationMap = new HashMap<>();
 
 			//Fan Fonts
-			clean_ = getFont(locationMap, "Roboto.ttf", 15);
+			clean_ = getFont(locationMap, "Roboto.ttf", 13);
 			menuWatermarkFont_ = getFont(locationMap, "Roboto.ttf", 20);
 			menuFont_ = getFont(locationMap, "Roboto.ttf", 13);
 			menuFontBold_ = getFont(locationMap, "Roboto-Bold.ttf", 13);
