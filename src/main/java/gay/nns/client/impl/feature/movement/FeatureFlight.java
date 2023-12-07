@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 public class FeatureFlight extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Vanilla", "Creative", "Verus Damage", "No-Y"})
+    @SettingMode(modes = {"Vanilla", "Creative", "No-Y"})
     public String mode = "Vanilla";
 
     @SerializeSetting(name = "Speed")
@@ -27,12 +27,6 @@ public class FeatureFlight extends Feature {
     public double speed = 0.3D;
 
     private boolean savedFlyingCapabilityState;
-    private int stage;
-    private double x;
-    private double y;
-    private double z;
-    private boolean damaged;
-    private int ticks;
 
     public FeatureFlight() {
         super();
@@ -40,12 +34,6 @@ public class FeatureFlight extends Feature {
 
     @Override
     protected void onEnable() {
-        damaged = false;
-        stage = 0;
-        ticks = 0;
-        x = mc.thePlayer.posX;
-        y = mc.thePlayer.posY;
-        z = mc.thePlayer.posZ;
         super.onEnable();
         savedFlyingCapabilityState = mc.thePlayer.capabilities.allowFlying;
     }
@@ -89,43 +77,6 @@ public class FeatureFlight extends Feature {
                 UtilMovement.setSpeed(speed);
                 else
                     UtilMovement.setSpeed(0.0D);
-            }
-        }
-    }
-
-    @Subscribe
-    public void eventPreMotion(EventPreMotion event) {
-        switch (mode.toLowerCase()) {
-            case "verus damage": {
-
-                if (mc.thePlayer.onGround && !UtilPlayer.isOverVoid()) {
-                    stage++;
-                    if (stage <= 4)
-                        mc.thePlayer.jump();
-                    if (stage > 5 && damaged)
-                        toggle();
-
-                }
-
-                if (stage <= 4) {
-                    mc.thePlayer.motionZ = 0;
-                    mc.thePlayer.motionX = 0;
-                    event.setGround(false);
-
-                }
-                if (mc.thePlayer.hurtTime > 0) {
-                    damaged = true;
-                    ticks++;
-                    if (ticks < 2)
-                        mc.thePlayer.motionY = 0.42;
-                    mc.thePlayer.moveFlying(0, (float) (0.5 + Math.random() / 100F), 3);
-
-                    speed -= 0.01;
-                }
-                if(mc.thePlayer.offGroundTicks > 2 && mc.thePlayer.offGroundTicks < 6 && damaged) {
-                    mc.thePlayer.motionY = 0.42;
-                }
-                break;
             }
         }
     }
