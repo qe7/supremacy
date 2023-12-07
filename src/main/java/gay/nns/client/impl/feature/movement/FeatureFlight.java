@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 public class FeatureFlight extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Vanilla", "Creative", "Verus Damage"})
+    @SettingMode(modes = {"Vanilla", "Creative", "Verus Damage", "No-Y"})
     public String mode = "Vanilla";
 
     @SerializeSetting(name = "Speed")
@@ -81,6 +81,14 @@ public class FeatureFlight extends Feature {
                 mc.thePlayer.capabilities.allowFlying = true;
                 mc.thePlayer.capabilities.isFlying = true;
                 break;
+            }
+
+            case "no-y" : {
+                mc.thePlayer.motionY = 0;
+                if (mc.thePlayer.moveForward != 0.F || mc.thePlayer.moveStrafing != 0.F)
+                UtilMovement.setSpeed(speed);
+                else
+                    UtilMovement.setSpeed(0.0D);
             }
         }
     }
