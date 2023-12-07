@@ -190,7 +190,7 @@ public class FeatureInterface extends Feature {
                     break;
                 case "Hyphen": arraylist += " §7- " + feature.getSuffix();
                     break;
-                case "Space": arraylist += " §7" + feature.getSuffix();
+                case "Standard": arraylist += " §7" + feature.getSuffix();
                     break;
                 case "None": arraylist += "";
                     break;

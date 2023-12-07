@@ -22,7 +22,7 @@ import net.minecraft.util.EnumFacing;
 public class FeatureVelocity extends Feature {
 
     @SerializeSetting(name = "Mode")
-    @SettingMode(modes = {"Standard", "Grim"})
+    @SettingMode(modes = {"Standard"})
     public String mode = "Standard";
 
     @SerializeSetting(name = "Horizontal")
@@ -57,77 +57,38 @@ public class FeatureVelocity extends Feature {
         if (mc.thePlayer == null) return;
         if (mc.thePlayer.isInWater() && waterCheck) return;
 
-		switch (mode) {
-			case "Standard": {
-				if (event.getPacket() instanceof S12PacketEntityVelocity) {
+        switch (mode) {
+            case "Standard": {
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) event.getPacket();
 
-					if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
-						if (horizontal == 0 && vertical == 0) {
-							event.setCancelled(true);
-						} else {
-							s12.motionX = (int) (s12.getMotionX() * (horizontal / 100));
-							s12.motionY = (int) (s12.getMotionY() * (vertical / 100));
-							s12.motionZ = (int) (s12.getMotionZ() * (horizontal / 100));
-						}
-					}
-				}
-				if (event.getPacket() instanceof S27PacketExplosion) {
+                    if (s12.getEntityID() == mc.thePlayer.getEntityId()) {
+                        if (horizontal == 0) {
+                            event.setCancelled(true);
+
+                            if (vertical != 0) {
+                                mc.thePlayer.motionY = s12.getMotionY() / 8000.0D;
+                            }
+                            return;
+                        }
+                    }
+                }
+
+
+                if (event.getPacket() instanceof S27PacketExplosion) {
                     S27PacketExplosion s27 = (S27PacketExplosion) event.getPacket();
 
-					if (horizontal == 0 && vertical == 0)
-						event.setCancelled(true);
-					else {
-						s27.posX = (int) (s27.posX * (horizontal / 100));
-						s27.posY = (int) (s27.posY * (vertical / 100));
-						s27.posZ = (int) (s27.posZ * (horizontal / 100));
-					}
-				}
-                break;
-			}
-			case "Grim": {
-				if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 50 || mc.thePlayer.isInLava()) {
-					return;
-				}
-
-				if (event.getPacket() instanceof S19PacketEntityStatus) {
-                    S19PacketEntityStatus s19 = (S19PacketEntityStatus) event.getPacket();
-
-					if (s19.getEntity(mc.theWorld) != mc.thePlayer || s19.getOpCode() != 2) {
-						return;
-					}
-
-					this.realVelocity = true;
-				}
-
-				if (event.getPacket() instanceof S12PacketEntityVelocity) {
-                    S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) event.getPacket();
-
-					if (s12.getEntityID() != mc.thePlayer.getEntityId() || !this.realVelocity) {
-						return;
-					}
-
-					event.setCancelled(true);
-					this.tookVelocity = true;
-					this.realVelocity = false;
-
-				}
-                break;
-			}
-		}
-    }
-
-    @Subscribe
-    public void UpdateEvent(final EventUpdate event) {
-        switch (mode) {
-            case "Grim": {
-                if (!this.tookVelocity) {
-                    return;
+                    if (horizontal == 0 && vertical == 0)
+                        event.setCancelled(true);
+                    else {
+                        s27.posX = (int) (s27.posX * (horizontal / 100));
+                        s27.posY = (int) (s27.posY * (vertical / 100));
+                        s27.posZ = (int) (s27.posZ * (horizontal / 100));
+                    }
                 }
-                mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), EnumFacing.DOWN));
-                this.tookVelocity = false;
                 break;
             }
+
         }
     }
 }

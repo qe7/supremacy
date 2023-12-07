@@ -80,6 +80,7 @@ public class ManagerFeature {
 				new FeatureAutoPlay(),
 				new FeatureKeepSprint(),
 				new FeatureTimer(),
+				new FeatureStaffDetector(),
 
 				/* Bot */
 				new FeatureFightBot(),

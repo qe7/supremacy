@@ -176,13 +176,7 @@ public class FeatureKillAura extends Feature {
 
     public void pre() {
         switch (autoBlock) {
-            case "Hypixel": {
-                if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
-                    mc.gameSettings.keyBindUseItem.setKeyPressed(false);
-                }
-                break;
-            }
-            case "NCP": {
+            case "NCP":{
                 mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                 break;
             }
@@ -193,12 +187,7 @@ public class FeatureKillAura extends Feature {
                 }
                 break;
             }
-        }
-    }
 
-
-    public void postAttack() {
-        switch (autoBlock) {
             case "BlocksMC": {
                 if (!this.isBlocking && mc.thePlayer.isSwingInProgress && Math.random() > 0.1 || this.hitTicks == 1 && mc.thePlayer.isSwingInProgress && Math.random() > 0.1) {
                     mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
@@ -209,6 +198,12 @@ public class FeatureKillAura extends Feature {
             }
         }
     }
+
+
+    public void postAttack() {
+
+            }
+
 
 
 
