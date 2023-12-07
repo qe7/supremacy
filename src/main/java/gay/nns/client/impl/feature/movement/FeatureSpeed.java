@@ -110,19 +110,21 @@ public class FeatureSpeed extends Feature {
             //paki
             case "blocksmc": {
                 if (mc.thePlayer.moveForward != 0.f || mc.thePlayer.moveStrafing != 0.f) {
-                    speed = (float) 0.264;
+                    if (mc.thePlayer.onGround) mc.thePlayer.jump();
+                    speed = 0.27F;
+                } else {
+                    speed = 0.26f;
                     if (!SupremacyCore.getSingleton().getFeatureManager().getFeatureFromType(FeatureNoSlowdown.class).isEnabled() && mc.thePlayer.isBlocking()) {
                         speed *= 0.2F;
                     }
                     UtilMovement.setSpeed(speed);
-                    if (mc.thePlayer.onGround) mc.thePlayer.jump();
-                }
 
-                if (hurtBoost && mc.thePlayer.hurtTime > 1) {
-                    speed = (float) (speed + boostSpeed);
-                    UtilMovement.setSpeed(speed);
+                    if (hurtBoost && mc.thePlayer.hurtTime > 1) {
+                        speed = (float) (speed + boostSpeed);
+                        UtilMovement.setSpeed(speed);
+                    }
+                    break;
                 }
-                break;
             }
 
 
