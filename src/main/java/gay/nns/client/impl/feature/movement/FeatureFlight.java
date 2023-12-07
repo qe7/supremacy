@@ -23,7 +23,7 @@ public class FeatureFlight extends Feature {
     public String mode = "Vanilla";
 
     @SerializeSetting(name = "Speed")
-    @SettingSlider(min = 0.0D, max = 1.0D, increment = 0.01D)
+    @SettingSlider(min = 0.0D, max = 10.0D, increment = 0.01D)
     public double speed = 0.3D;
 
     private boolean savedFlyingCapabilityState;
