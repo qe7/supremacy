@@ -19,7 +19,7 @@ public class FeatureSprint extends Feature {
 	public static String mode = "Legit";
 
 	public FeatureSprint() {
-		super();
+		this.toggle();
 	}
 
 	@Override

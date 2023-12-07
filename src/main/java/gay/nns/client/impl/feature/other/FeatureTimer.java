@@ -7,6 +7,7 @@ import gay.nns.client.api.feature.interfaces.SerializeFeature;
 import gay.nns.client.api.setting.annotations.SerializeSetting;
 import gay.nns.client.api.setting.annotations.SettingSlider;
 import gay.nns.client.impl.event.player.EventPreMotion;
+import gay.nns.client.impl.event.render.EventRender2D;
 
 @SerializeFeature(name = "Timer", description = "Changes how fast your game runs", category = FeatureCategory.OTHER)
 public class FeatureTimer extends Feature {
@@ -32,5 +33,12 @@ public class FeatureTimer extends Feature {
     @Subscribe
     public void eventPreMotion(EventPreMotion event) {
         mc.timer.timerSpeed = (float) timerSpeed;
+    }
+
+    @Subscribe
+    public void render2DEvent(EventRender2D event) {
+        if (mc.theWorld == null) return;
+        if (mc.thePlayer == null) return;
+        this.setSuffix(String.valueOf(timerSpeed));
     }
 }

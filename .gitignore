@@ -18,3 +18,7 @@ MavenMCP.iml
 .idea/
 *.log
 /workspace/
+*.dat
+*.dat_old
+*.mca
+*.lock
