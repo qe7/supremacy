@@ -132,7 +132,6 @@ public class FeatureKillAura extends Feature {
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
-                if (this.canBlock()) this.postAttack();
                 this.hitTicks = 0;
                 timer.reset();
             }
@@ -165,7 +164,9 @@ public class FeatureKillAura extends Feature {
 
     @Subscribe
     public void onPostMotionEvent(EventPostMotion event) {
-        if (mc.thePlayer != null && this.canBlock()) this.post();
+        if (mc.thePlayer != null)
+            if(this.canBlock())
+                this.post();
     }
 
     public void pre() {
@@ -192,10 +193,6 @@ public class FeatureKillAura extends Feature {
         }
     }
 
-
-    public void postAttack() {
-
-    }
 
     public void post() {
         switch (autoBlock) {
