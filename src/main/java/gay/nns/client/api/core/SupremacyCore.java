@@ -1,12 +1,11 @@
 package gay.nns.client.api.core;
 
 import gay.nns.client.api.event.EventBus;
+import gay.nns.client.impl.management.ManagerCommand;
 import gay.nns.client.impl.management.ManagerFeature;
 import gay.nns.client.impl.management.ManagerRotation;
 import gay.nns.client.impl.management.ManagerSetting;
 import gay.nns.client.util.font.UtilFont;
-import gay.nns.client.impl.management.ManagerCommand;
-import net.minecraft.client.Minecraft;
 
 public final class SupremacyCore {
 
