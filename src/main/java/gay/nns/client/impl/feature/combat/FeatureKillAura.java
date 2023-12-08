@@ -45,7 +45,7 @@ import java.util.Objects;
 public class FeatureKillAura extends Feature {
 
     @SerializeSetting(name = "Auto_Block")
-    @SettingMode(modes = {"None", "Fake", "Vanilla", "Hypixel", "BlocksMC", "NCP"})
+    @SettingMode(modes = {"None", "Fake", "Vanilla", "BlocksMC", "NCP"})
     public String autoBlock = "None";
 
     @SerializeSetting(name = "Attack_Range")
@@ -95,10 +95,6 @@ public class FeatureKillAura extends Feature {
     @Override
     protected void onDisable() {
         packets.clear();
-        if (autoBlock.equalsIgnoreCase("hypixel") && this.isBlocking) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-            this.isBlocking = false;
-        }
         super.onDisable();
     }
 
@@ -136,7 +132,6 @@ public class FeatureKillAura extends Feature {
             if (timer.hasTimeElapsed(1000L / UtilMath.getRandom((int) minCPS, (int) maxCPS))) {
                 mc.thePlayer.swingItem();
                 mc.playerController.attackEntity(mc.thePlayer, mcTarget);
-                if (this.canBlock()) this.postAttack();
                 this.hitTicks = 0;
                 timer.reset();
             }
@@ -169,7 +164,9 @@ public class FeatureKillAura extends Feature {
 
     @Subscribe
     public void onPostMotionEvent(EventPostMotion event) {
-        if (mc.thePlayer != null && this.canBlock()) this.post();
+        if (mc.thePlayer != null)
+            if(this.canBlock())
+                this.post();
     }
 
     public void pre() {
@@ -196,10 +193,6 @@ public class FeatureKillAura extends Feature {
         }
     }
 
-
-    public void postAttack() {
-
-    }
 
     public void post() {
         switch (autoBlock) {
