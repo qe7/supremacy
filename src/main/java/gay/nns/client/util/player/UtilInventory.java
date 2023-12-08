@@ -1,6 +1,6 @@
 package gay.nns.client.util.player;
 
-import gay.nns.client.impl.feature.other.FeatureInventoryManager;
+import gay.nns.client.feature.impl.other.FeatureInventoryManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.inventory.ContainerPlayer;

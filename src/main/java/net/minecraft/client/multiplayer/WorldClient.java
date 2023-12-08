@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.feature.render.FeatureAmbience;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.feature.impl.render.FeatureAmbience;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

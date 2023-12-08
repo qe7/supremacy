@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.event.render.Event3DRender;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.event.impl.render.Event3DRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;

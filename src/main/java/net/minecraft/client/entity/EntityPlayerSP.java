@@ -1,8 +1,8 @@
 package net.minecraft.client.entity;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.event.player.*;
-import gay.nns.client.impl.feature.movement.FeatureSprint;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.event.impl.player.*;
+import gay.nns.client.feature.impl.movement.FeatureSprint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;

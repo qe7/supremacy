@@ -1,6 +1,6 @@
 package gay.nns.client.util.chat;
 
-import gay.nns.client.api.core.SupremacyCore;
+import gay.nns.client.SupremacyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 

@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import gay.nns.client.util.account.UtilMicrosoftLogin;
-import gay.nns.client.api.core.SupremacyCore;
+import gay.nns.client.SupremacyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;

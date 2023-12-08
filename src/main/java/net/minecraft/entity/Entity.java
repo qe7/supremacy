@@ -5,9 +5,9 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.feature.movement.FeatureSafeWalk;
-import gay.nns.client.impl.feature.other.FeatureScaffold;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.feature.impl.movement.FeatureSafeWalk;
+import gay.nns.client.feature.impl.other.FeatureScaffold;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;

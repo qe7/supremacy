@@ -1,6 +1,6 @@
 package gay.nns.client.util.render;
 
-import gay.nns.client.api.feature.Feature;
+import gay.nns.client.feature.api.types.Feature;
 
 import java.awt.*;
 

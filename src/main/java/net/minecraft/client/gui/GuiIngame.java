@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.event.render.EventRender2D;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.event.impl.render.EventRender2D;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

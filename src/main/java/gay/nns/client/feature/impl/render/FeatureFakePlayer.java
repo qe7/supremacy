@@ -1,0 +1,35 @@
+package gay.nns.client.feature.impl.render;
+
+import com.mojang.authlib.GameProfile;
+import gay.nns.client.feature.api.types.Feature;
+import gay.nns.client.feature.api.enums.FeatureCategory;
+import gay.nns.client.feature.api.interfaces.SerializeFeature;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+
+import java.util.UUID;
+
+@SerializeFeature(name = "FakePlayer", description = "Spawns a fake player", category = FeatureCategory.RENDER)
+public class FeatureFakePlayer extends Feature {
+
+	public FeatureFakePlayer() {
+		super();
+	}
+
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+
+		EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.theWorld, new GameProfile(UUID.fromString("62007255-b0c2-4a8b-b4c0-1a1f76ff4d14"), "CyberTF2"));
+		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
+		fakePlayer.copyDataFromOld(mc.thePlayer);
+		mc.theWorld.addEntityToWorld(62007255, fakePlayer);
+	}
+
+	@Override
+	protected void onDisable() {
+		super.onDisable();
+
+		mc.theWorld.removeEntityFromWorld(62007255);
+	}
+
+}

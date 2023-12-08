@@ -1,9 +1,9 @@
 package net.minecraft.client.renderer;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.event.render.EventRenderItem;
-import gay.nns.client.impl.feature.render.FeatureAnimation;
-import gay.nns.client.impl.feature.render.FeatureViewModel;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.event.impl.render.EventRenderItem;
+import gay.nns.client.feature.impl.render.FeatureAnimation;
+import gay.nns.client.feature.impl.render.FeatureViewModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import gay.nns.client.api.core.SupremacyCore;
-import gay.nns.client.impl.feature.combat.FeatureKillAura;
-import gay.nns.client.impl.feature.other.FeatureKeepSprint;
+import gay.nns.client.SupremacyCore;
+import gay.nns.client.feature.impl.combat.FeatureKillAura;
+import gay.nns.client.feature.impl.other.FeatureKeepSprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
