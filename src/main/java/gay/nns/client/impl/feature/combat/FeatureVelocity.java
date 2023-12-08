@@ -88,7 +88,6 @@ public class FeatureVelocity extends Feature {
                 }
                 break;
             }
-
         }
     }
 }

@@ -45,7 +45,7 @@ import java.util.Objects;
 public class FeatureKillAura extends Feature {
 
     @SerializeSetting(name = "Auto_Block")
-    @SettingMode(modes = {"None", "Fake", "Vanilla", "Hypixel", "BlocksMC", "NCP"})
+    @SettingMode(modes = {"None", "Fake", "Vanilla", "BlocksMC", "NCP"})
     public String autoBlock = "None";
 
     @SerializeSetting(name = "Attack_Range")
@@ -94,10 +94,6 @@ public class FeatureKillAura extends Feature {
     @Override
     protected void onDisable() {
         packets.clear();
-        if (autoBlock.equalsIgnoreCase("hypixel") && this.isBlocking) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-            this.isBlocking = false;
-        }
         super.onDisable();
     }
 
