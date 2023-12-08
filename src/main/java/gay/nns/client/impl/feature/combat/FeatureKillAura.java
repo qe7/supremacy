@@ -63,6 +63,7 @@ public class FeatureKillAura extends Feature {
     @SerializeSetting(name = "Rotation_Speed")
     @SettingSlider(min = 0, max = 100, increment = 1)
     public double rotationSpeed = 17;
+
     @SerializeSetting(name = "Keep_Sprint")
     @SettingBoolean()
     public static boolean keepSprint = false;
@@ -145,12 +146,10 @@ public class FeatureKillAura extends Feature {
         }
     }
 
-
     @Subscribe
     public void onRender2D(final EventRender2D render2DEvent) {
         this.setSuffix(String.valueOf(entities.size()));
     }
-
 
     @Subscribe
     public void onRenderItem(EventRenderItem event) {
@@ -163,7 +162,6 @@ public class FeatureKillAura extends Feature {
             }
         }
     }
-
 
     @Subscribe
     public void onPostMotionEvent(EventPostMotion event) {
@@ -183,7 +181,6 @@ public class FeatureKillAura extends Feature {
                 }
                 break;
             }
-
             case "BlocksMC": {
                 if (!this.isBlocking && mc.thePlayer.isSwingInProgress && Math.random() > 0.1 || this.hitTicks == 1 && mc.thePlayer.isSwingInProgress && Math.random() > 0.1) {
                     mc.playerController.interactWithEntitySendPacket(mc.thePlayer, mcTarget);
@@ -198,11 +195,7 @@ public class FeatureKillAura extends Feature {
 
     public void postAttack() {
 
-            }
-
-
-
-
+    }
 
     public void post() {
         switch (autoBlock) {
@@ -214,7 +207,7 @@ public class FeatureKillAura extends Feature {
     }
 
     private boolean canBlock() {
-        return mc.thePlayer.inventory.getCurrentItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer;
+        return !autoBlock.equals("None") && mc.thePlayer.inventory.getCurrentItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mcTarget != null && mcTarget != mc.thePlayer;
     }
 }
 
